@@ -41,25 +41,25 @@ Atom *p_cond = mp->get_atom("cond");
 Atom *p_lambda = mp->get_atom("lambda");
 Atom *p_label = mp->get_atom("label");
 
-Atom *p_caar = mp->get_atom("caar");
-Atom *p_cadr = mp->get_atom("cadr");
-Atom *p_cadar = mp->get_atom("cadar");
-Atom *p_caddr = mp->get_atom("caddr");
-Atom *p_caddar = mp->get_atom("caddar");
-Atom *p_list = mp->get_atom("list");
+//Atom *p_caar = mp->get_atom("caar");
+//Atom *p_cadr = mp->get_atom("cadr");
+//Atom *p_cadar = mp->get_atom("cadar");
+//Atom *p_caddr = mp->get_atom("caddr");
+//Atom *p_caddar = mp->get_atom("caddar");
+//Atom *p_list = mp->get_atom("list");
 Atom *p_null = mp->get_atom("null");
-Atom *p_and = mp->get_atom("and");
+//Atom *p_and = mp->get_atom("and");
 Atom *p_not = mp->get_atom("not");
 Atom *p_append = mp->get_atom("append");
-Atom *p_pair = mp->get_atom("pair");
-Atom *p_assoc = mp->get_atom("assoc");
+//Atom *p_pair = mp->get_atom("pair");
+//Atom *p_assoc = mp->get_atom("assoc");
 
-Atom *p_evcon = mp->get_atom("evcon");
-Atom *p_evlis = mp->get_atom("evlis");
-Atom *p_eval = mp->get_atom("eval");
+//tom *p_evcon = mp->get_atom("evcon");
+//Atom *p_evlis = mp->get_atom("evlis");
+//Atom *p_eval = mp->get_atom("eval");
 
-Atom *p_aaa = mp->get_atom("aaa");
-Atom *p_bbb = mp->get_atom("bbb");
+//Atom *p_aaa = mp->get_atom("aaa");
+//Atom *p_bbb = mp->get_atom("bbb");//
 
 // Create Type_IDs
 const type_info& id_Atom = typeid(Atom);
@@ -740,7 +740,7 @@ Object *s_read(vector<Token> *tokens, int idx, int *rest_idx)
 
   *rest_idx = idx + 1;
 
-  cout << "[s] " << s << endl;
+//  cout << "[s] " << s << endl;
 //  cout << "[t] " << (int)type << endl;
 
   // (
@@ -765,7 +765,7 @@ Object *s_read(vector<Token> *tokens, int idx, int *rest_idx)
   {
     n = count_items(tokens, *rest_idx, 0);
 
-    cout << "[n] " << n << endl;
+//    cout << "[n] " << n << endl;
 
     p = new Vector((long)n);
     p_car = s_read(tokens, *rest_idx, &car_rest_idx);
@@ -833,7 +833,7 @@ Object *s_cdr_read(vector<Token> *tokens, int idx, int *rest_idx)
 
   *rest_idx = idx + 1;
 
-  cout << "[cdr s] " << s << endl;
+//  cout << "[cdr s] " << s << endl;
 //  cout << "[cdr t] " << (int)type << endl;
 
   // .
@@ -889,7 +889,7 @@ Object *s_cdr_read(vector<Token> *tokens, int idx, int *rest_idx)
     // in new Vector
     n = count_items(tokens, *rest_idx, 0);
 
-    cout << "[cdr n] " << n << endl;
+//    cout << "[cdr n] " << n << endl;
 
     q = new Vector((long)n);
     q_car = s_read(tokens, *rest_idx, &car_rest_idx);
@@ -996,7 +996,7 @@ void v_rest_read(Object *v, int i, vector<Token> *tokens, int idx, int *rest_idx
 
   *rest_idx = idx + 1;
 
-  cout << "[v_rest s] " << s << endl;
+//  cout << "[v_rest s] " << s << endl;
 //  cout << "[v_rest t] " << (int)type << endl;
 
   // (
@@ -1028,7 +1028,7 @@ void v_rest_read(Object *v, int i, vector<Token> *tokens, int idx, int *rest_idx
     // in new Vector
     n = count_items(tokens, *rest_idx, 0);
 
-    cout << "[v_rest n] " << n << endl;
+//    cout << "[v_rest n] " << n << endl;
 
     p = new Vector((long)n);
     p_car = s_read(tokens, *rest_idx, &car_rest_idx);
@@ -1546,7 +1546,8 @@ int main()
 
       // eval
       // a = ((aaa bbb)) for Test
-      q = s_eval(p, cons(cons(p_aaa, cons(p_bbb, p_nil)), p_nil));
+//      q = s_eval(p, cons(cons(p_aaa, cons(p_bbb, p_nil)), p_nil));
+      q = s_eval(p, p_nil);
 
       // print
       cout << "[eval] ";
@@ -1571,6 +1572,7 @@ int main()
         delete q;
       }
 
+      cout << endl;
     }
   }
 
