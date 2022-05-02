@@ -79,7 +79,7 @@ const type_info& id_Vector = typeid(Vector);
 // (...)                           (List)
 // 'ABC '(...)                     (quote)
 // #(1 2 3)                        (Vector)
-// #'(...)                         (lambda ())
+// #'(...)                         (function ())
 
 //
 // 標準入力からS式1個分の文字列を読み込む
@@ -487,7 +487,7 @@ void error_exit(string str)
 // (...)                           (List) *
 // 'ABC '(...)                     (quote ...) -
 // #(1 2 3)                        (Vector) *
-// #'(...)                         (lambda () (...)) -
+// #'(...)                         (function () (...)) -
 
 string get_elem(string text, int *idx, Type *type)
 {
@@ -1325,6 +1325,65 @@ Atom *null(Object *p)
   return eq(p, p_nil);
 }
 
+Atom *s_and(Object *x, Object *y)
+{
+  if (x != p_nil)
+  {
+    if (y != p_nil)
+    {
+      return p_t;
+    }
+    else
+    {
+      return p_nil;
+    }
+  }
+  else
+  {
+    return p_nil;
+  }
+}
+
+Atom *s_not(Object *x)
+{
+  if (x != p_nil)
+  {
+    return p_nil;
+  }
+  else
+  {
+    return p_t;
+  }
+}
+
+Object *append(Object *x, Object *y)
+{
+  if (null(x) == p_t)
+  {
+    return y;
+  }
+  else
+  {
+    return cons(car(x), append(cdr(x), y));
+  }
+}
+
+Object *s_pair(Object *x, Object *y)
+{
+  if (s_and(null(x), null(y)) == p_t)
+  {
+    return p_nil;
+  }
+  else if (s_and(s_not(atom(x)), s_not(atom(y))) == p_t)
+  {
+    return cons(list(car(x), car(y)), s_pair(cdr(x), cdr(y)));
+  }
+  else
+  {
+    return p_nil;
+  }
+}
+
 Object *assoc(Object *x, Object *y)
 {
   if (y == p_nil)
@@ -1353,11 +1412,36 @@ Object *evcon(Object *c, Object *a)
   }
 }
 
+Object *evlis(Object *m, Object *a)
+{
+  if (null(m) == p_t)
+  {
+    return p_nil;
+  }
+  else
+  {
+    return cons(s_eval(car(m), a), evlis(cdr(m), a));
+  }
+}
+
 Object *s_eval(Object *e, Object *a)
 {
-  if (atom(e) == p_t)
+  if (atom2(e) == p_t)
   {
+    return e;             // Constants
+  }
+  else if (atom(e) == p_t)
+  {
+    if ((e == p_t ) || (e == p_nil))
+    {
+      return e;
+    }
+
     return assoc(e, a);
+  }
+  else if (atom2(car(e)) == p_t)
+  {
+    return e;             // Constants List
   }
   else if (atom(car(e)) == p_t)
   {
@@ -1373,6 +1457,14 @@ Object *s_eval(Object *e, Object *a)
     {
       return eq(s_eval(cadr(e), a), s_eval(caddr(e), a));
     }
+    else if (car(e) == p_null)
+    {
+      return null(s_eval(cadr(e), a));                            // (null
+    }
+    else if (car(e) == p_not)
+    {
+      return s_not(s_eval(cadr(e), a));                           // (not
+    }
     else if (car(e) == p_car)
     {
       return car(s_eval(cadr(e), a));
@@ -1385,13 +1477,17 @@ Object *s_eval(Object *e, Object *a)
     {
       return cons(s_eval(cadr(e), a), s_eval(caddr(e), a));
     }
+    else if (car(e) == p_append)
+    {
+      return append(s_eval(cadr(e), a), s_eval(caddr(e), a));     // (append
+    }
     else if (car(e) == p_cond)
     {
       return evcon(cdr(e), a);
     }
     else
     {
-      return s_eval(cons(assoc(car(e), a), cdr(e)), a);         // Named Functions
+      return s_eval(cons(assoc(car(e), a), cdr(e)), a);           // Named Functions
     }
   }
   else if (caar(e) == p_label)
