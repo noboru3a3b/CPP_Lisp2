@@ -1210,6 +1210,21 @@ Atom *atom(Object *p)
   }
 }
 
+Atom *atom2(Object *p)
+{
+  if ((typeid(*p) == id_String) ||
+      (typeid(*p) == id_Num_int) ||
+      (typeid(*p) == id_Num_float) ||
+      (typeid(*p) == id_Vector))
+  {
+    return p_t;
+  }
+  else
+  {
+    return p_nil;
+  }
+}
+
 Atom *eq(Object *p, Object *q)
 {
   if (typeid(*p) == typeid(*q))
@@ -1376,25 +1391,22 @@ Object *s_eval(Object *e, Object *a)
     }
     else
     {
-      s_eval(cons(assoc(car(e), a), cdr(e)), a);
+      return s_eval(cons(assoc(car(e), a), cdr(e)), a);         // Named Functions
     }
   }
   else if (caar(e) == p_label)
   {
-
+    return s_eval(cons(caddar(e), cdr(e)), cons(list(cadar(e), car(e)), a));
   }
   else if (caar(e) == p_lambda)
   {
-
+    return s_eval(caddar(e), append(s_pair(cadar(e), evlis(cdr(e), a)), a));
   }
-
-  return p_nil;
+  else
+  {
+    return p_nil;
+  }
 }
-
-
-
-
-
 
 
 // --------------- Main Loop ---------------
