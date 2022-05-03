@@ -15,23 +15,25 @@ Now that it works, I'll publish the source code.
 make read_test  
 ./a.out  
 
-> (append '(100 200 300) '(aaa bbb ccc))  <--- Input  
+> (append '(100 200 300) '(aaa bbb ccc))  
 [str] (append (quote (100 200 300)) (quote (aaa bbb ccc)))  
 [exp] (append (quote (100 200 300)) (quote (aaa bbb ccc)))  
-[eval] (100 200 300 aaa bbb ccc)          <--- Output  
+[eval] (100 200 300 aaa bbb ccc)  
  ---------- atoms ----------  
-aaa append atom bbb car ccc cdr cond cons eq   
-label lambda nil not null quote t  
-Delete Object [Class ID]= 4Cell  
-Delete Object [Class ID]= 4Cell  
+aaa and append atom bbb caar cadar caddar caddr cadr  
+car ccc cdr cond cons eq label lambda list nil  
+not null quote t  
+[exp] Delete Object [Class ID]= 4Cell  
+[eval] Delete Object [Class ID]= 4Cell  
 
-> ((label subst (lambda (x y z) (cond ((atom z) (cond ((eq z y) x) ('t z))) ('t (cons (subst x y (car z)) (subst x y (cdr z))))))) 'm 'b '(a b (a b c) d))     <--- Input  
+> ((label subst (lambda (x y z) (cond ((atom z) (cond ((eq z y) x) ('t z))) ('t (cons (subst x y (car z)) (subst x y (cdr z))))))) 'm 'b '(a b (a b c) d))  
 [str] ((label subst (lambda (x y z) (cond ((atom z) (cond ((eq z y) x) ((quote t) z))) ((quote t) (cons (subst x y (car z)) (subst x y (cdr z))))))) (quote m) (quote b) (quote (a b (a b c) d)))  
 [exp] ((label subst (lambda (x y z) (cond ((atom z) (cond ((eq z y) x) ((quote t) z))) ((quote t) (cons (subst x y (car z)) (subst x y (cdr z))))))) (quote m) (quote b) (quote (a b (a b c) d)))  
-[eval] (a m (a m c) d)   <--- Output  
+[eval] (a m (a m c) d)  
  ---------- atoms ----------  
-a aaa append atom b bbb c car ccc cdr  
-cond cons d eq label lambda m nil not null  
-quote subst t x y z  
-Delete Object [Class ID]= 4Cell  
-Delete Object [Class ID]= 4Cell  
+a aaa and append atom b bbb c caar cadar  
+caddar caddr cadr car ccc cdr cond cons d eq  
+label lambda list m nil not null quote subst t  
+x y z  
+[exp] Delete Object [Class ID]= 4Cell  
+[eval] Delete Object [Class ID]= 4Cell  

@@ -41,14 +41,14 @@ Atom *p_cond = mp->get_atom("cond");
 Atom *p_lambda = mp->get_atom("lambda");
 Atom *p_label = mp->get_atom("label");
 
-//Atom *p_caar = mp->get_atom("caar");
-//Atom *p_cadr = mp->get_atom("cadr");
-//Atom *p_cadar = mp->get_atom("cadar");
-//Atom *p_caddr = mp->get_atom("caddr");
-//Atom *p_caddar = mp->get_atom("caddar");
-//Atom *p_list = mp->get_atom("list");
+Atom *p_caar = mp->get_atom("caar");
+Atom *p_cadr = mp->get_atom("cadr");
+Atom *p_cadar = mp->get_atom("cadar");
+Atom *p_caddr = mp->get_atom("caddr");
+Atom *p_caddar = mp->get_atom("caddar");
+Atom *p_list = mp->get_atom("list");
 Atom *p_null = mp->get_atom("null");
-//Atom *p_and = mp->get_atom("and");
+Atom *p_and = mp->get_atom("and");
 Atom *p_not = mp->get_atom("not");
 Atom *p_append = mp->get_atom("append");
 //Atom *p_pair = mp->get_atom("pair");
@@ -1472,6 +1472,22 @@ Object *evcon(Object *c, Object *a)
   }
 }
 
+Object *evand(Object *c, Object *a)
+{
+  if (c == p_nil)
+  {
+    return p_t;
+  }
+  if (s_eval(car(c), a) != p_nil)
+  {
+    return evand(cdr(c), a);
+  }
+  else
+  {
+    return p_nil;
+  }
+}
+
 Object *evlis(Object *m, Object *a)
 {
   if (null(m) == p_t)
@@ -1537,6 +1553,30 @@ Object *s_eval(Object *e, Object *a)
     {
       return cons(s_eval(cadr(e), a), s_eval(caddr(e), a));
     }
+    else if (car(e) == p_caar)
+    {
+      return caar(s_eval(cadr(e), a));                            // (caar
+    }
+    else if (car(e) == p_cadr)
+    {
+      return cadr(s_eval(cadr(e), a));                            // (cadr
+    }
+    else if (car(e) == p_cadar)
+    {
+      return cadar(s_eval(cadr(e), a));                           // (cadar
+    }
+    else if (car(e) == p_caddr)
+    {
+      return caddr(s_eval(cadr(e), a));                           // (caddr
+    }
+    else if (car(e) == p_caddar)
+    {
+      return caddar(s_eval(cadr(e), a));                          // (caddar
+    }
+    else if (car(e) == p_list)
+    {
+      return evlis(cdr(e), a);                                    // (list
+    }
     else if (car(e) == p_append)
     {
       return append(s_eval(cadr(e), a), s_eval(caddr(e), a));     // (append
@@ -1544,6 +1584,10 @@ Object *s_eval(Object *e, Object *a)
     else if (car(e) == p_cond)
     {
       return evcon(cdr(e), a);
+    }
+    else if (car(e) == p_and)
+    {
+      return evand(cdr(e), a);                                    // (and
     }
     else
     {
