@@ -28,8 +28,9 @@
     ('t '())))
 
 (defun not_ (x)
-  (cond (x '())
-        ('t 't)))
+  (cond
+    (x '())
+    ('t 't)))
 
 (defun append_ (x y)
   (cond
@@ -39,15 +40,15 @@
 
 (defun pair_ (x y)
   (cond
-    ((and_ (null_ x) (null_ y))
-     '())
+    ((and_ (null_ x) (null_ y)) '())
 	  ((and_ (not_ (atom x)) (not_ (atom y)))
 	   (cons (list (car x) (car y))
 	         (pair_ (cdr x) (cdr y))))))
 
 (defun assoc_ (x y)
-  (cond ((eq (caar y) x) (cadar y))
-        ('t (assoc_ x (cdr y)))))
+  (cond
+    ((eq (caar y) x) (cadar y))
+    ('t (assoc_ x (cdr y)))))
 
 (defun evcon_ (c a)
   (cond
@@ -58,8 +59,7 @@
 (defun evlis_ (m a)
   (cond
     ((null_ m) '())
-    ('t (cons (eval_ (car m) a)
-		          (evlis_ (cdr m) a)))))
+    ('t (cons (eval_ (car m) a) (evlis_ (cdr m) a)))))
 
 (defun eval_ (e a)
   (cond
@@ -75,8 +75,6 @@
        ((eq (car e) 'cond) (evcon_ (cdr e) a))
        ('t (eval_ (cons (assoc_ (car e) a) (cdr e)) a))))
     ((eq (caar e) 'label)
-     (eval_ (cons (caddar e) (cdr e))
-	          (cons (list (cadar e) (car e)) a)))
+     (eval_ (cons (caddar e) (cdr e)) (cons (list (cadar e) (car e)) a)))
     ((eq (caar e) 'lambda)
-     (eval_ (caddar e)
-	          (append_ (pair_ (cadar e) (evlis_ (cdr e) a)) a)))))
+     (eval_ (caddar e) (append_ (pair_ (cadar e) (evlis_ (cdr e) a)) a)))))
