@@ -1210,6 +1210,7 @@ Atom *atom(Object *p)
   }
 }
 
+// Constants
 Atom *atom2(Object *p)
 {
   if ((typeid(*p) == id_String) ||
@@ -1225,17 +1226,76 @@ Atom *atom2(Object *p)
   }
 }
 
+// Atom or Constants
+Atom *atom3(Object *p)
+{
+  if ((typeid(*p) == id_String) ||
+      (typeid(*p) == id_Num_int) ||
+      (typeid(*p) == id_Num_float) ||
+      (typeid(*p) == id_Vector) ||
+      (typeid(*p) == id_Atom))
+  {
+    return p_t;
+  }
+  else
+  {
+    return p_nil;
+  }
+}
+
 Atom *eq(Object *p, Object *q)
 {
   if (typeid(*p) == typeid(*q))
   {
-    if (p == q)
+    if ((typeid(*p) == id_Atom) ||
+        (typeid(*p) == id_Cell) || 
+        (typeid(*p) == id_Vector))
     {
-      return p_t;
+     if (p == q)
+      {
+        return p_t;
+      }
+      else
+      {
+        return p_nil;
+      }
+    }
+    else if (typeid(*p) == id_String)
+    {
+     if (((String *)p)->value == ((String *)q)->value)
+      {
+        return p_t;
+      }
+      else
+      {
+        return p_nil;
+      }
+    }
+    else if (typeid(*p) == id_Num_int)
+    {
+     if (((Num_int *)p)->value == ((Num_int *)q)->value)
+      {
+        return p_t;
+      }
+      else
+      {
+        return p_nil;
+      }
+    }
+      else if (typeid(*p) == id_Num_float)
+    {
+     if (((Num_float *)p)->value == ((Num_float *)q)->value)
+      {
+        return p_t;
+      }
+      else
+      {
+        return p_nil;
+      }
     }
     else
     {
-      return p_nil;
+        return p_nil;
     }
   }
   else
@@ -1451,7 +1511,7 @@ Object *s_eval(Object *e, Object *a)
     }
     else if (car(e) == p_atom)
     {
-      return atom(s_eval(cadr(e), a));
+      return atom3(s_eval(cadr(e), a));                           // Atom or Constants
     }
     else if (car(e) == p_eq)
     {

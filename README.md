@@ -5,7 +5,7 @@ I started writing CPP_Lisp because I wanted to create a my own Lisp reader, but 
 I tried it again and succeeded with CPP_Lisp2.
 Object-oriented programming in C++ is very expressive, and as a result, Lisp readers are easy to understand.
 CPP_Lisp2 reads sexp from the keyboard and builds a list structure on the heap.
-CPP_Lisp2 has a reference counter type garbage collector that can retrieve cells that are no longer needed.
+CPP_Lisp2 has a reference counter type garbage collector that can free cells that are no longer needed.
 This garbage collector is still experimental and will be tuned for future use.
 
 The Lisp reader managed to work, so I became a little greedy and ported the interpreter described in Paul Graham's "The Roots of Lisp".
