@@ -356,7 +356,7 @@ string expand_quote(string str)
           i++;
           for ( ; i < text_size; i++)
           {
-            if (line_text[i] == ' ') {
+            if ((line_text[i] == ' ') || (line_text[i] == '#')) {
               // no operation
             } else if (line_text[i] == '\'') {
               line_text.erase(i, 1);
@@ -1621,14 +1621,14 @@ int main()
       // Input Exp
       if (p->ref_cnt == 0)
       {
-        cout << "Delete Object [Class ID]= " << typeid(*p).name() << endl;
+        cout << "[exp] Delete Object [Class ID]= " << typeid(*p).name() << endl;
         delete p;
       }
 
       // Output Exp
       if (q->ref_cnt == 0)
       {
-        cout << "Delete Object [Class ID]= " << typeid(*q).name() << endl;
+        cout << "[eval] Delete Object [Class ID]= " << typeid(*q).name() << endl;
         delete q;
       }
 
