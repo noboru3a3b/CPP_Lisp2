@@ -43,8 +43,16 @@ Atom *p_label = mp->get_atom("label");
 
 Atom *p_caar = mp->get_atom("caar");
 Atom *p_cadr = mp->get_atom("cadr");
+Atom *p_cdar = mp->get_atom("cdar");
+Atom *p_cddr = mp->get_atom("cddr");
+Atom *p_caaar = mp->get_atom("caaar");
+Atom *p_caadr = mp->get_atom("caadr");
 Atom *p_cadar = mp->get_atom("cadar");
 Atom *p_caddr = mp->get_atom("caddr");
+Atom *p_cdaar = mp->get_atom("cdaar");
+Atom *p_cdadr = mp->get_atom("cdadr");
+Atom *p_cddar = mp->get_atom("cddar");
+Atom *p_cdddr = mp->get_atom("cdddr");
 Atom *p_caddar = mp->get_atom("caddar");
 Atom *p_list = mp->get_atom("list");
 Atom *p_null = mp->get_atom("null");
@@ -1362,6 +1370,26 @@ Object *cadr(Object *p)
   return car(cdr(p));
 }
 
+Object *cdar(Object *p)
+{
+  return cdr(car(p));
+}
+
+Object *cddr(Object *p)
+{
+  return cdr(cdr(p));
+}
+
+Object *caaar(Object *p)
+{
+  return car(car(car(p)));
+}
+
+Object *caadr(Object *p)
+{
+  return car(car(cdr(p)));
+}
+
 Object *cadar(Object *p)
 {
   return car(cdr(car(p)));
@@ -1370,6 +1398,26 @@ Object *cadar(Object *p)
 Object *caddr(Object *p)
 {
   return car(cdr(cdr(p)));
+}
+
+Object *cdaar(Object *p)
+{
+  return cdr(car(car(p)));
+}
+
+Object *cdadr(Object *p)
+{
+  return cdr(car(cdr(p)));
+}
+
+Object *cddar(Object *p)
+{
+  return cdr(cdr(car(p)));
+}
+
+Object *cdddr(Object *p)
+{
+  return cdr(cdr(cdr(p)));
 }
 
 Object *caddar(Object *p)
@@ -1580,6 +1628,22 @@ Object *s_eval(Object *e, Object *a)
     {
       return cadr(s_eval(cadr(e), a));                            // (cadr
     }
+    else if (car(e) == p_cdar)
+    {
+      return cdar(s_eval(cadr(e), a));                            // (cdar
+    }
+    else if (car(e) == p_cddr)
+    {
+      return cddr(s_eval(cadr(e), a));                            // (cddr
+    }
+    else if (car(e) == p_caaar)
+    {
+      return caaar(s_eval(cadr(e), a));                           // (caaar
+    }
+    else if (car(e) == p_caadr)
+    {
+      return caadr(s_eval(cadr(e), a));                           // (caadr
+    }
     else if (car(e) == p_cadar)
     {
       return cadar(s_eval(cadr(e), a));                           // (cadar
@@ -1587,6 +1651,22 @@ Object *s_eval(Object *e, Object *a)
     else if (car(e) == p_caddr)
     {
       return caddr(s_eval(cadr(e), a));                           // (caddr
+    }
+    else if (car(e) == p_cdaar)
+    {
+      return cdaar(s_eval(cadr(e), a));                           // (cdaar
+    }
+    else if (car(e) == p_cdadr)
+    {
+      return cdadr(s_eval(cadr(e), a));                           // (cdadr
+    }
+    else if (car(e) == p_cddar)
+    {
+      return cddar(s_eval(cadr(e), a));                           // (cddar
+    }
+    else if (car(e) == p_cdddr)
+    {
+      return cdddr(s_eval(cadr(e), a));                           // (cdddr
     }
     else if (car(e) == p_caddar)
     {
