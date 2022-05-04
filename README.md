@@ -15,14 +15,25 @@ Now that it works, I'll publish the source code.
 make read_test  
 ./a.out  
 
-> (append '(100 200 300) '(aaa bbb ccc))  
-[str] (append (quote (100 200 300)) (quote (aaa bbb ccc)))  
-[exp] (append (quote (100 200 300)) (quote (aaa bbb ccc)))  
-[eval] (100 200 300 aaa bbb ccc)  
+> (append '(1 2 3) '(4 5 6))  
+[str] (append (quote (1 2 3)) (quote (4 5 6)))  
+[exp] (append (quote (1 2 3)) (quote (4 5 6)))  
+[eval] (1 2 3 4 5 6)  
  ---------- atoms ----------  
-aaa and append atom bbb caar cadar caddar caddr cadr  
-car ccc cdr cond cons eq label lambda list nil  
-not null quote t  
+and append atom caar cadar caddar caddr cadr car cdr  
+cond cons eq label lambda list nil not null quote  
+reverse t  
+[exp] Delete Object [Class ID]= 4Cell  
+[eval] Delete Object [Class ID]= 4Cell  
+
+> (reverse '(1 2 3 4 5 6))  
+[str] (reverse (quote (1 2 3 4 5 6)))  
+[exp] (reverse (quote (1 2 3 4 5 6)))  
+[eval] (6 5 4 3 2 1)  
+ ---------- atoms ----------  
+and append atom caar cadar caddar caddr cadr car cdr  
+cond cons eq label lambda list nil not null quote  
+reverse t  
 [exp] Delete Object [Class ID]= 4Cell  
 [eval] Delete Object [Class ID]= 4Cell  
 
@@ -31,9 +42,9 @@ not null quote t
 [exp] ((label subst (lambda (x y z) (cond ((atom z) (cond ((eq z y) x) ((quote t) z))) ((quote t) (cons (subst x y (car z)) (subst x y (cdr z))))))) (quote m) (quote b) (quote (a b (a b c) d)))  
 [eval] (a m (a m c) d)  
  ---------- atoms ----------  
-a aaa and append atom b bbb c caar cadar  
-caddar caddr cadr car ccc cdr cond cons d eq  
-label lambda list m nil not null quote subst t  
-x y z  
+a and append atom b c caar cadar caddar caddr  
+cadr car cdr cond cons d eq label lambda list  
+m nil not null quote reverse subst t x y  
+z  
 [exp] Delete Object [Class ID]= 4Cell  
 [eval] Delete Object [Class ID]= 4Cell  

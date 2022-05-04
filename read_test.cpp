@@ -51,6 +51,8 @@ Atom *p_null = mp->get_atom("null");
 Atom *p_and = mp->get_atom("and");
 Atom *p_not = mp->get_atom("not");
 Atom *p_append = mp->get_atom("append");
+Atom *p_reverse = mp->get_atom("reverse");
+
 //Atom *p_pair = mp->get_atom("pair");
 //Atom *p_assoc = mp->get_atom("assoc");
 
@@ -59,7 +61,7 @@ Atom *p_append = mp->get_atom("append");
 //Atom *p_eval = mp->get_atom("eval");
 
 //Atom *p_aaa = mp->get_atom("aaa");
-//Atom *p_bbb = mp->get_atom("bbb");//
+//Atom *p_bbb = mp->get_atom("bbb");
 
 // Create Type_IDs
 const type_info& id_Atom = typeid(Atom);
@@ -1428,6 +1430,23 @@ Object *append(Object *x, Object *y)
   }
 }
 
+Object *rev0(Object *x, Object *y)
+{
+  if (null(x) == p_t)
+  {
+    return y;
+  }
+  else
+  {
+    return rev0(cdr(x), cons(car(x), y));
+  }
+}
+
+Object *reverse(Object *x)
+{
+  return rev0(x, p_nil);
+}
+
 Object *s_pair(Object *x, Object *y)
 {
   if (s_and(null(x), null(y)) == p_t)
@@ -1580,6 +1599,10 @@ Object *s_eval(Object *e, Object *a)
     else if (car(e) == p_append)
     {
       return append(s_eval(cadr(e), a), s_eval(caddr(e), a));     // (append
+    }
+    else if (car(e) == p_reverse)
+    {
+      return reverse(s_eval(cadr(e), a));                         // (reverse
     }
     else if (car(e) == p_cond)
     {
