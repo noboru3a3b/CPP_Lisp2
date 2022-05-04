@@ -56,6 +56,7 @@ Atom *p_cdddr = mp->get_atom("cdddr");
 Atom *p_caddar = mp->get_atom("caddar");
 Atom *p_list = mp->get_atom("list");
 Atom *p_null = mp->get_atom("null");
+Atom *p_if = mp->get_atom("if");
 Atom *p_and = mp->get_atom("and");
 Atom *p_not = mp->get_atom("not");
 Atom *p_append = mp->get_atom("append");
@@ -1539,6 +1540,18 @@ Object *evcon(Object *c, Object *a)
   }
 }
 
+Object *evif(Object *c, Object *a)
+{
+  if (s_eval(car(c), a) != p_nil)
+  {
+    return s_eval(cadr(c), a);
+  }
+  else
+  {
+    return s_eval(caddr(c), a);
+  }
+}
+
 Object *evand(Object *c, Object *a)
 {
   if (c == p_nil)
@@ -1687,6 +1700,10 @@ Object *s_eval(Object *e, Object *a)
     else if (car(e) == p_cond)
     {
       return evcon(cdr(e), a);
+    }
+    else if (car(e) == p_if)
+    {
+      return evif(cdr(e), a);                                     // (if
     }
     else if (car(e) == p_and)
     {
