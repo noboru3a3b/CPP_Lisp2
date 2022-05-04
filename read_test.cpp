@@ -62,6 +62,11 @@ Atom *p_not = mp->get_atom("not");
 Atom *p_append = mp->get_atom("append");
 Atom *p_reverse = mp->get_atom("reverse");
 
+Atom *p_add = mp->get_atom("add");
+Atom *p_sub = mp->get_atom("sub");
+Atom *p_mul = mp->get_atom("mul");
+Atom *p_div = mp->get_atom("div");
+
 //Atom *p_pair = mp->get_atom("pair");
 //Atom *p_assoc = mp->get_atom("assoc");
 
@@ -1580,6 +1585,107 @@ Object *evlis(Object *m, Object *a)
   }
 }
 
+// to Int
+long to_int(Object *x, Object *a)
+{
+  if (typeid(*s_eval(x, a)) == id_Num_float)
+  {
+    return (long)(((Num_float *)s_eval(x, a))->value);
+  }
+  else
+  {
+    return (((Num_int *)s_eval(x, a))->value);
+  }
+}
+
+// Add (Int)
+long add0(Object *x, long y, Object *a)
+{
+  if (null(x) == p_t)
+  {
+    return y;
+  }
+  else
+  {
+    return add0(cdr(x), to_int(car(x), a) + y, a);
+  }
+}
+
+Num_int *evadd(Object *x, Object *a)
+{
+  Num_int *q;
+
+  q = new Num_int;
+  q->set_value(add0(x, (long)0, a));
+  return q;
+}
+
+// Sub (Int)
+long sub0(Object *x, long y, Object *a)
+{
+  if (null(x) == p_t)
+  {
+    return y;
+  }
+  else
+  {
+    return sub0(cdr(x), y - to_int(car(x), a), a);
+  }
+}
+
+Num_int *evsub(Object *x, Object *a)
+{
+  Num_int *q;
+
+  q = new Num_int;
+  q->set_value(sub0(cdr(x), to_int(car(x), a), a));
+  return q;
+}
+
+// Mul (Int)
+long mul0(Object *x, long y, Object *a)
+{
+  if (null(x) == p_t)
+  {
+    return y;
+  }
+  else
+  {
+    return mul0(cdr(x), to_int(car(x), a) * y, a);
+  }
+}
+
+Num_int *evmul(Object *x, Object *a)
+{
+  Num_int *q;
+
+  q = new Num_int;
+  q->set_value(mul0(x, (long)1, a));
+  return q;
+}
+
+// Div (Int)
+long div0(Object *x, long y, Object *a)
+{
+  if (null(x) == p_t)
+  {
+    return y;
+  }
+  else
+  {
+    return div0(cdr(x), y / to_int(car(x), a), a);
+  }
+}
+
+Num_int *evdiv(Object *x, Object *a)
+{
+  Num_int *q;
+
+  q = new Num_int;
+  q->set_value(div0(cdr(x), to_int(car(x), a), a));
+  return q;
+}
+
 Object *s_eval(Object *e, Object *a)
 {
   if (atom2(e) == p_t)
@@ -1696,6 +1802,22 @@ Object *s_eval(Object *e, Object *a)
     else if (car(e) == p_reverse)
     {
       return reverse(s_eval(cadr(e), a));                         // (reverse
+    }
+    else if (car(e) == p_add)
+    {
+      return evadd(cdr(e), a);                                    // (add (Int)
+    }
+    else if (car(e) == p_sub)
+    {
+      return evsub(cdr(e), a);                                    // (sub (Int)
+    }
+    else if (car(e) == p_mul)
+    {
+      return evmul(cdr(e), a);                                    // (mul (Int)
+    }
+    else if (car(e) == p_div)
+    {
+      return evdiv(cdr(e), a);                                    // (div (Int)
     }
     else if (car(e) == p_cond)
     {
