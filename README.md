@@ -24,7 +24,8 @@ make read_test
 and append atom caaar caadr caar cadar caddar caddr cadr  
 car cdaar cdadr cdar cddar cdddr cddr cdr cond cons  
 div eq eqn gt gte if label lambda list lt  
-lte mod mul nil not null quote reverse sub t   
+lte mod mul nil not null quote reverse sub t  
+
 [exp] Delete Object [Class ID]= 4Cell  
 [eval] Delete Object [Class ID]= 4Cell  
 
@@ -38,6 +39,7 @@ and append atom caaar caadr caar cadar caddar caddr cadr
 car cdaar cdadr cdar cddar cdddr cddr cdr cond cons  
 div eq eqn gt gte if label lambda list lt  
 lte mod mul nil not null quote reverse sub t  
+
 [exp] Delete Object [Class ID]= 4Cell  
 [eval] Delete Object [Class ID]= 4Cell  
 
