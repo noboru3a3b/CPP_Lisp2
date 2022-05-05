@@ -72,7 +72,11 @@ Atom *p_gt = mp->get_atom("gt");
 Atom *p_gte = mp->get_atom("gte");
 Atom *p_lt = mp->get_atom("lt");
 Atom *p_lte = mp->get_atom("lte");
-Atom *p_eqf = mp->get_atom("=");
+Atom *p_addf = mp->get_atom("+");
+Atom *p_subf = mp->get_atom("-");
+Atom *p_mulf = mp->get_atom("*");
+Atom *p_divf = mp->get_atom("/");
+Atom *p_eqnf = mp->get_atom("=");
 Atom *p_gtf = mp->get_atom(">");
 Atom *p_gtef = mp->get_atom(">=");
 Atom *p_ltf = mp->get_atom("<");
@@ -1842,8 +1846,96 @@ double to_float(Object *x, Object *a)
   }
 }
 
-// Eqf (Float)
-Atom *eqf0(Object *x, double y, Object *a)
+// Addf (Float)
+double addf0(Object *x, double y, Object *a)
+{
+  if (null(x) == p_t)
+  {
+    return y;
+  }
+  else
+  {
+    return addf0(cdr(x), to_float(car(x), a) + y, a);
+  }
+}
+
+Num_float *evaddf(Object *x, Object *a)
+{
+  Num_float *q;
+
+  q = new Num_float;
+  q->set_value(addf0(x, (double)0, a));
+  return q;
+}
+
+// Subf (Float)
+double subf0(Object *x, double y, Object *a)
+{
+  if (null(x) == p_t)
+  {
+    return y;
+  }
+  else
+  {
+    return subf0(cdr(x), y - to_float(car(x), a), a);
+  }
+}
+
+Num_float *evsubf(Object *x, Object *a)
+{
+  Num_float *q;
+
+  q = new Num_float;
+  q->set_value(subf0(cdr(x), to_float(car(x), a), a));
+  return q;
+}
+
+// Mulf (Float)
+double mulf0(Object *x, double y, Object *a)
+{
+  if (null(x) == p_t)
+  {
+    return y;
+  }
+  else
+  {
+    return mulf0(cdr(x), to_float(car(x), a) * y, a);
+  }
+}
+
+Num_float *evmulf(Object *x, Object *a)
+{
+  Num_float *q;
+
+  q = new Num_float;
+  q->set_value(mulf0(x, (double)1, a));
+  return q;
+}
+
+// Divf (Float)
+double divf0(Object *x, double y, Object *a)
+{
+  if (null(x) == p_t)
+  {
+    return y;
+  }
+  else
+  {
+    return divf0(cdr(x), y / to_float(car(x), a), a);
+  }
+}
+
+Num_float *evdivf(Object *x, Object *a)
+{
+  Num_float *q;
+
+  q = new Num_float;
+  q->set_value(divf0(cdr(x), to_float(car(x), a), a));
+  return q;
+}
+
+// Eqnf (Float)
+Atom *eqnf0(Object *x, double y, Object *a)
 {
   if (null(x) == p_t)
   {
@@ -1855,13 +1947,13 @@ Atom *eqf0(Object *x, double y, Object *a)
   }
   else
   {
-    return eqf0(cdr(x), y, a);
+    return eqnf0(cdr(x), y, a);
   }
 }
 
-Atom *eveqf(Object *x, Object *a)
+Atom *eveqnf(Object *x, Object *a)
 {
-  return eqf0(cdr(x), to_float(car(x), a), a);
+  return eqnf0(cdr(x), to_float(car(x), a), a);
 }
 
 // Gtf (Float)
@@ -2109,9 +2201,25 @@ Object *s_eval(Object *e, Object *a)
     {
       return evlte(cdr(e), a);                                    // (lte (Int)
     }
-    else if (car(e) == p_eqf)
+    else if (car(e) == p_addf)
     {
-      return eveqf(cdr(e), a);                                    // (= (Float)
+      return evaddf(cdr(e), a);                                   // (add (Int)
+    }
+    else if (car(e) == p_subf)
+    {
+      return evsubf(cdr(e), a);                                   // (sub (Int)
+    }
+    else if (car(e) == p_mulf)
+    {
+      return evmulf(cdr(e), a);                                   // (mul (Int)
+    }
+    else if (car(e) == p_divf)
+    {
+      return evdivf(cdr(e), a);                                   // (div (Int)
+    }
+    else if (car(e) == p_eqnf)
+    {
+      return eveqnf(cdr(e), a);                                   // (= (Float)
     }
     else if (car(e) == p_gtf)
     {
