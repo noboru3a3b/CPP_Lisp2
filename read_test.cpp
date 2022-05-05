@@ -67,6 +67,11 @@ Atom *p_sub = mp->get_atom("sub");
 Atom *p_mul = mp->get_atom("mul");
 Atom *p_div = mp->get_atom("div");
 Atom *p_mod = mp->get_atom("mod");
+Atom *p_eqn = mp->get_atom("eqn");
+Atom *p_gt = mp->get_atom("gt");
+Atom *p_gte = mp->get_atom("gte");
+Atom *p_lt = mp->get_atom("lt");
+Atom *p_lte = mp->get_atom("lte");
 
 //Atom *p_pair = mp->get_atom("pair");
 //Atom *p_assoc = mp->get_atom("assoc");
@@ -1709,6 +1714,116 @@ Num_int *evmod(Object *x, Object *a)
   return q;
 }
 
+// Eqn (Int)
+Atom *eqn0(Object *x, long y, Object *a)
+{
+  if (null(x) == p_t)
+  {
+    return p_t;
+  }
+  else if (to_int(car(x), a) != y)
+  {
+    return p_nil;
+  }
+  else
+  {
+    return eqn0(cdr(x), y, a);
+  }
+}
+
+Atom *eveqn(Object *x, Object *a)
+{
+  return eqn0(cdr(x), to_int(car(x), a), a);
+}
+
+// Gt (Int)
+Atom *gt0(Object *x, long y, Object *a)
+{
+  if (null(x) == p_t)
+  {
+    return p_t;
+  }
+  else if (to_int(car(x), a) >= y)
+  {
+    return p_nil;
+  }
+  else
+  {
+    return gt0(cdr(x), to_int(car(x), a), a);
+  }
+}
+
+Atom *evgt(Object *x, Object *a)
+{
+  return gt0(cdr(x), to_int(car(x), a), a);
+}
+
+// Gte (Int)
+Atom *gte0(Object *x, long y, Object *a)
+{
+  if (null(x) == p_t)
+  {
+    return p_t;
+  }
+  else if (to_int(car(x), a) > y)
+  {
+    return p_nil;
+  }
+  else
+  {
+    return gte0(cdr(x), to_int(car(x), a), a);
+  }
+}
+
+Atom *evgte(Object *x, Object *a)
+{
+  return gte0(cdr(x), to_int(car(x), a), a);
+}
+
+// Lt (Int)
+Atom *lt0(Object *x, long y, Object *a)
+{
+  if (null(x) == p_t)
+  {
+    return p_t;
+  }
+  else if (to_int(car(x), a) <= y)
+  {
+    return p_nil;
+  }
+  else
+  {
+    return lt0(cdr(x), to_int(car(x), a), a);
+  }
+}
+
+Atom *evlt(Object *x, Object *a)
+{
+  return lt0(cdr(x), to_int(car(x), a), a);
+}
+
+// Lte (Int)
+Atom *lte0(Object *x, long y, Object *a)
+{
+  if (null(x) == p_t)
+  {
+    return p_t;
+  }
+  else if (to_int(car(x), a) < y)
+  {
+    return p_nil;
+  }
+  else
+  {
+    return lte0(cdr(x), to_int(car(x), a), a);
+  }
+}
+
+Atom *evlte(Object *x, Object *a)
+{
+  return lte0(cdr(x), to_int(car(x), a), a);
+}
+
 Object *s_eval(Object *e, Object *a)
 {
   if (atom2(e) == p_t)
@@ -1845,6 +1960,26 @@ Object *s_eval(Object *e, Object *a)
     else if (car(e) == p_mod)
     {
       return evmod(cdr(e), a);                                    // (mod (Int)
+    }
+    else if (car(e) == p_eqn)
+    {
+      return eveqn(cdr(e), a);                                    // (eqn (Int)
+    }
+    else if (car(e) == p_gt)
+    {
+      return evgt(cdr(e), a);                                     // (gt (Int)
+    }
+    else if (car(e) == p_gte)
+    {
+      return evgte(cdr(e), a);                                    // (gte (Int)
+    }
+    else if (car(e) == p_lt)
+    {
+      return evlt(cdr(e), a);                                     // (lt (Int)
+    }
+    else if (car(e) == p_lte)
+    {
+      return evlte(cdr(e), a);                                    // (lte (Int)
     }
     else if (car(e) == p_cond)
     {
