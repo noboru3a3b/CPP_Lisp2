@@ -33,7 +33,7 @@ lte mod mul nil not null quote reverse sub t
 [exp] (reverse (quote (1 2 3 4 5 6)))  
 [eval] (6 5 4 3 2 1)  
  ---------- atoms ----------  
-'* + - / < <= = > >= add 
+'* + - / < <= = > >= add  
 and append atom caaar caadr caar cadar caddar caddr cadr  
 car cdaar cdadr cdar cddar cdddr cddr cdr cond cons  
 div eq eqn gt gte if label lambda list lt  
