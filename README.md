@@ -20,9 +20,10 @@ make read_test
 [exp] (append (quote (1 2 3)) (quote (4 5 6)))  
 [eval] (1 2 3 4 5 6)  
  ---------- atoms ----------  
-and append atom caar cadar caddar caddr cadr car cdr  
-cond cons eq label lambda list nil not null quote  
-reverse t  
+add and append atom caaar caadr caar cadar caddar caddr  
+cadr car cdaar cdadr cdar cddar cdddr cddr cdr cond  
+cons div eq if label lambda list mod mul nil  
+not null quote reverse sub t  
 [exp] Delete Object [Class ID]= 4Cell  
 [eval] Delete Object [Class ID]= 4Cell  
 
@@ -31,9 +32,10 @@ reverse t
 [exp] (reverse (quote (1 2 3 4 5 6)))  
 [eval] (6 5 4 3 2 1)  
  ---------- atoms ----------  
-and append atom caar cadar caddar caddr cadr car cdr  
-cond cons eq label lambda list nil not null quote  
-reverse t  
+add and append atom caaar caadr caar cadar caddar caddr  
+cadr car cdaar cdadr cdar cddar cdddr cddr cdr cond  
+cons div eq if label lambda list mod mul nil  
+not null quote reverse sub t  
 [exp] Delete Object [Class ID]= 4Cell  
 [eval] Delete Object [Class ID]= 4Cell  
 
@@ -42,9 +44,10 @@ reverse t
 [exp] ((label subst (lambda (x y z) (cond ((atom z) (cond ((eq z y) x) ((quote t) z))) ((quote t) (cons (subst x y (car z)) (subst x y (cdr z))))))) (quote m) (quote b) (quote (a b (a b c) d)))  
 [eval] (a m (a m c) d)  
  ---------- atoms ----------  
-a and append atom b c caar cadar caddar caddr  
-cadr car cdr cond cons d eq label lambda list  
-m nil not null quote reverse subst t x y  
-z  
+a add and append atom b c caaar caadr caar  
+cadar caddar caddr cadr car cdaar cdadr cdar cddar cdddr  
+cddr cdr cond cons d div eq if label lambda  
+list m mod mul nil not null quote reverse sub  
+subst t x y z  
 [exp] Delete Object [Class ID]= 4Cell  
 [eval] Delete Object [Class ID]= 4Cell  
