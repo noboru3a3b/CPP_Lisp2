@@ -22,8 +22,9 @@ make read_test
  ---------- atoms ----------  
 add and append atom caaar caadr caar cadar caddar caddr  
 cadr car cdaar cdadr cdar cddar cdddr cddr cdr cond  
-cons div eq if label lambda list mod mul nil  
-not null quote reverse sub t  
+cons div eq eqn gt gte if label lambda list  
+lt lte mod mul nil not null quote reverse sub  
+t  
 [exp] Delete Object [Class ID]= 4Cell  
 [eval] Delete Object [Class ID]= 4Cell  
 
@@ -34,20 +35,21 @@ not null quote reverse sub t
  ---------- atoms ----------  
 add and append atom caaar caadr caar cadar caddar caddr  
 cadr car cdaar cdadr cdar cddar cdddr cddr cdr cond  
-cons div eq if label lambda list mod mul nil  
-not null quote reverse sub t  
+cons div eq eqn gt gte if label lambda list  
+lt lte mod mul nil not null quote reverse sub  
+t  
 [exp] Delete Object [Class ID]= 4Cell  
 [eval] Delete Object [Class ID]= 4Cell  
 
-> ((label subst (lambda (x y z) (cond ((atom z) (cond ((eq z y) x) ('t z))) ('t (cons (subst x y (car z)) (subst x y (cdr z))))))) 'm 'b '(a b (a b c) d))  
-[str] ((label subst (lambda (x y z) (cond ((atom z) (cond ((eq z y) x) ((quote t) z))) ((quote t) (cons (subst x y (car z)) (subst x y (cdr z))))))) (quote m) (quote b) (quote (a b (a b c) d)))  
-[exp] ((label subst (lambda (x y z) (cond ((atom z) (cond ((eq z y) x) ((quote t) z))) ((quote t) (cons (subst x y (car z)) (subst x y (cdr z))))))) (quote m) (quote b) (quote (a b (a b c) d)))  
-[eval] (a m (a m c) d)  
+> ((label sqradd (lambda (x y) (if (null x) y (sqradd (cdr x) (add (mul (car x) (car x)) y))))) '(1 2 3 4 5) 0)  
+[str] ((label sqradd (lambda (x y) (if (null x) y (sqradd (cdr x) (add (mul (car x) (car x)) y))))) (quote (1 2 3 4 5)) 0)  
+[exp] ((label sqradd (lambda (x y) (if (null x) y (sqradd (cdr x) (add (mul (car x) (car x)) y))))) (quote (1 2 3 4 5)) 0)  
+[eval] 55  
  ---------- atoms ----------  
-a add and append atom b c caaar caadr caar  
-cadar caddar caddr cadr car cdaar cdadr cdar cddar cdddr  
-cddr cdr cond cons d div eq if label lambda  
-list m mod mul nil not null quote reverse sub  
-subst t x y z  
+add and append atom caaar caadr caar cadar caddar caddr  
+cadr car cdaar cdadr cdar cddar cdddr cddr cdr cond  
+cons div eq eqn gt gte if label lambda list  
+lt lte mod mul nil not null quote reverse sqradd  
+sub t x y  
 [exp] Delete Object [Class ID]= 4Cell  
 [eval] Delete Object [Class ID]= 4Cell  
