@@ -66,6 +66,7 @@ Atom *p_add = mp->get_atom("add");
 Atom *p_sub = mp->get_atom("sub");
 Atom *p_mul = mp->get_atom("mul");
 Atom *p_div = mp->get_atom("div");
+Atom *p_mod = mp->get_atom("mod");
 
 //Atom *p_pair = mp->get_atom("pair");
 //Atom *p_assoc = mp->get_atom("assoc");
@@ -1686,6 +1687,28 @@ Num_int *evdiv(Object *x, Object *a)
   return q;
 }
 
+// Mod (Int)
+long mod0(Object *x, long y, Object *a)
+{
+  if (null(x) == p_t)
+  {
+    return y;
+  }
+  else
+  {
+    return mod0(cdr(x), y % to_int(car(x), a), a);
+  }
+}
+
+Num_int *evmod(Object *x, Object *a)
+{
+  Num_int *q;
+
+  q = new Num_int;
+  q->set_value(mod0(cdr(x), to_int(car(x), a), a));
+  return q;
+}
+
 Object *s_eval(Object *e, Object *a)
 {
   if (atom2(e) == p_t)
@@ -1818,6 +1841,10 @@ Object *s_eval(Object *e, Object *a)
     else if (car(e) == p_div)
     {
       return evdiv(cdr(e), a);                                    // (div (Int)
+    }
+    else if (car(e) == p_mod)
+    {
+      return evmod(cdr(e), a);                                    // (mod (Int)
     }
     else if (car(e) == p_cond)
     {
