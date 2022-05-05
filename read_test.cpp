@@ -72,6 +72,11 @@ Atom *p_gt = mp->get_atom("gt");
 Atom *p_gte = mp->get_atom("gte");
 Atom *p_lt = mp->get_atom("lt");
 Atom *p_lte = mp->get_atom("lte");
+Atom *p_eqf = mp->get_atom("=");
+Atom *p_gtf = mp->get_atom(">");
+Atom *p_gtef = mp->get_atom(">=");
+Atom *p_ltf = mp->get_atom("<");
+Atom *p_ltef = mp->get_atom("<=");
 
 //Atom *p_pair = mp->get_atom("pair");
 //Atom *p_assoc = mp->get_atom("assoc");
@@ -1824,6 +1829,129 @@ Atom *evlte(Object *x, Object *a)
   return lte0(cdr(x), to_int(car(x), a), a);
 }
 
+// to Float
+double to_float(Object *x, Object *a)
+{
+  if (typeid(*s_eval(x, a)) == id_Num_int)
+  {
+    return (double)(((Num_int *)s_eval(x, a))->value);
+  }
+  else
+  {
+    return (((Num_float *)s_eval(x, a))->value);
+  }
+}
+
+// Eqf (Float)
+Atom *eqf0(Object *x, double y, Object *a)
+{
+  if (null(x) == p_t)
+  {
+    return p_t;
+  }
+  else if (to_float(car(x), a) != y)
+  {
+    return p_nil;
+  }
+  else
+  {
+    return eqf0(cdr(x), y, a);
+  }
+}
+
+Atom *eveqf(Object *x, Object *a)
+{
+  return eqf0(cdr(x), to_float(car(x), a), a);
+}
+
+// Gtf (Float)
+Atom *gtf0(Object *x, double y, Object *a)
+{
+  if (null(x) == p_t)
+  {
+    return p_t;
+  }
+  else if (to_float(car(x), a) >= y)
+  {
+    return p_nil;
+  }
+  else
+  {
+    return gtf0(cdr(x), to_float(car(x), a), a);
+  }
+}
+
+Atom *evgtf(Object *x, Object *a)
+{
+  return gtf0(cdr(x), to_float(car(x), a), a);
+}
+
+// Gtef (Float)
+Atom *gtef0(Object *x, double y, Object *a)
+{
+  if (null(x) == p_t)
+  {
+    return p_t;
+  }
+  else if (to_float(car(x), a) > y)
+  {
+    return p_nil;
+  }
+  else
+  {
+    return gtef0(cdr(x), to_float(car(x), a), a);
+  }
+}
+
+Atom *evgtef(Object *x, Object *a)
+{
+  return gtef0(cdr(x), to_float(car(x), a), a);
+}
+
+// Ltf (Float)
+Atom *ltf0(Object *x, double y, Object *a)
+{
+  if (null(x) == p_t)
+  {
+    return p_t;
+  }
+  else if (to_float(car(x), a) <= y)
+  {
+    return p_nil;
+  }
+  else
+  {
+    return ltf0(cdr(x), to_float(car(x), a), a);
+  }
+}
+
+Atom *evltf(Object *x, Object *a)
+{
+  return ltf0(cdr(x), to_float(car(x), a), a);
+}
+
+// Ltef (Float)
+Atom *ltef0(Object *x, double y, Object *a)
+{
+  if (null(x) == p_t)
+  {
+    return p_t;
+  }
+  else if (to_float(car(x), a) < y)
+  {
+    return p_nil;
+  }
+  else
+  {
+    return ltef0(cdr(x), to_float(car(x), a), a);
+  }
+}
+
+Atom *evltef(Object *x, Object *a)
+{
+  return ltef0(cdr(x), to_float(car(x), a), a);
+}
+
 Object *s_eval(Object *e, Object *a)
 {
   if (atom2(e) == p_t)
@@ -1980,6 +2108,26 @@ Object *s_eval(Object *e, Object *a)
     else if (car(e) == p_lte)
     {
       return evlte(cdr(e), a);                                    // (lte (Int)
+    }
+    else if (car(e) == p_eqf)
+    {
+      return eveqf(cdr(e), a);                                    // (= (Float)
+    }
+    else if (car(e) == p_gtf)
+    {
+      return evgtf(cdr(e), a);                                    // (> (Float)
+    }
+    else if (car(e) == p_gtef)
+    {
+      return evgtef(cdr(e), a);                                   // (>= (Float)
+    }
+    else if (car(e) == p_ltf)
+    {
+      return evltf(cdr(e), a);                                    // (< (Float)
+    }
+    else if (car(e) == p_ltef)
+    {
+      return evltef(cdr(e), a);                                   // (<= (Float)
     }
     else if (car(e) == p_cond)
     {
