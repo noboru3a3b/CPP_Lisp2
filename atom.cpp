@@ -6,6 +6,7 @@
 Atom::Atom()
 {
   value = NULL;
+  func = NULL;
 }
 
 Atom::~Atom()
@@ -53,5 +54,11 @@ void Atom::set_name(string s)
 void Atom::set_value(Object *v)
 {
   value = v;
+  value->ref_cnt++;
+}
+
+void Atom::set_func(Object *(*fn)(Object *e, Object *))
+{
+  func = fn;
   value->ref_cnt++;
 }
