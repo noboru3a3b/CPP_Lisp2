@@ -1626,13 +1626,13 @@ long add0(Object *x, long y, Object *a)
   }
 }
 
-Num_int *evadd(Object *x, Object *a)
+Object *evadd(Object *x, Object *a)
 {
   Num_int *q;
 
   q = new Num_int;
   q->set_value(add0(x, (long)0, a));
-  return q;
+  return (Object *)q;
 }
 
 // Sub (Int)
@@ -1648,13 +1648,13 @@ long sub0(Object *x, long y, Object *a)
   }
 }
 
-Num_int *evsub(Object *x, Object *a)
+Object *evsub(Object *x, Object *a)
 {
   Num_int *q;
 
   q = new Num_int;
   q->set_value(sub0(cdr(x), to_int(car(x), a), a));
-  return q;
+  return (Object *)q;
 }
 
 // Mul (Int)
@@ -1670,13 +1670,13 @@ long mul0(Object *x, long y, Object *a)
   }
 }
 
-Num_int *evmul(Object *x, Object *a)
+Object *evmul(Object *x, Object *a)
 {
   Num_int *q;
 
   q = new Num_int;
   q->set_value(mul0(x, (long)1, a));
-  return q;
+  return (Object *)q;
 }
 
 // Div (Int)
@@ -1692,13 +1692,13 @@ long div0(Object *x, long y, Object *a)
   }
 }
 
-Num_int *evdiv(Object *x, Object *a)
+Object *evdiv(Object *x, Object *a)
 {
   Num_int *q;
 
   q = new Num_int;
   q->set_value(div0(cdr(x), to_int(car(x), a), a));
-  return q;
+  return (Object *)q;
 }
 
 // Mod (Int)
@@ -1714,13 +1714,13 @@ long mod0(Object *x, long y, Object *a)
   }
 }
 
-Num_int *evmod(Object *x, Object *a)
+Object *evmod(Object *x, Object *a)
 {
   Num_int *q;
 
   q = new Num_int;
   q->set_value(mod0(cdr(x), to_int(car(x), a), a));
-  return q;
+  return (Object *)q;
 }
 
 // Eqn (Int)
@@ -1740,7 +1740,7 @@ Atom *eqn0(Object *x, long y, Object *a)
   }
 }
 
-Atom *eveqn(Object *x, Object *a)
+Object *eveqn(Object *x, Object *a)
 {
   return eqn0(cdr(x), to_int(car(x), a), a);
 }
@@ -1762,7 +1762,7 @@ Atom *gt0(Object *x, long y, Object *a)
   }
 }
 
-Atom *evgt(Object *x, Object *a)
+Object *evgt(Object *x, Object *a)
 {
   return gt0(cdr(x), to_int(car(x), a), a);
 }
@@ -1784,7 +1784,7 @@ Atom *gte0(Object *x, long y, Object *a)
   }
 }
 
-Atom *evgte(Object *x, Object *a)
+Object *evgte(Object *x, Object *a)
 {
   return gte0(cdr(x), to_int(car(x), a), a);
 }
@@ -1806,7 +1806,7 @@ Atom *lt0(Object *x, long y, Object *a)
   }
 }
 
-Atom *evlt(Object *x, Object *a)
+Object *evlt(Object *x, Object *a)
 {
   return lt0(cdr(x), to_int(car(x), a), a);
 }
@@ -1828,7 +1828,7 @@ Atom *lte0(Object *x, long y, Object *a)
   }
 }
 
-Atom *evlte(Object *x, Object *a)
+Object *evlte(Object *x, Object *a)
 {
   return lte0(cdr(x), to_int(car(x), a), a);
 }
@@ -2167,46 +2167,46 @@ Object *s_eval(Object *e, Object *a)
 //    {
 //      return reverse(s_eval(cadr(e), a));           // (reverse
 //    }
-    else if (car(e) == p_add)
-    {
-      return evadd(cdr(e), a);                      // (add (Int)
-    }
-    else if (car(e) == p_sub)
-    {
-      return evsub(cdr(e), a);                      // (sub (Int)
-    }
-    else if (car(e) == p_mul)
-    {
-      return evmul(cdr(e), a);                      // (mul (Int)
-    }
-    else if (car(e) == p_div)
-    {
-      return evdiv(cdr(e), a);                      // (div (Int)
-    }
-    else if (car(e) == p_mod)
-    {
-      return evmod(cdr(e), a);                      // (mod (Int)
-    }
-    else if (car(e) == p_eqn)
-    {
-      return eveqn(cdr(e), a);                      // (eqn (Int)
-    }
-    else if (car(e) == p_gt)
-    {
-      return evgt(cdr(e), a);                       // (gt (Int)
-    }
-    else if (car(e) == p_gte)
-    {
-      return evgte(cdr(e), a);                      // (gte (Int)
-    }
-    else if (car(e) == p_lt)
-    {
-      return evlt(cdr(e), a);                       // (lt (Int)
-    }
-    else if (car(e) == p_lte)
-    {
-      return evlte(cdr(e), a);                      // (lte (Int)
-    }
+//    else if (car(e) == p_add)
+//    {
+//      return evadd(cdr(e), a);                      // (add (Int)
+//    }
+//    else if (car(e) == p_sub)
+//    {
+//      return evsub(cdr(e), a);                      // (sub (Int)
+//    }
+//    else if (car(e) == p_mul)
+//    {
+//      return evmul(cdr(e), a);                      // (mul (Int)
+//    }
+//    else if (car(e) == p_div)
+//    {
+//      return evdiv(cdr(e), a);                      // (div (Int)
+//    }
+//    else if (car(e) == p_mod)
+//    {
+//      return evmod(cdr(e), a);                      // (mod (Int)
+//    }
+//    else if (car(e) == p_eqn)
+//    {
+//      return eveqn(cdr(e), a);                      // (eqn (Int)
+//    }
+//    else if (car(e) == p_gt)
+//    {
+//      return evgt(cdr(e), a);                       // (gt (Int)
+//    }
+//    else if (car(e) == p_gte)
+//    {
+//      return evgte(cdr(e), a);                      // (gte (Int)
+//    }
+//    else if (car(e) == p_lt)
+//    {
+//      return evlt(cdr(e), a);                       // (lt (Int)
+//    }
+//    else if (car(e) == p_lte)
+//    {
+//      return evlte(cdr(e), a);                      // (lte (Int)
+//    }
     else if (car(e) == p_addf)
     {
       return evaddf(cdr(e), a);                     // (add (Float)
@@ -2396,7 +2396,16 @@ Object *evreverse(Object *e, Object *a)
 {
   return reverse(s_eval(car(e), a));  
 }
-
+// (add -> evadd() ↑
+// (sub -> evsub() ↑
+// (mul -> evmul() ↑
+// (div -> evdiv() ↑
+// (mod -> evmod() ↑
+// (eqn -> eveqn() ↑
+// (gt -> evgt() ↑
+// (gte -> evgte() ↑
+// (lt -> evlt() ↑
+// (lte -> evlte()) ↑
 
 
 
@@ -2443,6 +2452,16 @@ int main()
   p_not->func = evnot;
   p_append->func = evappend;
   p_reverse->func = evreverse;
+  p_add->func = evadd;
+  p_sub->func = evsub;
+  p_mul->func = evmul;
+  p_div->func = evdiv;
+  p_mod->func = evmod;
+  p_eqn->func = eveqn;
+  p_gt->func = evgt;
+  p_gte->func = evgte;
+  p_lt->func = evlt;
+  p_lte->func = evlte;
 
 
 
