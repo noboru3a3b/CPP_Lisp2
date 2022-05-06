@@ -2077,20 +2077,20 @@ Object *s_eval(Object *e, Object *a)
 //    }
 //    else if (car(e) == p_atom)
 //    {
-//      return atom3(s_eval(cadr(e), a));           // Atom or Constants
+//      return atom3(s_eval(cadr(e), a));             // Atom or Constants
 //    }
 //    else if (car(e) == p_eq)
 //    {//
 //      return eq(s_eval(cadr(e), a), s_eval(caddr(e), a));
 //    }
-    else if (car(e) == p_null)
-    {
-      return null(s_eval(cadr(e), a));              // (null
-    }
-    else if (car(e) == p_not)
-    {
-      return s_not(s_eval(cadr(e), a));             // (not
-    }
+//    else if (car(e) == p_null)
+//    {
+//      return null(s_eval(cadr(e), a));              // (null
+//    }
+//    else if (car(e) == p_not)
+//    {
+//      return s_not(s_eval(cadr(e), a));             // (not
+//    }
 //    else if (car(e) == p_car)
 //    {
 //      return car(s_eval(cadr(e), a));
@@ -2155,18 +2155,18 @@ Object *s_eval(Object *e, Object *a)
 //    {
 //      return caddar(s_eval(cadr(e), a));            // (caddar
 //    }
-    else if (car(e) == p_list)
-    {
-      return evlis(cdr(e), a);                      // (list
-    }
-    else if (car(e) == p_append)
-    {
-      return append(s_eval(cadr(e), a), s_eval(caddr(e), a));     // (append
-    }
-    else if (car(e) == p_reverse)
-    {
-      return reverse(s_eval(cadr(e), a));           // (reverse
-    }
+//    else if (car(e) == p_list)
+//    {
+//      return evlis(cdr(e), a);                      // (list
+//    }
+//    else if (car(e) == p_append)
+//    {
+//      return append(s_eval(cadr(e), a), s_eval(caddr(e), a));     // (append
+//    }
+//    else if (car(e) == p_reverse)
+//    {
+//      return reverse(s_eval(cadr(e), a));           // (reverse
+//    }
     else if (car(e) == p_add)
     {
       return evadd(cdr(e), a);                      // (add (Int)
@@ -2247,14 +2247,14 @@ Object *s_eval(Object *e, Object *a)
 //    {
 //      return evcon(cdr(e), a);
 //    }
-    else if (car(e) == p_if)
-    {
-      return evif(cdr(e), a);                       // (if
-    }
-    else if (car(e) == p_and)
-    {
-      return evand(cdr(e), a);                      // (and
-    }
+//    else if (car(e) == p_if)
+//    {
+//      return evif(cdr(e), a);                       // (if
+//    }
+//    else if (car(e) == p_and)
+//    {
+//      return evand(cdr(e), a);                      // (and
+//    }
     else
     {
       return s_eval(cons(assoc(car(e), a), cdr(e)), a);           // Named Functions
@@ -2373,6 +2373,31 @@ Object *evcaddar(Object *e, Object *a)
 {
   return caddar(s_eval(car(e), a)); 
 }
+// (list -> evlis() ↑
+// (null
+Object *evnull(Object *e, Object *a)
+{
+  return null(s_eval(car(e), a));
+}
+// (if -> evif() ↑
+// (and -> evand() ↑
+// (not
+Object *evnot(Object *e, Object *a)
+{
+  return s_not(s_eval(car(e), a)); 
+}
+// (append
+Object *evappend(Object *e, Object *a)
+{
+  return append(s_eval(car(e), a), s_eval(cadr(e), a));
+}
+// (reverse
+Object *evreverse(Object *e, Object *a)
+{
+  return reverse(s_eval(car(e), a));  
+}
+
+
 
 
 
@@ -2397,6 +2422,7 @@ int main()
   p_car->func = evcar;
   p_cdr->func = evcdr;
   p_cons->func = evcons;
+  p_cond->func = evcon;
   p_caar->func = evcaar;
   p_cadr->func = evcadr;
   p_cdar->func = evcdar;
@@ -2410,6 +2436,14 @@ int main()
   p_cddar->func = evcddar;
   p_cdddr->func = evcdddr;
   p_caddar->func = evcaddar;
+  p_list->func = evlis;
+  p_null->func = evnull;
+  p_if->func = evif;
+  p_and->func = evand;
+  p_not->func = evnot;
+  p_append->func = evappend;
+  p_reverse->func = evreverse;
+
 
 
 
