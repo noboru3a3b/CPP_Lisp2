@@ -1859,13 +1859,13 @@ double addf0(Object *x, double y, Object *a)
   }
 }
 
-Num_float *evaddf(Object *x, Object *a)
+Object *evaddf(Object *x, Object *a)
 {
   Num_float *q;
 
   q = new Num_float;
   q->set_value(addf0(x, (double)0, a));
-  return q;
+  return (Object *)q;
 }
 
 // Subf (Float)
@@ -1881,13 +1881,13 @@ double subf0(Object *x, double y, Object *a)
   }
 }
 
-Num_float *evsubf(Object *x, Object *a)
+Object *evsubf(Object *x, Object *a)
 {
   Num_float *q;
 
   q = new Num_float;
   q->set_value(subf0(cdr(x), to_float(car(x), a), a));
-  return q;
+  return (Object *)q;
 }
 
 // Mulf (Float)
@@ -1903,13 +1903,13 @@ double mulf0(Object *x, double y, Object *a)
   }
 }
 
-Num_float *evmulf(Object *x, Object *a)
+Object *evmulf(Object *x, Object *a)
 {
   Num_float *q;
 
   q = new Num_float;
   q->set_value(mulf0(x, (double)1, a));
-  return q;
+  return (Object *)q;
 }
 
 // Divf (Float)
@@ -1925,13 +1925,13 @@ double divf0(Object *x, double y, Object *a)
   }
 }
 
-Num_float *evdivf(Object *x, Object *a)
+Object *evdivf(Object *x, Object *a)
 {
   Num_float *q;
 
   q = new Num_float;
   q->set_value(divf0(cdr(x), to_float(car(x), a), a));
-  return q;
+  return (Object *)q;
 }
 
 // Eqnf (Float)
@@ -1951,7 +1951,7 @@ Atom *eqnf0(Object *x, double y, Object *a)
   }
 }
 
-Atom *eveqnf(Object *x, Object *a)
+Object *eveqnf(Object *x, Object *a)
 {
   return eqnf0(cdr(x), to_float(car(x), a), a);
 }
@@ -1973,7 +1973,7 @@ Atom *gtf0(Object *x, double y, Object *a)
   }
 }
 
-Atom *evgtf(Object *x, Object *a)
+Object *evgtf(Object *x, Object *a)
 {
   return gtf0(cdr(x), to_float(car(x), a), a);
 }
@@ -1995,7 +1995,7 @@ Atom *gtef0(Object *x, double y, Object *a)
   }
 }
 
-Atom *evgtef(Object *x, Object *a)
+Object *evgtef(Object *x, Object *a)
 {
   return gtef0(cdr(x), to_float(car(x), a), a);
 }
@@ -2017,7 +2017,7 @@ Atom *ltf0(Object *x, double y, Object *a)
   }
 }
 
-Atom *evltf(Object *x, Object *a)
+Object *evltf(Object *x, Object *a)
 {
   return ltf0(cdr(x), to_float(car(x), a), a);
 }
@@ -2039,7 +2039,7 @@ Atom *ltef0(Object *x, double y, Object *a)
   }
 }
 
-Atom *evltef(Object *x, Object *a)
+Object *evltef(Object *x, Object *a)
 {
   return ltef0(cdr(x), to_float(car(x), a), a);
 }
@@ -2207,42 +2207,42 @@ Object *s_eval(Object *e, Object *a)
 //    {
 //      return evlte(cdr(e), a);                      // (lte (Int)
 //    }
-    else if (car(e) == p_addf)
-    {
-      return evaddf(cdr(e), a);                     // (add (Float)
-    }
-    else if (car(e) == p_subf)
-    {
-      return evsubf(cdr(e), a);                     // (sub (Float)
-    }
-    else if (car(e) == p_mulf)
-    {
-      return evmulf(cdr(e), a);                     // (mul (Float)
-    }
-    else if (car(e) == p_divf)
-    {
-      return evdivf(cdr(e), a);                     // (div (Float)
-    }
-    else if (car(e) == p_eqnf)
-    {
-      return eveqnf(cdr(e), a);                     // (= (Float)
-    }
-    else if (car(e) == p_gtf)
-    {
-      return evgtf(cdr(e), a);                      // (> (Float)
-    }
-    else if (car(e) == p_gtef)
-    {
-      return evgtef(cdr(e), a);                     // (>= (Float)
-    }
-    else if (car(e) == p_ltf)
-    {
-      return evltf(cdr(e), a);                      // (< (Float)
-    }
-    else if (car(e) == p_ltef)
-    {
-      return evltef(cdr(e), a);                     // (<= (Float)
-    }
+//    else if (car(e) == p_addf)
+//    {
+//      return evaddf(cdr(e), a);                     // (add (Float)
+//    }
+//    else if (car(e) == p_subf)
+//    {
+//      return evsubf(cdr(e), a);                     // (sub (Float)
+//    }
+//    else if (car(e) == p_mulf)
+//    {
+//      return evmulf(cdr(e), a);                     // (mul (Float)
+//    }
+//    else if (car(e) == p_divf)
+//    {
+//      return evdivf(cdr(e), a);                     // (div (Float)
+//    }
+//    else if (car(e) == p_eqnf)
+//    {
+//      return eveqnf(cdr(e), a);                     // (= (Float)
+//    }
+//    else if (car(e) == p_gtf)
+//    {
+//      return evgtf(cdr(e), a);                      // (> (Float)
+//    }
+//    else if (car(e) == p_gtef)
+//    {
+//      return evgtef(cdr(e), a);                     // (>= (Float)
+//    }
+//    else if (car(e) == p_ltf)
+//    {
+//      return evltf(cdr(e), a);                      // (< (Float)
+//    }
+//    else if (car(e) == p_ltef)
+//    {
+//      return evltef(cdr(e), a);                     // (<= (Float)
+//    }
 //    else if (car(e) == p_cond)
 //    {
 //      return evcon(cdr(e), a);
@@ -2405,13 +2405,16 @@ Object *evreverse(Object *e, Object *a)
 // (gt -> evgt() ↑
 // (gte -> evgte() ↑
 // (lt -> evlt() ↑
-// (lte -> evlte()) ↑
-
-
-
-
-
-
+// (lte -> evlte() ↑
+// (+ -> evaddf() ↑
+// (- -> evsubf() ↑
+// (* -> evmulf() ↑
+// (/ -> evdivf() ↑
+// (= -> eveqnf() ↑
+// (> -> evgtf() ↑
+// (>= -> evgtef() ↑
+// (< -> evltf() ↑
+// (<= -> evltef() ↑
 
 
 // --------------- Main Loop ---------------
@@ -2462,11 +2465,15 @@ int main()
   p_gte->func = evgte;
   p_lt->func = evlt;
   p_lte->func = evlte;
-
-
-
-
-
+  p_addf->func = evaddf;
+  p_subf->func = evsubf;
+  p_mulf->func = evmulf;
+  p_divf->func = evdivf;
+  p_eqnf->func = eveqnf;
+  p_gtf->func = evgtf;
+  p_gtef->func = evgtef;
+  p_ltf->func = evltf;
+  p_ltef->func = evltef;
 
 
   while (1)
