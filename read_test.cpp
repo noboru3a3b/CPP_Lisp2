@@ -734,7 +734,6 @@ int count_items(vector<Token> *tokens, int idx, int i)
 
 // --------------- Read One S-Expression ---------------
 
-
 void get_elems(string text, vector<Token> *tokens)
 {
   string s;
@@ -2044,7 +2043,8 @@ Object *evltef(Object *x, Object *a)
 }
 
 
-// ----------------- Eval ------------------
+// --------------- Evaluate One S-Expression ---------------
+
 Object *s_eval(Object *e, Object *a)
 {
   // Constants
