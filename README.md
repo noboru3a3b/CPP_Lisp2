@@ -3,7 +3,7 @@
 CPP_Lisp means C++ Lisp and is implemented in the C++ language.
 I started writing CPP_Lisp because I wanted to create a my own Lisp reader, but it failed.
 I tried it again and succeeded with CPP_Lisp2.
-Object-oriented programming in C++ is very expressive, and as a result, Lisp readers are easy to understand.
+Object-oriented programming in C++ is very expressive, and as a result, completed Lisp reader is now easy to understand.
 CPP_Lisp2 reads sexp from the keyboard and builds a list structure on the heap.
 CPP_Lisp2 has a reference counter type garbage collector that can free cells that are no longer needed.
 This garbage collector is still experimental and will be tuned for future use.
