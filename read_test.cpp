@@ -28,6 +28,8 @@ using namespace std;
 AtomMap *mp = new AtomMap;
 
 // Create Atoms
+Atom *p_nondef = mp->get_atom("nondef");
+
 Atom *p_t = mp->get_atom("t");
 Atom *p_nil = mp->get_atom("nil");
 
@@ -1533,7 +1535,7 @@ Object *assoc(Object *x, Object *y)
 {
   if (y == p_nil)
   {
-    return p_nil;
+    return p_nondef;
   }
   else if (eq(caar(y), x) == p_t)
   {
@@ -2041,24 +2043,28 @@ Object *evltef(Object *x, Object *a)
   return ltef0(cdr(x), to_float(car(x), a), a);
 }
 
+
+// ----------------- Eval ------------------
 Object *s_eval(Object *e, Object *a)
 {
+  // Constants
   if (atom2(e) == p_t)
   {
-    return e;             // Constants
+    return e;
   }
   else if (atom(e) == p_t)
   {
-    if ((e == p_t ) || (e == p_nil))
+    if (assoc(e, a) != p_nondef)
     {
-      return e;
+      return assoc(e, a);
     }
 
-    return assoc(e, a);
+    return ((Atom *)e)->value;
   }
+  // Constants List
   else if (atom2(car(e)) == p_t)
   {
-    return e;             // Constants List
+    return e;
   }
   else if (atom(car(e)) == p_t)
   {
@@ -2239,6 +2245,10 @@ int main()
   int rst_idx;
   Object *p;
   Object *q;
+
+  // Set Atom value
+  p_t->value = p_t;
+  p_nil->value = p_nil;
 
   // Set Atom function 
   p_quote->func = evquote;
