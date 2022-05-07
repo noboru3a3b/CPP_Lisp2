@@ -43,5 +43,9 @@ void AtomMap::print_all()
     }
     i++;
   }
-  cout << endl;
+
+  if ((i % 10) != 0)
+  {
+    cout << endl;
+  }
 }

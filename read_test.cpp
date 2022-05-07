@@ -89,9 +89,6 @@ Atom *p_ltef = mp->get_atom("<=");
 //Atom *p_evlis = mp->get_atom("evlis");
 //Atom *p_eval = mp->get_atom("eval");
 
-//Atom *p_aaa = mp->get_atom("aaa");
-//Atom *p_bbb = mp->get_atom("bbb");
-
 // Create Type_IDs
 const type_info& id_Atom = typeid(Atom);
 const type_info& id_String = typeid(String);
@@ -2070,194 +2067,10 @@ Object *s_eval(Object *e, Object *a)
     {
       return ((Atom *)car(e))->func(cdr(e), a);
     }
-//    if (car(e) == p_quote)
-//    {
-//      return cadr(e);
-//      return p_quote->func(cdr(e), a);
-//    }
-//    else if (car(e) == p_atom)
-//    {
-//      return atom3(s_eval(cadr(e), a));             // Atom or Constants
-//    }
-//    else if (car(e) == p_eq)
-//    {//
-//      return eq(s_eval(cadr(e), a), s_eval(caddr(e), a));
-//    }
-//    else if (car(e) == p_null)
-//    {
-//      return null(s_eval(cadr(e), a));              // (null
-//    }
-//    else if (car(e) == p_not)
-//    {
-//      return s_not(s_eval(cadr(e), a));             // (not
-//    }
-//    else if (car(e) == p_car)
-//    {
-//      return car(s_eval(cadr(e), a));
-//    }
-//    else if (car(e) == p_cdr)
-//    {
-//      return cdr(s_eval(cadr(e), a));
-//    }
-//    else if (car(e) == p_cons)
-//    {
-//      return cons(s_eval(cadr(e), a), s_eval(caddr(e), a));
-//    }
-//    else if (car(e) == p_caar)
-//    {
-//      return caar(s_eval(cadr(e), a));              // (caar
-//    }
-//    else if (car(e) == p_cadr)
-//    {
-//      return cadr(s_eval(cadr(e), a));              // (cadr
-//    }
-//    else if (car(e) == p_cdar)
-//    {
-//      return cdar(s_eval(cadr(e), a));              // (cdar
-//    }
-//    else if (car(e) == p_cddr)
-//    {
-//      return cddr(s_eval(cadr(e), a));              // (cddr
-//    }
-//    else if (car(e) == p_caaar)
-//    {
-//      return caaar(s_eval(cadr(e), a));             // (caaar
-//    }
-//    else if (car(e) == p_caadr)
-//    {
-//      return caadr(s_eval(cadr(e), a));             // (caadr
-//    }
-//    else if (car(e) == p_cadar)
-//    {
-//      return cadar(s_eval(cadr(e), a));             // (cadar
-//    }
-//    else if (car(e) == p_caddr)
-//    {
-//      return caddr(s_eval(cadr(e), a));             // (caddr
-//    }
-//    else if (car(e) == p_cdaar)
-//    {
-//      return cdaar(s_eval(cadr(e), a));             // (cdaar
-//    }
-//    else if (car(e) == p_cdadr)
-//    {
-//      return cdadr(s_eval(cadr(e), a));             // (cdadr
-//    }
-//    else if (car(e) == p_cddar)
-//    {
-//      return cddar(s_eval(cadr(e), a));             // (cddar
-//    }
-//    else if (car(e) == p_cdddr)
-//    {
-//      return cdddr(s_eval(cadr(e), a));             // (cdddr
-//    }
-//    else if (car(e) == p_caddar)
-//    {
-//      return caddar(s_eval(cadr(e), a));            // (caddar
-//    }
-//    else if (car(e) == p_list)
-//    {
-//      return evlis(cdr(e), a);                      // (list
-//    }
-//    else if (car(e) == p_append)
-//    {
-//      return append(s_eval(cadr(e), a), s_eval(caddr(e), a));     // (append
-//    }
-//    else if (car(e) == p_reverse)
-//    {
-//      return reverse(s_eval(cadr(e), a));           // (reverse
-//    }
-//    else if (car(e) == p_add)
-//    {
-//      return evadd(cdr(e), a);                      // (add (Int)
-//    }
-//    else if (car(e) == p_sub)
-//    {
-//      return evsub(cdr(e), a);                      // (sub (Int)
-//    }
-//    else if (car(e) == p_mul)
-//    {
-//      return evmul(cdr(e), a);                      // (mul (Int)
-//    }
-//    else if (car(e) == p_div)
-//    {
-//      return evdiv(cdr(e), a);                      // (div (Int)
-//    }
-//    else if (car(e) == p_mod)
-//    {
-//      return evmod(cdr(e), a);                      // (mod (Int)
-//    }
-//    else if (car(e) == p_eqn)
-//    {
-//      return eveqn(cdr(e), a);                      // (eqn (Int)
-//    }
-//    else if (car(e) == p_gt)
-//    {
-//      return evgt(cdr(e), a);                       // (gt (Int)
-//    }
-//    else if (car(e) == p_gte)
-//    {
-//      return evgte(cdr(e), a);                      // (gte (Int)
-//    }
-//    else if (car(e) == p_lt)
-//    {
-//      return evlt(cdr(e), a);                       // (lt (Int)
-//    }
-//    else if (car(e) == p_lte)
-//    {
-//      return evlte(cdr(e), a);                      // (lte (Int)
-//    }
-//    else if (car(e) == p_addf)
-//    {
-//      return evaddf(cdr(e), a);                     // (add (Float)
-//    }
-//    else if (car(e) == p_subf)
-//    {
-//      return evsubf(cdr(e), a);                     // (sub (Float)
-//    }
-//    else if (car(e) == p_mulf)
-//    {
-//      return evmulf(cdr(e), a);                     // (mul (Float)
-//    }
-//    else if (car(e) == p_divf)
-//    {
-//      return evdivf(cdr(e), a);                     // (div (Float)
-//    }
-//    else if (car(e) == p_eqnf)
-//    {
-//      return eveqnf(cdr(e), a);                     // (= (Float)
-//    }
-//    else if (car(e) == p_gtf)
-//    {
-//      return evgtf(cdr(e), a);                      // (> (Float)
-//    }
-//    else if (car(e) == p_gtef)
-//    {
-//      return evgtef(cdr(e), a);                     // (>= (Float)
-//    }
-//    else if (car(e) == p_ltf)
-//    {
-//      return evltf(cdr(e), a);                      // (< (Float)
-//    }
-//    else if (car(e) == p_ltef)
-//    {
-//      return evltef(cdr(e), a);                     // (<= (Float)
-//    }
-//    else if (car(e) == p_cond)
-//    {
-//      return evcon(cdr(e), a);
-//    }
-//    else if (car(e) == p_if)
-//    {
-//      return evif(cdr(e), a);                       // (if
-//    }
-//    else if (car(e) == p_and)
-//    {
-//      return evand(cdr(e), a);                      // (and
-//    }
+    // Exec Local function
     else
     {
-      return s_eval(cons(assoc(car(e), a), cdr(e)), a);           // Named Functions
+      return s_eval(cons(assoc(car(e), a), cdr(e)), a);
     }
   }
   else if (caar(e) == p_label)
@@ -2506,8 +2319,6 @@ int main()
       cout << endl;
 
       // eval
-      // a = ((aaa bbb)) for Test
-//      q = s_eval(p, cons(cons(p_aaa, cons(p_bbb, p_nil)), p_nil));
       q = s_eval(p, p_nil);
 
       // print
@@ -2527,11 +2338,11 @@ int main()
       }
 
       // Output Exp
-      if (q->ref_cnt == 0)
-      {
-        cout << "[eval] Delete Object [Class ID]= " << typeid(*q).name() << endl;
-        delete q;
-      }
+//      if (q->ref_cnt == 0)
+//      {
+//        cout << "[eval] Delete Object [Class ID]= " << typeid(*q).name() << endl;
+//        delete q;
+//      }
 
       cout << endl;
     }
