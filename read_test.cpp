@@ -84,6 +84,8 @@ Atom *p_gtef = mp->get_atom(">=");
 Atom *p_ltf = mp->get_atom("<");
 Atom *p_ltef = mp->get_atom("<=");
 
+Atom *p_defun = mp->get_atom("defun");
+
 //Atom *p_pair = mp->get_atom("pair");
 //Atom *p_assoc = mp->get_atom("assoc");
 
@@ -2073,6 +2075,11 @@ Object *s_eval(Object *e, Object *a)
     {
       return ((Atom *)car(e))->func(cdr(e), a);
     }
+    // Exec Atom lambda
+    else if (((Atom *)car(e))->lambda != NULL)
+    {
+      return s_eval(cons(((Atom *)car(e))->lambda, cdr(e)), a);
+    }
     // Exec Local function
     else
     {
@@ -2235,6 +2242,12 @@ Object *evreverse(Object *e, Object *a)
 // (< -> evltf() ↑
 // (<= -> evltef() ↑
 
+// (defun fn () -> fn.lmd = (lambda ()
+Object *evdefun(Object *e, Object *a)
+{
+  ((Atom *)car(e))->set_lambda(cons(p_lambda, cdr(e)));
+  return p_t;
+}
 
 // --------------- Main Loop ---------------
 
@@ -2297,6 +2310,8 @@ int main()
   p_gtef->func = evgtef;
   p_ltf->func = evltf;
   p_ltef->func = evltef;
+
+  p_defun->func = evdefun;
 
 
   while (1)

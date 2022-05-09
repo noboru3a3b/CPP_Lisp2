@@ -13,6 +13,7 @@ class Atom : public Object
  public:
   string name;
   Object *value;
+  Object *lambda;
   Object *(*func)(Object *e, Object *a);
 
   Atom();
@@ -24,6 +25,7 @@ class Atom : public Object
   void print_cdr();
   void set_name( string s );
   void set_value( Object *v );
+  void set_lambda( Object *lmd );
   void set_func( Object *(*fn)(Object *e, Object *a) );
 };
 
