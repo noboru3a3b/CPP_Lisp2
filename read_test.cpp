@@ -94,6 +94,10 @@ Atom *p_sqrt = mp->get_atom("sqrt");
 Atom *p_sin = mp->get_atom("sin");
 Atom *p_cos = mp->get_atom("cos");
 Atom *p_tan = mp->get_atom("tan");
+Atom *p_asin = mp->get_atom("asin");
+Atom *p_acos = mp->get_atom("acos");
+Atom *p_atan = mp->get_atom("atan");
+Atom *p_abs = mp->get_atom("abs");
 
 Atom *p_defun = mp->get_atom("defun");
 
@@ -2095,6 +2099,46 @@ Object *evtan(Object *x, Object *a)
   return (Object *)q;
 }
 
+// asin (Float)
+Object *evasin(Object *x, Object *a)
+{
+  Num_float *q;
+
+  q = new Num_float;
+  q->set_value(asin(to_float(car(x), a)));
+  return (Object *)q;
+}
+
+// acos (Float)
+Object *evacos(Object *x, Object *a)
+{
+  Num_float *q;
+
+  q = new Num_float;
+  q->set_value(acos(to_float(car(x), a)));
+  return (Object *)q;
+}
+
+// atan (Float)
+Object *evatan(Object *x, Object *a)
+{
+  Num_float *q;
+
+  q = new Num_float;
+  q->set_value(atan(to_float(car(x), a)));
+  return (Object *)q;
+}
+
+// abs (Float)
+Object *evabs(Object *x, Object *a)
+{
+  Num_float *q;
+
+  q = new Num_float;
+  q->set_value(abs(to_float(car(x), a)));
+  return (Object *)q;
+}
+
 
 // --------------- Evaluate One S-Expression ---------------
 
@@ -2369,6 +2413,10 @@ int main()
   p_sin->func = evsin;
   p_cos->func = evcos;
   p_tan->func = evtan;
+  p_asin->func = evasin;
+  p_acos->func = evacos;
+  p_atan->func = evatan;
+  p_abs->func = evabs;
 
   p_defun->func = evdefun;
 
