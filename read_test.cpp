@@ -98,6 +98,9 @@ Atom *p_asin = mp->get_atom("asin");
 Atom *p_acos = mp->get_atom("acos");
 Atom *p_atan = mp->get_atom("atan");
 Atom *p_abs = mp->get_atom("abs");
+Atom *p_round = mp->get_atom("round");
+Atom *p_trunc = mp->get_atom("trunc");
+Atom *p_floor = mp->get_atom("floor");
 
 Atom *p_defun = mp->get_atom("defun");
 
@@ -2139,6 +2142,36 @@ Object *evabs(Object *x, Object *a)
   return (Object *)q;
 }
 
+// round (Int)
+Object *evround(Object *x, Object *a)
+{
+  Num_int *q;
+
+  q = new Num_int;
+  q->set_value(round(to_float(car(x), a)));
+  return (Object *)q;
+}
+
+// trunc (Int)
+Object *evtrunc(Object *x, Object *a)
+{
+  Num_int *q;
+
+  q = new Num_int;
+  q->set_value(trunc(to_float(car(x), a)));
+  return (Object *)q;
+}
+
+// floor (Int)
+Object *evfloor(Object *x, Object *a)
+{
+  Num_int *q;
+
+  q = new Num_int;
+  q->set_value(floor(to_float(car(x), a)));
+  return (Object *)q;
+}
+
 
 // --------------- Evaluate One S-Expression ---------------
 
@@ -2417,6 +2450,9 @@ int main()
   p_acos->func = evacos;
   p_atan->func = evatan;
   p_abs->func = evabs;
+  p_round->func = evround;
+  p_trunc->func = evtrunc;
+  p_floor->func = evfloor;
 
   p_defun->func = evdefun;
 
