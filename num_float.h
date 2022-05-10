@@ -13,6 +13,7 @@ class Num_float  : public Object
   double value;
   
   Num_float();
+  Num_float(double n);
   ~Num_float();
   
   void print();

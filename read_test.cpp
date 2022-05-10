@@ -1,10 +1,13 @@
 // read_test.cpp
 
+#define _USE_MATH_DEFINES
+
 #include <iostream>
 #include <string>
 #include <vector>
 #include <typeinfo>
 
+#include <math.h>
 #include "type.h"
 #include "token.h"
 #include "atom.h"
@@ -83,6 +86,14 @@ Atom *p_gtf = mp->get_atom(">");
 Atom *p_gtef = mp->get_atom(">=");
 Atom *p_ltf = mp->get_atom("<");
 Atom *p_ltef = mp->get_atom("<=");
+
+Atom *p_const_pi = mp->get_atom("const_pi");
+Atom *p_const_e = mp->get_atom("const_e");
+
+Atom *p_sqrt = mp->get_atom("sqrt");
+Atom *p_sin = mp->get_atom("sin");
+Atom *p_cos = mp->get_atom("cos");
+Atom *p_tan = mp->get_atom("tan");
 
 Atom *p_defun = mp->get_atom("defun");
 
@@ -2044,6 +2055,46 @@ Object *evltef(Object *x, Object *a)
   return ltef0(cdr(x), to_float(car(x), a), a);
 }
 
+// sqrt (Float)
+Object *evsqrt(Object *x, Object *a)
+{
+  Num_float *q;
+
+  q = new Num_float;
+  q->set_value(sqrt(to_float(car(x), a)));
+  return (Object *)q;
+}
+
+// sin (Float)
+Object *evsin(Object *x, Object *a)
+{
+  Num_float *q;
+
+  q = new Num_float;
+  q->set_value(sin(to_float(car(x), a)));
+  return (Object *)q;
+}
+
+// cos (Float)
+Object *evcos(Object *x, Object *a)
+{
+  Num_float *q;
+
+  q = new Num_float;
+  q->set_value(cos(to_float(car(x), a)));
+  return (Object *)q;
+}
+
+// tan (Float)
+Object *evtan(Object *x, Object *a)
+{
+  Num_float *q;
+
+  q = new Num_float;
+  q->set_value(tan(to_float(car(x), a)));
+  return (Object *)q;
+}
+
 
 // --------------- Evaluate One S-Expression ---------------
 
@@ -2263,6 +2314,9 @@ int main()
   p_t->value = p_t;
   p_nil->value = p_nil;
 
+  p_const_pi->value = (new Num_float(M_PI));
+  p_const_e->value = (new Num_float(M_E));
+
   // Set Atom function 
   p_quote->func = evquote;
   p_atom->func = evatom;
@@ -2310,6 +2364,11 @@ int main()
   p_gtef->func = evgtef;
   p_ltf->func = evltf;
   p_ltef->func = evltef;
+
+  p_sqrt->func = evsqrt;
+  p_sin->func = evsin;
+  p_cos->func = evcos;
+  p_tan->func = evtan;
 
   p_defun->func = evdefun;
 

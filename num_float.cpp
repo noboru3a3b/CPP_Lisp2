@@ -8,6 +8,11 @@ Num_float::Num_float()
 
 }
 
+Num_float::Num_float(double n)
+{
+  value = n;
+}
+
 Num_float::~Num_float()
 {
 
