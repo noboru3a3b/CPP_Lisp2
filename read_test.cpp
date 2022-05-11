@@ -97,10 +97,17 @@ Atom *p_tan = mp->get_atom("tan");
 Atom *p_asin = mp->get_atom("asin");
 Atom *p_acos = mp->get_atom("acos");
 Atom *p_atan = mp->get_atom("atan");
+Atom *p_sinh = mp->get_atom("sinh");
+Atom *p_cosh = mp->get_atom("cosh");
+Atom *p_tanh = mp->get_atom("tanh");
 Atom *p_abs = mp->get_atom("abs");
 Atom *p_round = mp->get_atom("round");
 Atom *p_trunc = mp->get_atom("trunc");
 Atom *p_floor = mp->get_atom("floor");
+Atom *p_exp = mp->get_atom("exp");
+Atom *p_pow = mp->get_atom("pow");
+Atom *p_ln = mp->get_atom("ln");
+Atom *p_log = mp->get_atom("log");
 
 Atom *p_defun = mp->get_atom("defun");
 
@@ -2132,6 +2139,36 @@ Object *evatan(Object *x, Object *a)
   return (Object *)q;
 }
 
+// sinh (Float)
+Object *evsinh(Object *x, Object *a)
+{
+  Num_float *q;
+
+  q = new Num_float;
+  q->set_value(sinh(to_float(car(x), a)));
+  return (Object *)q;
+}
+
+// cosh (Float)
+Object *evcosh(Object *x, Object *a)
+{
+  Num_float *q;
+
+  q = new Num_float;
+  q->set_value(cosh(to_float(car(x), a)));
+  return (Object *)q;
+}
+
+// tanh (Float)
+Object *evtanh(Object *x, Object *a)
+{
+  Num_float *q;
+
+  q = new Num_float;
+  q->set_value(tanh(to_float(car(x), a)));
+  return (Object *)q;
+}
+
 // abs (Float)
 Object *evabs(Object *x, Object *a)
 {
@@ -2169,6 +2206,46 @@ Object *evfloor(Object *x, Object *a)
 
   q = new Num_int;
   q->set_value(floor(to_float(car(x), a)));
+  return (Object *)q;
+}
+
+// exp (Float)
+Object *evexp(Object *x, Object *a)
+{
+  Num_float *q;
+
+  q = new Num_float;
+  q->set_value(exp(to_float(car(x), a)));
+  return (Object *)q;
+}
+
+// pow (Float)
+Object *evpow(Object *x, Object *a)
+{
+  Num_float *q;
+
+  q = new Num_float;
+  q->set_value(pow(to_float(car(x), a), to_float(cadr(x), a)));
+  return (Object *)q;
+}
+
+// ln (Float)
+Object *evln(Object *x, Object *a)
+{
+  Num_float *q;
+
+  q = new Num_float;
+  q->set_value(log(to_float(car(x), a)));
+  return (Object *)q;
+}
+
+// log (Float)
+Object *evlog(Object *x, Object *a)
+{
+  Num_float *q;
+
+  q = new Num_float;
+  q->set_value(log10(to_float(car(x), a)));
   return (Object *)q;
 }
 
@@ -2377,6 +2454,7 @@ Object *evdefun(Object *e, Object *a)
   return p_t;
 }
 
+
 // --------------- Main Loop ---------------
 
 int main()
@@ -2449,10 +2527,17 @@ int main()
   p_asin->func = evasin;
   p_acos->func = evacos;
   p_atan->func = evatan;
+  p_sinh->func = evsinh;
+  p_cosh->func = evcosh;
+  p_tanh->func = evtanh;
   p_abs->func = evabs;
   p_round->func = evround;
   p_trunc->func = evtrunc;
   p_floor->func = evfloor;
+  p_exp->func = evexp;
+  p_pow->func = evpow;
+  p_ln->func = evln;
+  p_log->func = evlog;
 
   p_defun->func = evdefun;
 
