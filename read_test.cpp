@@ -2492,6 +2492,27 @@ Object *evreverse(Object *e, Object *a)
 // (>= -> evgtef() ↑
 // (< -> evltf() ↑
 // (<= -> evltef() ↑
+// (min -> evmin() ↑
+// (max -> evmax() ↑
+
+// (sqrt -> evsqrt() ↑
+// (sin -> evsin() ↑
+// (cos -> evcos() ↑
+// (tan -> evtan() ↑
+// (asin -> evasin() ↑
+// (acos -> evacos() ↑
+// (atan -> evatan() ↑
+// (sinh -> evsinh() ↑
+// (cosh -> evcosh() ↑
+// (tanh -> evtanh() ↑
+// (abs -> evabs() ↑
+// (round -> evround() ↑
+// (trunc -> evtrunc() ↑
+// (floor -> evfloor() ↑
+// (exp -> evexp() ↑
+// (pow -> evpow() ↑
+// (ln -> evln() ↑
+// (log -> evlog() ↑
 
 // (defun fn () -> fn.lmd = (lambda ()
 Object *evdefun(Object *e, Object *a)
@@ -2526,6 +2547,7 @@ int main()
   p_cdr->func = evcdr;
   p_cons->func = evcons;
   p_cond->func = evcon;
+
   p_caar->func = evcaar;
   p_cadr->func = evcadr;
   p_cdar->func = evcdar;
@@ -2546,6 +2568,7 @@ int main()
   p_not->func = evnot;
   p_append->func = evappend;
   p_reverse->func = evreverse;
+
   p_add->func = evadd;
   p_sub->func = evsub;
   p_mul->func = evmul;

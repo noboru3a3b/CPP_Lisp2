@@ -25,9 +25,9 @@ acos add and append asin atan atom caaar caadr caar
 cadar caddar caddr cadr car cdaar cdadr cdar cddar cdddr
 cddr cdr cond cons const_e const_pi cos cosh defun div
 eq eqn exp floor gt gte if label lambda list
-ln log lt lte mod mul nil nondef not null
-pow quote reverse round sin sinh sqrt sub t tan
-tanh trunc
+ln log lt lte max min mod mul nil nondef
+not null pow quote reverse round sin sinh sqrt sub
+t tan tanh trunc
 [exp] Delete Object [Class ID]= 4Cell
 
 > (reverse (append '(1 2 3 4 5) '(6 7 8 9 10)))
@@ -40,9 +40,9 @@ acos add and append asin atan atom caaar caadr caar
 cadar caddar caddr cadr car cdaar cdadr cdar cddar cdddr
 cddr cdr cond cons const_e const_pi cos cosh defun div
 eq eqn exp floor gt gte if label lambda list
-ln log lt lte mod mul nil nondef not null
-pow quote reverse round sin sinh sqrt sub t tan
-tanh trunc
+ln log lt lte max min mod mul nil nondef
+not null pow quote reverse round sin sinh sqrt sub
+t tan tanh trunc
 [exp] Delete Object [Class ID]= 4Cell
 
 > (defun sqr+0 (x y) (if (null x) y (sqr+0 (cdr x) (+ (* (car x) (car x)) y))))
@@ -55,9 +55,9 @@ acos add and append asin atan atom caaar caadr caar
 cadar caddar caddr cadr car cdaar cdadr cdar cddar cdddr
 cddr cdr cond cons const_e const_pi cos cosh defun div
 eq eqn exp floor gt gte if label lambda list
-ln log lt lte mod mul nil nondef not null
-pow quote reverse round sin sinh sqr+0 sqrt sub t
-tan tanh trunc x y
+ln log lt lte max min mod mul nil nondef
+not null pow quote reverse round sin sinh sqr+0 sqrt
+sub t tan tanh trunc x y
 [exp] Delete Object [Class ID]= 4Cell
 
 > (defun sqr+ (x) (sqr+0 x 0))
@@ -70,9 +70,9 @@ acos add and append asin atan atom caaar caadr caar
 cadar caddar caddr cadr car cdaar cdadr cdar cddar cdddr
 cddr cdr cond cons const_e const_pi cos cosh defun div
 eq eqn exp floor gt gte if label lambda list
-ln log lt lte mod mul nil nondef not null
-pow quote reverse round sin sinh sqr+ sqr+0 sqrt sub
-t tan tanh trunc x y
+ln log lt lte max min mod mul nil nondef
+not null pow quote reverse round sin sinh sqr+ sqr+0
+sqrt sub t tan tanh trunc x y
 [exp] Delete Object [Class ID]= 4Cell
 
 > (sqr+ '(1 2 3 4 5))
@@ -85,8 +85,8 @@ acos add and append asin atan atom caaar caadr caar
 cadar caddar caddr cadr car cdaar cdadr cdar cddar cdddr
 cddr cdr cond cons const_e const_pi cos cosh defun div
 eq eqn exp floor gt gte if label lambda list
-ln log lt lte mod mul nil nondef not null
-pow quote reverse round sin sinh sqr+ sqr+0 sqrt sub
-t tan tanh trunc x y
+ln log lt lte max min mod mul nil nondef
+not null pow quote reverse round sin sinh sqr+ sqr+0
+sqrt sub t tan tanh trunc x y
 [exp] Delete Object [Class ID]= 4Cell
 ```
