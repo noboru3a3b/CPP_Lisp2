@@ -75,6 +75,8 @@ Atom *p_sub = mp->get_atom("sub");
 Atom *p_mul = mp->get_atom("mul");
 Atom *p_div = mp->get_atom("div");
 Atom *p_mod = mp->get_atom("mod");
+Atom *p_inc = mp->get_atom("inc");
+Atom *p_dec = mp->get_atom("dec");
 Atom *p_eqn = mp->get_atom("eqn");
 Atom *p_gt = mp->get_atom("gt");
 Atom *p_gte = mp->get_atom("gte");
@@ -84,6 +86,8 @@ Atom *p_addf = mp->get_atom("+");
 Atom *p_subf = mp->get_atom("-");
 Atom *p_mulf = mp->get_atom("*");
 Atom *p_divf = mp->get_atom("/");
+Atom *p_incf = mp->get_atom("1+");
+Atom *p_decf = mp->get_atom("1-");
 Atom *p_eqnf = mp->get_atom("=");
 Atom *p_gtf = mp->get_atom(">");
 Atom *p_gtef = mp->get_atom(">=");
@@ -492,8 +496,9 @@ bool is_int(string s)
   char c;
   int end = s.size();
   bool flag = true;
+  int i;
 
-  for (int i = 0; i < end; i++)
+  for (i = 0; i < end; i++)
   {
     c = s[i];
     if (((c >= '0') && (c <= '9')) ||
@@ -505,6 +510,12 @@ bool is_int(string s)
     flag = false;
     break;
   }
+
+  if ((i == end) && ((c == '+') || (c == '-')))
+  {
+    return false;
+  }
+
   return flag;
 }
 
@@ -514,8 +525,9 @@ bool is_float(string s)
   char c;
   int end = s.size();
   bool flag = true;
+  int i;
 
-  for (int i = 0; i < end; i++)
+  for (i = 0; i < end; i++)
   {
     c = s[i];
     if (((c >= '0') && (c <= '9')) ||
@@ -529,6 +541,12 @@ bool is_float(string s)
     flag = false;
     break;
   }
+
+    if ((i == end) && ((c == '+') || (c == '-')))
+  {
+    return false;
+  }
+
   return flag;
 }
 
@@ -1751,6 +1769,26 @@ Object *evmod(Object *x, Object *a)
   return (Object *)q;
 }
 
+// Inc (Int)
+Object *evinc(Object *x, Object *a)
+{
+  Num_int *q;
+
+  q = new Num_int;
+  q->set_value(to_int(car(x), a) + 1);
+  return (Object *)q;
+}
+
+// Dec (Int)
+Object *evdec(Object *x, Object *a)
+{
+  Num_int *q;
+
+  q = new Num_int;
+  q->set_value(to_int(car(x), a) - 1);
+  return (Object *)q;
+}
+
 // Eqn (Int)
 Atom *eqn0(Object *x, long y, Object *a)
 {
@@ -1959,6 +1997,26 @@ Object *evdivf(Object *x, Object *a)
 
   q = new Num_float;
   q->set_value(divf0(cdr(x), to_float(car(x), a), a));
+  return (Object *)q;
+}
+
+// Incf (Float)
+Object *evincf(Object *x, Object *a)
+{
+  Num_float *q;
+
+  q = new Num_float;
+  q->set_value(to_float(car(x), a) + (double)1);
+  return (Object *)q;
+}
+
+// Decf (Float)
+Object *evdecf(Object *x, Object *a)
+{
+  Num_float *q;
+
+  q = new Num_float;
+  q->set_value(to_float(car(x), a) - (double)1);
   return (Object *)q;
 }
 
@@ -2479,6 +2537,8 @@ Object *evreverse(Object *e, Object *a)
 // (mul -> evmul() ↑
 // (div -> evdiv() ↑
 // (mod -> evmod() ↑
+// (inc -> evinc() ↑
+// (dec -> evdec() ↑
 // (eqn -> eveqn() ↑
 // (gt -> evgt() ↑
 // (gte -> evgte() ↑
@@ -2488,6 +2548,8 @@ Object *evreverse(Object *e, Object *a)
 // (- -> evsubf() ↑
 // (* -> evmulf() ↑
 // (/ -> evdivf() ↑
+// (1+ -> evincf() ↑
+// (1- -> evdecf() ↑
 // (= -> eveqnf() ↑
 // (> -> evgtf() ↑
 // (>= -> evgtef() ↑
@@ -2582,6 +2644,8 @@ int main()
   p_mul->func = evmul;
   p_div->func = evdiv;
   p_mod->func = evmod;
+  p_inc->func = evinc;
+  p_dec->func = evdec;
   p_eqn->func = eveqn;
   p_gt->func = evgt;
   p_gte->func = evgte;
@@ -2591,6 +2655,8 @@ int main()
   p_subf->func = evsubf;
   p_mulf->func = evmulf;
   p_divf->func = evdivf;
+  p_incf->func = evincf;
+  p_decf->func = evdecf;
   p_eqnf->func = eveqnf;
   p_gtf->func = evgtf;
   p_gtef->func = evgtef;
