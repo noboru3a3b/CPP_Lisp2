@@ -112,6 +112,7 @@ Atom *p_ln = mp->get_atom("ln");
 Atom *p_log = mp->get_atom("log");
 
 Atom *p_defun = mp->get_atom("defun");
+Atom *p_print = mp->get_atom("print");
 
 //Atom *p_pair = mp->get_atom("pair");
 //Atom *p_assoc = mp->get_atom("assoc");
@@ -2518,7 +2519,14 @@ Object *evreverse(Object *e, Object *a)
 Object *evdefun(Object *e, Object *a)
 {
   ((Atom *)car(e))->set_lambda(cons(p_lambda, cdr(e)));
-  return p_t;
+  return car(e);
+}
+// (print
+Object *evprint(Object *e, Object *a)
+{
+  (s_eval(car(e), a))->print();
+  cout << endl;
+  return s_eval(car(e), a);
 }
 
 
@@ -2611,6 +2619,7 @@ int main()
   p_log->func = evlog;
 
   p_defun->func = evdefun;
+  p_print->func = evprint;
 
 
   while (1)
