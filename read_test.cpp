@@ -36,6 +36,9 @@ Atom *p_nondef = mp->get_atom("nondef");
 Atom *p_t = mp->get_atom("t");
 Atom *p_nil = mp->get_atom("nil");
 
+Atom *p_const_pi = mp->get_atom("const_pi");
+Atom *p_const_e = mp->get_atom("const_e");
+
 Atom *p_quote = mp->get_atom("quote");
 Atom *p_atom = mp->get_atom("atom");
 Atom *p_eq = mp->get_atom("eq");
@@ -86,9 +89,8 @@ Atom *p_gtf = mp->get_atom(">");
 Atom *p_gtef = mp->get_atom(">=");
 Atom *p_ltf = mp->get_atom("<");
 Atom *p_ltef = mp->get_atom("<=");
-
-Atom *p_const_pi = mp->get_atom("const_pi");
-Atom *p_const_e = mp->get_atom("const_e");
+Atom *p_min = mp->get_atom("min");
+Atom *p_max = mp->get_atom("max");
 
 Atom *p_sqrt = mp->get_atom("sqrt");
 Atom *p_sin = mp->get_atom("sin");
@@ -2069,6 +2071,50 @@ Object *evltef(Object *x, Object *a)
   return ltef0(cdr(x), to_float(car(x), a), a);
 }
 
+// min (Float)
+double min0(Object *x, double y, Object *a)
+{
+  if (null(x) == p_t)
+  {
+    return y;
+  }
+  else
+  {
+    return min0(cdr(x), fmin(to_float(car(x), a), y), a);
+  }
+}
+
+Object *evmin(Object *x, Object *a)
+{
+  Num_float *q;
+
+  q = new Num_float;
+  q->set_value(min0(x, (double)0, a));
+  return (Object *)q;
+}
+
+// max (Float)
+double max0(Object *x, double y, Object *a)
+{
+  if (null(x) == p_t)
+  {
+    return y;
+  }
+  else
+  {
+    return max0(cdr(x), fmax(to_float(car(x), a), y), a);
+  }
+}
+
+Object *evmax(Object *x, Object *a)
+{
+  Num_float *q;
+
+  q = new Num_float;
+  q->set_value(max0(x, (double)0, a));
+  return (Object *)q;
+}
+
 // sqrt (Float)
 Object *evsqrt(Object *x, Object *a)
 {
@@ -2519,6 +2565,8 @@ int main()
   p_gtef->func = evgtef;
   p_ltf->func = evltf;
   p_ltef->func = evltef;
+  p_min->func = evmin;
+  p_max->func = evmax;
 
   p_sqrt->func = evsqrt;
   p_sin->func = evsin;
