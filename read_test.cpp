@@ -117,6 +117,8 @@ Atom *p_log = mp->get_atom("log");
 
 Atom *p_defun = mp->get_atom("defun");
 Atom *p_print = mp->get_atom("print");
+Atom *p_let = mp->get_atom("let");
+Atom *p_let2 = mp->get_atom("let*");
 
 //Atom *p_pair = mp->get_atom("pair");
 //Atom *p_assoc = mp->get_atom("assoc");
@@ -1646,6 +1648,32 @@ Object *evlis(Object *m, Object *a)
   }
 }
 
+// ((a exp1) (b exp2) ... ) -> ((a eval(exp1)) (b eval(exp2)) ... )
+Object *evparam(Object *e, Object *a)
+{
+  if (null(e) == p_t)
+  {
+    return p_nil;
+  }
+  else
+  {
+    return cons(list(caar(e), s_eval(cadar(e), a)), evparam(cdr(e), a));
+  }
+}
+
+// ((a exp1) (b exp2) ... ) -> ((a eval(exp1)) (b eval(exp2)) ... )
+Object *evparam2(Object *e, Object *a)
+{
+  if (null(e) == p_t)
+  {
+    return p_nil;
+  }
+  else
+  {
+    return cons(list(caar(e), s_eval(cadar(e), a)), evparam2(cdr(e), cons(list(caar(e), s_eval(cadar(e), a)), a)));
+  }
+}
+
 // to Int
 long to_int(Object *x, Object *a)
 {
@@ -2590,6 +2618,16 @@ Object *evprint(Object *e, Object *a)
   cout << endl;
   return s_eval(car(e), a);
 }
+// (let ((a exp1) (b exp2) ... ) exp)
+Object *evlet(Object *e, Object *a)
+{
+  return s_eval(cadr(e), append(evparam(car(e), a), a));
+}
+// (let* ((a exp1) (b exp2) ... ) exp)
+Object *evlet2(Object *e, Object *a)
+{
+  return s_eval(cadr(e), append(evparam2(car(e), a), a));
+}
 
 
 // --------------- Main Loop ---------------
@@ -2686,6 +2724,8 @@ int main()
 
   p_defun->func = evdefun;
   p_print->func = evprint;
+  p_let->func = evlet;
+  p_let2->func = evlet2;
 
 
   while (1)
