@@ -1,42 +1,28 @@
-> (let ((x 1000) (y 2000)) (cons x y))
-[str] (let ((x 1000) (y 2000)) (cons x y))
-[exp] (let ((x 1000) (y 2000)) (cons x y))
-[eval] (1000 . 2000)
- ---------- atoms ----------
-* + - / 1+ 1- < <= = >
->= abs acos add and append asin atan atom caaar
-caadr caar cadar caddar caddr cadr car cdaar cdadr cdar
-cddar cdddr cddr cdr cond cons const_e const_pi cos cosh
-dec defun div eq eqn exp floor gt gte if
-inc label lambda let let* list ln log lt lte
-max min mod mul nil nondef not null pow print
-quote reverse round setq sin sinh sqrt sub t tan
-tanh trunc x y
-[exp] Delete Object [Class ID]= 4Cell
-
-> (let* ((x 1000) (y (* 2 x))) (cons x y))
-[str] (let* ((x 1000) (y (* 2 x))) (cons x y))
-[exp] (let* ((x 1000) (y (* 2 x))) (cons x y))
-[eval] (1000 . 2000)
- ---------- atoms ----------
-* + - / 1+ 1- < <= = >
->= abs acos add and append asin atan atom caaar
-caadr caar cadar caddar caddr cadr car cdaar cdadr cdar
-cddar cdddr cddr cdr cond cons const_e const_pi cos cosh
-dec defun div eq eqn exp floor gt gte if
-inc label lambda let let* list ln log lt lte
-max min mod mul nil nondef not null pow print
-quote reverse round setq sin sinh sqrt sub t tan
-tanh trunc x y
-[exp] Delete Object [Class ID]= 4Cell
-
-> (let ((x 10) (y 20)) (print x) (setq x (* x 3)) (print y) (print x))
-[str] (let ((x 10) (y 20)) (print x) (setq x (* x 3)) (print y) (print x))
-[exp] (let ((x 10) (y 20)) (print x) (setq x (* x 3)) (print y) (print x))
+> (let ((x 10) (y 20)) (print x) (print y) (setq y (+ x y)) (print y))
+[str] (let ((x 10) (y 20)) (print x) (print y) (setq y (+ x y)) (print y))
+[exp] (let ((x 10) (y 20)) (print x) (print y) (setq y (+ x y)) (print y))
 10
 20
 30
 [eval] 30
+ ---------- atoms ----------
+* + - / 1+ 1- < <= = >
+>= abs acos add and append asin atan atom caaar
+caadr caar cadar caddar caddr cadr car cdaar cdadr cdar
+cddar cdddr cddr cdr cond cons const_e const_pi cos cosh
+dec defun div eq eqn exp floor gt gte if
+inc label lambda let let* list ln log lt lte
+max min mod mul nil nondef not null pow print
+quote reverse round setq sin sinh sqrt sub t tan
+tanh trunc x y
+[exp] Delete Object [Class ID]= 4Cell
+
+> (let* ((x 10) (y (* 2 x))) (print x) (print y) (cons x y))
+[str] (let* ((x 10) (y (* 2 x))) (print x) (print y) (cons x y))
+[exp] (let* ((x 10) (y (* 2 x))) (print x) (print y) (cons x y))
+10
+20
+[eval] (10 . 20)
  ---------- atoms ----------
 * + - / 1+ 1- < <= = >
 >= abs acos add and append asin atan atom caaar
