@@ -7,7 +7,8 @@ using namespace std;
 
 Cell::Cell()
 {
-
+  car = NULL;
+  cdr = NULL;
 }
 
 Cell::Cell(Object *p, Object *q)
@@ -49,12 +50,22 @@ void Cell::print_cdr()
 
 void Cell::set_car(Object *p)
 {
+  if (car != NULL)
+  {
+    car->ref_cnt--;
+  }
+
   car = p;
   car->ref_cnt++;
 }
 
 void Cell::set_cdr(Object *p)
 {
+  if (cdr != NULL)
+  {
+    cdr->ref_cnt--;
+  }
+
   cdr = p;
   cdr->ref_cnt++;
 }

@@ -119,6 +119,7 @@ Atom *p_defun = mp->get_atom("defun");
 Atom *p_print = mp->get_atom("print");
 Atom *p_let = mp->get_atom("let");
 Atom *p_let2 = mp->get_atom("let*");
+Atom *p_setq = mp->get_atom("setq");
 
 //Atom *p_pair = mp->get_atom("pair");
 //Atom *p_assoc = mp->get_atom("assoc");
@@ -1596,6 +1597,22 @@ Object *assoc(Object *x, Object *y)
   }
 }
 
+Object *assoc2(Object *x, Object *y)
+{
+  if (y == p_nil)
+  {
+    return p_nondef;
+  }
+  else if (eq(caar(y), x) == p_t)
+  {
+    return car(y);
+  }
+  else
+  {
+    return assoc2(x, cdr(y));
+  }
+}
+
 Object *evcon(Object *c, Object *a)
 {
   if (s_eval(caar(c), a) != p_nil)
@@ -2438,6 +2455,20 @@ Object *s_eval(Object *e, Object *a)
   }
 }
 
+// Run Sequence
+Object *s_runseq(Object *e, Object *a, Object *ans)
+{
+  if (null(e) == p_t)
+  {
+    return ans;  
+  }
+  else
+  {
+    return s_runseq(cdr(e), a, s_eval(car(e), a));
+  }
+}
+
+
 // Atom functions
 // (quote
 Object *evquote(Object *e, Object *a)
@@ -2621,12 +2652,34 @@ Object *evprint(Object *e, Object *a)
 // (let ((a exp1) (b exp2) ... ) exp)
 Object *evlet(Object *e, Object *a)
 {
-  return s_eval(cadr(e), append(evparam(car(e), a), a));
+  return s_runseq(cdr(e), append(evparam(car(e), a), a), p_nil);
 }
 // (let* ((a exp1) (b exp2) ... ) exp)
 Object *evlet2(Object *e, Object *a)
 {
-  return s_eval(cadr(e), append(evparam2(car(e), a), a));
+  return s_runseq(cdr(e), append(evparam2(car(e), a), a), p_nil);
+}
+// (setq a exp)
+Object *evsetq(Object *e, Object *a)
+{
+  Object *p;
+
+  // Get (var value) list
+  p = assoc2(car(e), a);
+
+  // Local case
+  if (p != p_nondef)
+  {
+    cdr(((Cell *)p))->set_car(s_eval(cadr(e), a));
+    return cadr((Cell *)p);
+  }
+  // Global case
+  else
+  {
+    p = car(e);
+    ((Atom *)p)->set_value(s_eval(cadr(e), a));
+    return ((Atom *)p)->value;
+  }
 }
 
 
@@ -2726,6 +2779,7 @@ int main()
   p_print->func = evprint;
   p_let->func = evlet;
   p_let2->func = evlet2;
+  p_setq->func = evsetq;
 
 
   while (1)

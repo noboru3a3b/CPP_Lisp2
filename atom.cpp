@@ -6,6 +6,7 @@
 Atom::Atom()
 {
   value = NULL;
+  lambda = NULL;
   func = NULL;
 }
 
@@ -53,12 +54,22 @@ void Atom::set_name(string s)
 
 void Atom::set_value(Object *v)
 {
+  if (value != NULL)
+  {
+    value->ref_cnt--;
+  }
+
   value = v;
   v->ref_cnt++;
 }
 
 void Atom::set_lambda(Object *lmd)
 {
+  if (lambda != NULL)
+  {
+    lambda->ref_cnt--;
+  }
+
   lambda = lmd;
   lmd->ref_cnt++;
 }
