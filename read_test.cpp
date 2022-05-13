@@ -2402,6 +2402,20 @@ Object *evlog(Object *x, Object *a)
 
 // --------------- Evaluate One S-Expression ---------------
 
+// Run Sequence
+Object *s_runseq(Object *e, Object *a, Object *ans)
+{
+  if (null(e) == p_t)
+  {
+    return ans;  
+  }
+  else
+  {
+    return s_runseq(cdr(e), a, s_eval(car(e), a));
+  }
+}
+
+// Eval
 Object *s_eval(Object *e, Object *a)
 {
   // Constants
@@ -2447,24 +2461,11 @@ Object *s_eval(Object *e, Object *a)
   }
   else if (caar(e) == p_lambda)
   {
-    return s_eval(caddar(e), append(s_pair(cadar(e), evlis(cdr(e), a)), a));
+    return s_runseq(cddar(e), append(s_pair(cadar(e), evlis(cdr(e), a)), a), p_nil);
   }
   else
   {
     return p_nil;
-  }
-}
-
-// Run Sequence
-Object *s_runseq(Object *e, Object *a, Object *ans)
-{
-  if (null(e) == p_t)
-  {
-    return ans;  
-  }
-  else
-  {
-    return s_runseq(cdr(e), a, s_eval(car(e), a));
   }
 }
 
@@ -2667,13 +2668,13 @@ Object *evsetq(Object *e, Object *a)
   // Get (var value) list
   p = assoc2(car(e), a);
 
-  // Local case
+  // Local var
   if (p != p_nondef)
   {
     cdr(((Cell *)p))->set_car(s_eval(cadr(e), a));
     return cadr((Cell *)p);
   }
-  // Global case
+  // Global var
   else
   {
     p = car(e);
