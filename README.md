@@ -34,11 +34,11 @@ make read_test
 >= abs acos add and append asin assoc atan atom
 caaar caadr caar cadar caddar caddr cadr car cdaar cdadr
 cdar cddar cdddr cddr cdr cond cons const_e const_pi cos
-cosh dec defun div eq eqn exp floor gt gte
-if inc label lambda let let* list ln log lt
-lte max min mod mul n nil nondef not null
-pow print quote rassoc reverse round setq sin sinh sqrt
-sub t tan tanh trunc while
+cosh dec defun div eq eqn exp floor funcall gt
+gte if inc label lambda let let* list ln log
+lt lte max min mod mul n nil nondef not
+null pow print quote rassoc reverse round setq sin sinh
+sqrt sub symbol-value t tan tanh trunc while
 [exp] Delete Object [Class ID]= 4Cell
 
 > (let* ((x 10) (y (* 2 x))) (print x) (print y) (cons x y))
@@ -52,11 +52,11 @@ sub t tan tanh trunc while
 >= abs acos add and append asin assoc atan atom
 caaar caadr caar cadar caddar caddr cadr car cdaar cdadr
 cdar cddar cdddr cddr cdr cond cons const_e const_pi cos
-cosh dec defun div eq eqn exp floor gt gte
-if inc label lambda let let* list ln log lt
-lte max min mod mul n nil nondef not null
-pow print quote rassoc reverse round setq sin sinh sqrt
-sub t tan tanh trunc while x y
+cosh dec defun div eq eqn exp floor funcall gt
+gte if inc label lambda let let* list ln log
+lt lte max min mod mul n nil nondef not
+null pow print quote rassoc reverse round setq sin sinh
+sqrt sub symbol-value t tan tanh trunc while x y
 [exp] Delete Object [Class ID]= 4Cell
 
 > (defun sqr+0 (x y) (if (null x) y (sqr+0 (cdr x) (+ (* (car x) (car x)) y))))
@@ -68,11 +68,12 @@ sub t tan tanh trunc while x y
 >= abs acos add and append asin assoc atan atom
 caaar caadr caar cadar caddar caddr cadr car cdaar cdadr
 cdar cddar cdddr cddr cdr cond cons const_e const_pi cos
-cosh dec defun div eq eqn exp floor gt gte
-if inc label lambda let let* list ln log lt
-lte max min mod mul n nil nondef not null
-pow print quote rassoc reverse round setq sin sinh sqr+0
-sqrt sub t tan tanh trunc while x y
+cosh dec defun div eq eqn exp floor funcall gt
+gte if inc label lambda let let* list ln log
+lt lte max min mod mul n nil nondef not
+null pow print quote rassoc reverse round setq sin sinh
+sqr+0 sqrt sub symbol-value t tan tanh trunc while x
+y
 [exp] Delete Object [Class ID]= 4Cell
 
 > (defun sqr+ (x) (sqr+0 x 0))
@@ -84,11 +85,12 @@ sqrt sub t tan tanh trunc while x y
 >= abs acos add and append asin assoc atan atom
 caaar caadr caar cadar caddar caddr cadr car cdaar cdadr
 cdar cddar cdddr cddr cdr cond cons const_e const_pi cos
-cosh dec defun div eq eqn exp floor gt gte
-if inc label lambda let let* list ln log lt
-lte max min mod mul n nil nondef not null
-pow print quote rassoc reverse round setq sin sinh sqr+
-sqr+0 sqrt sub t tan tanh trunc while x y
+cosh dec defun div eq eqn exp floor funcall gt
+gte if inc label lambda let let* list ln log
+lt lte max min mod mul n nil nondef not
+null pow print quote rassoc reverse round setq sin sinh
+sqr+ sqr+0 sqrt sub symbol-value t tan tanh trunc while
+x y
 [exp] Delete Object [Class ID]= 4Cell
 
 > (sqr+ '(1 2 3 4 5))
@@ -100,10 +102,11 @@ sqr+0 sqrt sub t tan tanh trunc while x y
 >= abs acos add and append asin assoc atan atom
 caaar caadr caar cadar caddar caddr cadr car cdaar cdadr
 cdar cddar cdddr cddr cdr cond cons const_e const_pi cos
-cosh dec defun div eq eqn exp floor gt gte
-if inc label lambda let let* list ln log lt
-lte max min mod mul n nil nondef not null
-pow print quote rassoc reverse round setq sin sinh sqr+
-sqr+0 sqrt sub t tan tanh trunc while x y
+cosh dec defun div eq eqn exp floor funcall gt
+gte if inc label lambda let let* list ln log
+lt lte max min mod mul n nil nondef not
+null pow print quote rassoc reverse round setq sin sinh
+sqr+ sqr+0 sqrt sub symbol-value t tan tanh trunc while
+x y
 [exp] Delete Object [Class ID]= 4Cell
 ```
