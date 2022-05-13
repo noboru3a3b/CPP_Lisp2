@@ -120,6 +120,7 @@ Atom *p_print = mp->get_atom("print");
 Atom *p_let = mp->get_atom("let");
 Atom *p_let2 = mp->get_atom("let*");
 Atom *p_setq = mp->get_atom("setq");
+Atom *p_while = mp->get_atom("while");
 
 //Atom *p_pair = mp->get_atom("pair");
 //Atom *p_assoc = mp->get_atom("assoc");
@@ -2682,6 +2683,20 @@ Object *evsetq(Object *e, Object *a)
     return ((Atom *)p)->value;
   }
 }
+// (while condition exp1 exp2 ... )
+Object *evwhile(Object *e, Object *a)
+{
+  Object *ans;
+
+  ans = p_nil;
+
+  while (s_eval(car(e), a) == p_t)
+  {
+    ans = s_runseq(cdr(e), a, p_nil);
+  }
+
+  return ans;
+}
 
 
 // --------------- Main Loop ---------------
@@ -2781,6 +2796,7 @@ int main()
   p_let->func = evlet;
   p_let2->func = evlet2;
   p_setq->func = evsetq;
+  p_while->func = evwhile;
 
 
   while (1)
