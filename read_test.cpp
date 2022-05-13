@@ -123,6 +123,8 @@ Atom *p_setq = mp->get_atom("setq");
 Atom *p_while = mp->get_atom("while");
 Atom *p_assoc = mp->get_atom("assoc");
 Atom *p_rassoc = mp->get_atom("rassoc");
+Atom *p_symbolvalue = mp->get_atom("symbol-value");
+Atom *p_funcall = mp->get_atom("funcall");
 
 //Atom *p_pair = mp->get_atom("pair");
 
@@ -2724,6 +2726,16 @@ Object *evrassoc(Object *e, Object *a)
 {
   return rassoc2(s_eval(car(e), a), s_eval(cadr(e), a));
 }
+// symbol-value
+Object *evsymbolvalue(Object *e, Object *a)
+{
+  return s_eval(s_eval(car(e), a), a);
+}
+// funcall
+Object *evfuncall(Object *e, Object *a)
+{
+  return s_eval(cons(s_eval(car(e), a), cdr(e)), a);
+}
 
 
 // --------------- Main Loop ---------------
@@ -2826,6 +2838,8 @@ int main()
   p_while->func = evwhile;
   p_assoc->func = evassoc;
   p_rassoc->func = evrassoc;
+  p_symbolvalue->func = evsymbolvalue;
+  p_funcall->func = evfuncall;
 
 
   while (1)
