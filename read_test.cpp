@@ -121,9 +121,10 @@ Atom *p_let = mp->get_atom("let");
 Atom *p_let2 = mp->get_atom("let*");
 Atom *p_setq = mp->get_atom("setq");
 Atom *p_while = mp->get_atom("while");
+Atom *p_assoc = mp->get_atom("assoc");
+Atom *p_rassoc = mp->get_atom("rassoc");
 
 //Atom *p_pair = mp->get_atom("pair");
-//Atom *p_assoc = mp->get_atom("assoc");
 
 //tom *p_evcon = mp->get_atom("evcon");
 //Atom *p_evlis = mp->get_atom("evlis");
@@ -1614,6 +1615,22 @@ Object *assoc2(Object *x, Object *y)
   }
 }
 
+Object *rassoc2(Object *x, Object *y)
+{
+  if (y == p_nil)
+  {
+    return p_nondef;
+  }
+  else if (eq(cadar(y), x) == p_t)
+  {
+    return car(y);
+  }
+  else
+  {
+    return rassoc2(x, cdr(y));
+  }
+}
+
 Object *evcon(Object *c, Object *a)
 {
   if (s_eval(caar(c), a) != p_nil)
@@ -2697,6 +2714,16 @@ Object *evwhile(Object *e, Object *a)
 
   return ans;
 }
+// assoc
+Object *evassoc(Object *e, Object *a)
+{
+  return assoc2(s_eval(car(e), a), s_eval(cadr(e), a));
+}
+// rassoc
+Object *evrassoc(Object *e, Object *a)
+{
+  return rassoc2(s_eval(car(e), a), s_eval(cadr(e), a));
+}
 
 
 // --------------- Main Loop ---------------
@@ -2797,6 +2824,8 @@ int main()
   p_let2->func = evlet2;
   p_setq->func = evsetq;
   p_while->func = evwhile;
+  p_assoc->func = evassoc;
+  p_rassoc->func = evrassoc;
 
 
   while (1)
