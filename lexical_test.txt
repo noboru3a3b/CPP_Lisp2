@@ -52,7 +52,7 @@
 ----- function を使用 -----
 (defun make-variable-c () (let ((c 0)) (list (function (lambda () c)) (function (lambda () (setq c (+ c 1)))) (function (lambda () (setq c (- c 1)))))))
 
------ quote を使用 -----
+----- CPP_Lisp 用 quote を使用 -----
 (1)式
 (defun make-variable-c () (let ((c 0)) (list (quote (lambda () c)) (quote (lambda () (setq c (+ c 1)))) (quote (lambda () (setq c (- c 1)))))))
 
@@ -77,3 +77,71 @@ Segmentation fault (コアダンプ)
 [eval] -1
 
 やはりローカル変数 c が保存されていないことがわかる。
+
+-> 例題改善（クロージャ機能確認）
+----- Common Lisp 用 -----
+(defun make-variable-c ()
+  (let ((c 0))
+    (list
+      (lambda () c)
+      (lambda () (setq c (+ c 1)))
+      (lambda () (setq c (- c 1)))
+)))
+
+(let* ((funcs (make-variable-c))
+       (c 1000)
+       (get-c (car funcs))
+       (inc-c (cadr funcs))
+       (dec-c (caddr funcs)))
+  (print (funcall get-c))
+  (funcall inc-c)
+  (print (funcall get-c))
+  (funcall dec-c)
+  (funcall dec-c)
+  (print (funcall get-c))
+)
+;-> 0
+;   1
+;   -1
+ローカル変数 c を上書きされても、このように動くこと！
+
+-> 例題改善（クロージャ機能確認）
+----- CPP_Lisp 用 quote を使用 -----
+(1)式
+(defun make-variable-c () (let ((c 0)) (list (quote (lambda () c)) (quote (lambda () (setq c (+ c 1)))) (quote (lambda () (setq c (- c 1)))))))
+
+(2)式
+(let* ((funcs (make-variable-c)) (c 1000) (get-c (car funcs)) (inc-c (cadr funcs)) (dec-c (caddr funcs))) (print (funcall get-c)) (funcall inc-c) (print (funcall get-c)) (funcall dec-c) (funcall dec-c) (print (funcall get-c)))
+;-> 1000
+;   1001
+;   999
+[eval] 999 ---> NG!
+この動きは、ダイナミックバインディングで動いているときの Emacs Lisp と同等。
+なので、まあ良しとしたい。
+
+-> 例題改善（クロージャ機能確認）
+----- Scheme 用 -----
+(define (make-variable-c)
+  (let ((c 0))
+    (list
+      (lambda () c)
+      (lambda () (set! c (+ c 1)))
+      (lambda () (set! c (- c 1)))
+)))
+
+(let* ((funcs (make-variable-c))
+       (c 1000)
+       (get-c (car funcs))
+       (inc-c (cadr funcs))
+       (dec-c (caddr funcs)))
+  (print (get-c))
+  (inc-c)
+  (print (get-c))
+  (dec-c)
+  (dec-c)
+  (print (get-c))
+)
+;-> 0
+;   1
+;   -1
+ローカル変数 c を上書きされても、このように動くこと！
