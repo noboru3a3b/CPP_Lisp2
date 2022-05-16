@@ -2522,7 +2522,11 @@ Object *evcons(Object *e, Object *a)
   return cons(s_eval(car(e), a), s_eval(cadr(e), a));
 }
 // (cond -> evcon() ↑
-// (lambda ↑
+// (lambda
+Object *evlambda(Object *e, Object *a)
+{
+  return cons(p_lambda, e);
+}
 // (label ↑
 // (caar
 Object *evcaar(Object *e, Object *a)
@@ -2762,6 +2766,7 @@ int main()
   p_car->func = evcar;
   p_cdr->func = evcdr;
   p_cons->func = evcons;
+  p_lambda->func = evlambda;
   p_cond->func = evcon;
 
   p_caar->func = evcaar;
