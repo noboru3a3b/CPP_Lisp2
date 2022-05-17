@@ -126,6 +126,7 @@ Atom *p_rassoc = mp->get_atom("rassoc");
 Atom *p_symbolvalue = mp->get_atom("symbol-value");
 Atom *p_funcall = mp->get_atom("funcall");
 Atom *p_apply = mp->get_atom("apply");
+Atom *p_closure = mp->get_atom("closure");
 
 //Atom *p_pair = mp->get_atom("pair");
 
@@ -1500,6 +1501,11 @@ Object *caddar(Object *p)
   return car(cdr(cdr(car(p))));
 }
 
+Object *cdddar(Object *p)
+{
+  return cdr(cdr(cdr(car(p))));
+}
+
 Cell *list(Object *p, Object *q)
 {
   return cons(p, cons(q, p_nil));
@@ -2507,6 +2513,10 @@ Object *s_eval(Object *e, Object *a)
   {
     return s_runseq(cddar(e), append(s_pair(cadar(e), evlis(cdr(e), a)), a), p_nil);
   }
+   else if (caar(e) == p_closure)
+  {
+    return s_runseq(cdddar(e), append(s_pair(caddar(e), evlis(cdr(e), cadar(e))), cadar(e)), p_nil);
+  }
   else
   {
     return p_nil;
@@ -2769,6 +2779,11 @@ Object *evapply(Object *e, Object *a)
 {
   return s_eval(cons(s_eval(car(e), a), evlis2(cdr(e), a)), a);
 }
+// (closure
+Object *evclosure(Object *e, Object *a)
+{
+  return cons(p_closure, cons(a, e));
+}
 
 
 // --------------- Main Loop ---------------
@@ -2875,6 +2890,7 @@ int main()
   p_symbolvalue->func = evsymbolvalue;
   p_funcall->func = evfuncall;
   p_apply->func = evapply;
+  p_closure->func = evclosure;
 
 
   while (1)
