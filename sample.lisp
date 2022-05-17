@@ -1,103 +1,41 @@
-> (let ((n 0))
->   (while (< n 10)
->     (print n)
->     (setq n (+ n 1))))
-[str] (let ((n 0))   (while (< n 10)     (print n)     (setq n (+ n 1))))
-[exp] (let ((n 0)) (while (< n 10) (print n) (setq n (+ n 1))))
-0
-1
-2
-3
-4
-5
-6
-7
-8
-9
-[eval] 10
- ---------- atoms ----------
-* + - / 1+ 1- < <= = >
->= abs acos add and append apply asin assoc atan
-atom caaar caadr caar cadar caddar caddr cadr car cdaar
-cdadr cdar cddar cdddr cddr cdr closure cond cons const_e
-const_pi cos cosh dec defun div eq eqn exp floor
-funcall gt gte if inc label lambda let let* list
-ln log lt lte max min mod mul n nil
-nondef not null pow print quote rassoc reverse round setq
-sin sinh sqrt sub symbol-value t tan tanh trunc while
-[exp] Delete Object [Class ID]= 4Cell
+(let ((n 0))
+  (while (< n 10)
+    (print n)
+    (setq n (+ n 1))))
 
-> (let* ((x 10)
->        (y (* 2 x)))
->   (print x)
->   (print y)
->   (cons x y))
-[str] (let* ((x 10)        (y (* 2 x)))   (print x)   (print y)   (cons x y))
-[exp] (let* ((x 10) (y (* 2 x))) (print x) (print y) (cons x y))
-10
-20
-[eval] (10 . 20)
- ---------- atoms ----------
-* + - / 1+ 1- < <= = >
->= abs acos add and append apply asin assoc atan
-atom caaar caadr caar cadar caddar caddr cadr car cdaar
-cdadr cdar cddar cdddr cddr cdr closure cond cons const_e
-const_pi cos cosh dec defun div eq eqn exp floor
-funcall gt gte if inc label lambda let let* list
-ln log lt lte max min mod mul n nil
-nondef not null pow print quote rassoc reverse round setq
-sin sinh sqrt sub symbol-value t tan tanh trunc while
-x y
-[exp] Delete Object [Class ID]= 4Cell
+(let* ((x 10)
+       (y (* 2 x)))
+  (print x)
+  (print y)
+  (cons x y))
 
-> (defun make-variable-c ()
->   (let ((c 0))
->     (list
->       (closure () c)
->       (closure () (setq c (+ c 1)))
->       (closure () (setq c (- c 1))))))
-[str] (defun make-variable-c ()   (let ((c 0))     (list       (closure () c)       (closure () (setq c (+ c 1)))       (closure () (setq c (- c 1))))))
-[exp] (defun make-variable-c nil (let ((c 0)) (list (closure nil c) (closure nil (setq c (+ c 1))) (closure nil (setq c (- c 1))))))
-[eval] make-variable-c
- ---------- atoms ----------
-* + - / 1+ 1- < <= = >
->= abs acos add and append apply asin assoc atan
-atom c caaar caadr caar cadar caddar caddr cadr car
-cdaar cdadr cdar cddar cdddr cddr cdr closure cond cons
-const_e const_pi cos cosh dec defun div eq eqn exp
-floor funcall gt gte if inc label lambda let let*
-list ln log lt lte make-variable-c max min mod mul
-n nil nondef not null pow print quote rassoc reverse
-round setq sin sinh sqrt sub symbol-value t tan tanh
-trunc while x y
-[exp] Delete Object [Class ID]= 4Cell
 
-> (let* ((funcs (make-variable-c))
->        (c 1000)
->        (get-c (car funcs))
->        (inc-c (cadr funcs))
->        (dec-c (caddr funcs)))
->   (print (funcall get-c))
->   (funcall inc-c)
->   (print (funcall get-c))
->   (funcall dec-c)
->   (funcall dec-c)
->   (print (funcall get-c)))
-[str] (let* ((funcs (make-variable-c))        (c 1000)        (get-c (car funcs))        (inc-c (cadr funcs))        (dec-c (caddr funcs)))   (print (funcall get-c))   (funcall inc-c)   (print (funcall get-c))   (funcall dec-c)   (funcall dec-c)   (print (funcall get-c)))
-[exp] (let* ((funcs (make-variable-c)) (c 1000) (get-c (car funcs)) (inc-c (cadr funcs)) (dec-c (caddr funcs))) (print (funcall get-c)) (funcall inc-c) (print (funcall get-c)) (funcall dec-c) (funcall dec-c) (print (funcall get-c)))
-0
-1
--1
-[eval] -1
- ---------- atoms ----------
-* + - / 1+ 1- < <= = >
->= abs acos add and append apply asin assoc atan
-atom c caaar caadr caar cadar caddar caddr cadr car
-cdaar cdadr cdar cddar cdddr cddr cdr closure cond cons
-const_e const_pi cos cosh dec dec-c defun div eq eqn
-exp floor funcall funcs get-c gt gte if inc inc-c
-label lambda let let* list ln log lt lte make-variable-c
-max min mod mul n nil nondef not null pow
-print quote rassoc reverse round setq sin sinh sqrt sub
-symbol-value t tan tanh trunc while x y
-[exp] Delete Object [Class ID]= 4Cell
+(defun sqr+0 (x y)
+  (if (null x) y
+      (sqr+0 (cdr x) (+ (* (car x) (car x)) y))))
+
+(defun sqr+ (x)
+  (sqr+0 x 0))
+
+(sqr+ '(1 2 3 4 5))
+
+
+(defun make-variable-c ()
+  (let ((c 0))
+    (list
+      (closure () c)
+      (closure () (setq c (+ c 1)))
+      (closure () (setq c (- c 1))))))
+
+(let* ((funcs (make-variable-c))
+       (c 1000)
+       (get-c (car funcs))
+       (inc-c (cadr funcs))
+       (dec-c (caddr funcs)))
+  (print (funcall get-c))
+  (funcall inc-c)
+  (print (funcall get-c))
+  (funcall dec-c)
+  (funcall dec-c)
+  (print (funcall get-c)))
+
