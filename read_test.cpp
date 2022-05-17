@@ -62,6 +62,7 @@ Atom *p_cdadr = mp->get_atom("cdadr");
 Atom *p_cddar = mp->get_atom("cddar");
 Atom *p_cdddr = mp->get_atom("cdddr");
 Atom *p_caddar = mp->get_atom("caddar");
+Atom *p_cdddar = mp->get_atom("cdddar");
 Atom *p_list = mp->get_atom("list");
 Atom *p_null = mp->get_atom("null");
 Atom *p_if = mp->get_atom("if");
@@ -2627,6 +2628,11 @@ Object *evcaddar(Object *e, Object *a)
 {
   return caddar(s_eval(car(e), a)); 
 }
+// (cdddar
+Object *evcdddar(Object *e, Object *a)
+{
+  return cdddar(s_eval(car(e), a)); 
+}
 // (list -> evlis() ↑
 // (null
 Object *evnull(Object *e, Object *a)
@@ -2826,6 +2832,7 @@ int main()
   p_cddar->func = evcddar;
   p_cdddr->func = evcdddr;
   p_caddar->func = evcaddar;
+  p_cdddar->func = evcdddar;
   p_list->func = evlis;
   p_null->func = evnull;
   p_if->func = evif;
