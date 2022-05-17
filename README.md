@@ -36,12 +36,13 @@ make read_test
 * + - / 1+ 1- < <= = >
 >= abs acos add and append apply asin assoc atan
 atom caaar caadr caar cadar caddar caddr cadr car cdaar
-cdadr cdar cddar cdddr cddr cdr closure cond cons const_e
-const_pi cos cosh dec defun div eq eqn exp floor
-funcall gt gte if inc label lambda let let* list
-ln log lt lte max min mod mul n nil
-nondef not null pow print quote rassoc reverse round setq
-sin sinh sqrt sub symbol-value t tan tanh trunc while
+cdadr cdar cddar cdddar cdddr cddr cdr closure cond cons
+const_e const_pi cos cosh dec defun div eq eqn exp
+floor funcall gt gte if inc label lambda let let*
+list ln log lt lte max min mod mul n
+nil nondef not null pow print quote rassoc reverse round
+setq sin sinh sqrt sub symbol-value t tan tanh trunc
+while
 [exp] Delete Object [Class ID]= 4Cell
 
 > (let* ((x 10)
@@ -58,13 +59,13 @@ sin sinh sqrt sub symbol-value t tan tanh trunc while
 * + - / 1+ 1- < <= = >
 >= abs acos add and append apply asin assoc atan
 atom caaar caadr caar cadar caddar caddr cadr car cdaar
-cdadr cdar cddar cdddr cddr cdr closure cond cons const_e
-const_pi cos cosh dec defun div eq eqn exp floor
-funcall gt gte if inc label lambda let let* list
-ln log lt lte max min mod mul n nil
-nondef not null pow print quote rassoc reverse round setq
-sin sinh sqrt sub symbol-value t tan tanh trunc while
-x y
+cdadr cdar cddar cdddar cdddr cddr cdr closure cond cons
+const_e const_pi cos cosh dec defun div eq eqn exp
+floor funcall gt gte if inc label lambda let let*
+list ln log lt lte max min mod mul n
+nil nondef not null pow print quote rassoc reverse round
+setq sin sinh sqrt sub symbol-value t tan tanh trunc
+while x y
 [exp] Delete Object [Class ID]= 4Cell
 
 > (defun make-variable-c ()
@@ -80,13 +81,13 @@ x y
 * + - / 1+ 1- < <= = >
 >= abs acos add and append apply asin assoc atan
 atom c caaar caadr caar cadar caddar caddr cadr car
-cdaar cdadr cdar cddar cdddr cddr cdr closure cond cons
-const_e const_pi cos cosh dec defun div eq eqn exp
-floor funcall gt gte if inc label lambda let let*
-list ln log lt lte make-variable-c max min mod mul
-n nil nondef not null pow print quote rassoc reverse
-round setq sin sinh sqrt sub symbol-value t tan tanh
-trunc while x y
+cdaar cdadr cdar cddar cdddar cdddr cddr cdr closure cond
+cons const_e const_pi cos cosh dec defun div eq eqn
+exp floor funcall gt gte if inc label lambda let
+let* list ln log lt lte make-variable-c max min mod
+mul n nil nondef not null pow print quote rassoc
+reverse round setq sin sinh sqrt sub symbol-value t tan
+tanh trunc while x y
 [exp] Delete Object [Class ID]= 4Cell
 
 > (let* ((funcs (make-variable-c))
@@ -110,12 +111,12 @@ trunc while x y
 * + - / 1+ 1- < <= = >
 >= abs acos add and append apply asin assoc atan
 atom c caaar caadr caar cadar caddar caddr cadr car
-cdaar cdadr cdar cddar cdddr cddr cdr closure cond cons
-const_e const_pi cos cosh dec dec-c defun div eq eqn
-exp floor funcall funcs get-c gt gte if inc inc-c
-label lambda let let* list ln log lt lte make-variable-c
-max min mod mul n nil nondef not null pow
-print quote rassoc reverse round setq sin sinh sqrt sub
-symbol-value t tan tanh trunc while x y
+cdaar cdadr cdar cddar cdddar cdddr cddr cdr closure cond
+cons const_e const_pi cos cosh dec dec-c defun div eq
+eqn exp floor funcall funcs get-c gt gte if inc
+inc-c label lambda let let* list ln log lt lte
+make-variable-c max min mod mul n nil nondef not null
+pow print quote rassoc reverse round setq sin sinh sqrt
+sub symbol-value t tan tanh trunc while x y
 [exp] Delete Object [Class ID]= 4Cell
 ```
