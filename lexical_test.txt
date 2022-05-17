@@ -109,7 +109,7 @@ Segmentation fault (コアダンプ)
 ----- CPP_Lisp 用 -----
 (1)式
 (defun make-variable-c () (let ((c 0)) (list (lambda () c) (lambda () (setq c (+ c 1))) (lambda () (setq c (- c 1))))))
--> closure に変更
+-> closure を使用に変更
 (defun make-variable-c () (let ((c 0)) (list (closure () c) (closure () (setq c (+ c 1))) (closure () (setq c (- c 1))))))
 
 (2)式
@@ -120,6 +120,12 @@ Segmentation fault (コアダンプ)
 [eval] 999 ---> NG!
 この動きは、ダイナミックバインディングで動いているときの Emacs Lisp と同等。
 なので、まあ良しとしたい。
+-> closure を使用に変更
+;0
+;1
+;-1
+;[eval] -1
+レキシカルバインディングになった！
 
 -> 例題改善（クロージャ機能確認）
 ----- Scheme 用 -----
