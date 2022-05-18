@@ -11,6 +11,7 @@
 )))
 
 (let* ((funcs (make-variable-c))
+       (c 1000)
        (get-c (car funcs))
        (inc-c (cadr funcs))
        (dec-c (caddr funcs)))
@@ -35,60 +36,6 @@
 )))
 
 (let* ((funcs (make-variable-c))
-       (get-c (car funcs))
-       (inc-c (cadr funcs))
-       (dec-c (caddr funcs)))
-  (print (funcall get-c))
-  (funcall inc-c)
-  (print (funcall get-c))
-  (funcall dec-c)
-  (funcall dec-c)
-  (print (funcall get-c))
-)
-;-> 0
-;   1
-;   -1
-
------ function を使用 -----
-(defun make-variable-c () (let ((c 0)) (list (function (lambda () c)) (function (lambda () (setq c (+ c 1)))) (function (lambda () (setq c (- c 1)))))))
-
------ CPP_Lisp 用 -----
-(1)式
-(defun make-variable-c () (let ((c 0)) (list (lambda () c) (lambda () (setq c (+ c 1))) (lambda () (setq c (- c 1))))))
-
-(2)式
-(let* ((funcs (make-variable-c)) (get-c (car funcs)) (inc-c (cadr funcs)) (dec-c (caddr funcs))) (print (funcall get-c)) (funcall inc-c) (print (funcall get-c)) (funcall dec-c) (funcall dec-c) (print (funcall get-c)))
-
-残念ながら、CPP_Lisp2 では、無限エクステントは実現できていない。
-(1)式 (2)式 の順で実行しても、ローカル変数 c が保存されていないため、
-> ((lambda () c))
-[str] ((lambda () c)) 
-[exp] ((lambda nil c))
-Segmentation fault (コアダンプ)
-となる。
-
-(setq c 0)
-としてグローバル変数 c を確保してから
-(1)式 (2)式 と実行すれば、
-問題なく動作する。
-0
-1
--1
-[eval] -1
-
-やはりローカル変数 c が保存されていないことがわかる。
-
--> 例題改善（クロージャ機能確認）
------ Common Lisp 用 -----
-(defun make-variable-c ()
-  (let ((c 0))
-    (list
-      (lambda () c)
-      (lambda () (setq c (+ c 1)))
-      (lambda () (setq c (- c 1)))
-)))
-
-(let* ((funcs (make-variable-c))
        (c 1000)
        (get-c (car funcs))
        (inc-c (cadr funcs))
@@ -103,13 +50,25 @@ Segmentation fault (コアダンプ)
 ;-> 0
 ;   1
 ;   -1
-ローカル変数 c を上書きされても、このように動くこと！
 
--> 例題改善（クロージャ機能確認）
------ CPP_Lisp 用 -----
+----- CPP_Lisp2 用 -----
 (1)式
 (defun make-variable-c () (let ((c 0)) (list (lambda () c) (lambda () (setq c (+ c 1))) (lambda () (setq c (- c 1))))))
--> closure を使用に変更
+
+(2)式
+(let* ((funcs (make-variable-c)) (c 1000) (get-c (car funcs)) (inc-c (cadr funcs)) (dec-c (caddr funcs))) (print (funcall get-c)) (funcall inc-c) (print (funcall get-c)) (funcall dec-c) (funcall dec-c) (print (funcall get-c)))
+;-> 1000
+;   1001
+;   999
+;   [eval] 999
+
+残念ながら、CPP_Lisp2 では、無限エクステントは実現できていない。
+変数の束縛はダイナミックバインディングであり、
+(lambda 中では、最も最近確保されたローカル変数 c が参照されるし、
+それがなければ、グローバル変数 c が参照される。
+
+----- CPP_Lisp2 用 (closure を使用) -----
+(1)式
 (defun make-variable-c ()
   (let ((c 0))
     (list
@@ -129,42 +88,8 @@ Segmentation fault (コアダンプ)
   (funcall dec-c)
   (funcall dec-c)
   (print (funcall get-c)))
-;-> 1000
-;   1001
-;   999
-[eval] 999 ---> NG!
-この動きは、ダイナミックバインディングで動いているときの Emacs Lisp と同等。
-なので、まあ良しとしたい。
--> closure を使用に変更
-;0
-;1
-;-1
-;[eval] -1
-レキシカルバインディングになった！
-
--> 例題改善（クロージャ機能確認）
------ Scheme 用 -----
-(define (make-variable-c)
-  (let ((c 0))
-    (list
-      (lambda () c)
-      (lambda () (set! c (+ c 1)))
-      (lambda () (set! c (- c 1)))
-)))
-
-(let* ((funcs (make-variable-c))
-       (c 1000)
-       (get-c (car funcs))
-       (inc-c (cadr funcs))
-       (dec-c (caddr funcs)))
-  (print (get-c))
-  (inc-c)
-  (print (get-c))
-  (dec-c)
-  (dec-c)
-  (print (get-c))
-)
 ;-> 0
 ;   1
 ;   -1
-ローカル変数 c を上書きされても、このように動くこと！
+;   [eval] -1
+レキシカルバインディングになった！
