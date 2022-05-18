@@ -9,6 +9,7 @@ CPP_Lisp2 has a reference counter type garbage collector that can free cells tha
 This garbage collector is still experimental and will be tuned for future use.
 
 The Lisp reader & printer managed to work, so I became a little greedy and ported the interpreter described in Paul Graham's "The Roots of Lisp".
+To make a reasonably usable Lisp system, I made a slight expansion.
 Now Lisp system works, I'll publish the source code.
 
 ### Usage:
