@@ -28,7 +28,6 @@
       (closure () (setq c (- c 1))))))
 
 (let* ((funcs (make-variable-c))
-       (c 1000)
        (get-c (car funcs))
        (inc-c (cadr funcs))
        (dec-c (caddr funcs)))
@@ -36,6 +35,35 @@
   (funcall inc-c)
   (print (funcall get-c))
   (funcall dec-c)
-  (funcall dec-c)
   (print (funcall get-c)))
+
+
+(defun make-queue ()
+  (let ((queue (cons nil nil)))
+    (setcar queue queue)
+    queue))
+
+(defun en-queue (queue x)
+  (let ((q (cons x nil)))
+    (setcdr (car queue) q)
+    (setcar queue q)
+    queue))
+
+(defun get-list (queue) (cdr queue))
+
+(defun is-prime (p-list x)
+  (if (null p-list) t
+      (let ((p (car p-list)))
+	(cond ((gt (mul p p) x) t)
+	      ((eqn 0 (mod x p)) nil)
+	      (t (is-prime (cdr p-list) x))))))
+
+(defun primes (queue x max)
+  (cond ((gt x max)
+	       (cons 2 (get-list queue)))
+      	((is-prime (get-list queue) x)
+      	 (primes (en-queue queue x) (add x 2) max))
+      	(t (primes queue (add x 2) max))))
+
+(primes (make-queue) 3 1000)
 
