@@ -15,6 +15,7 @@ Now Lisp system works, I'll publish the source code.
 ### Usage:
 make read_test  
 ./a.out  
+```
 > (defun make-variable-c ()
 >   (let ((c 0))
 >     (list
