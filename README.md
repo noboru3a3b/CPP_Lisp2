@@ -31,11 +31,11 @@ make read_test
 atan atom c caaar caadr caar cadar caddar caddr cadr
 car cdaar cdadr cdar cddar cdddar cdddr cddr cdr closure
 cond cons const_e const_pi cos cosh dec defun div eq
-eqn exp floor funcall gt gte if inc label lambda
-let let* list ln log lt lte make-variable-c max min
-mod mul nil nondef not null pow print quote rassoc
-reverse round setcar setcdr setq sin sinh sqrt sub symbol-value
-t tan tanh trunc while zerop
+eqn exp floatp floor funcall gt gte if inc integerp
+label lambda let let* list ln log lt lte make-variable-c
+max min mod mul nil nondef not null numberp pow
+print quote rassoc reverse round setcar setcdr setq sin sinh
+sqrt sub symbol-value t tan tanh trunc while zerop
 
 > (let* ((funcs (make-variable-c))
 >        (get-c (car funcs))
@@ -58,11 +58,12 @@ t tan tanh trunc while zerop
 atan atom c caaar caadr caar cadar caddar caddr cadr
 car cdaar cdadr cdar cddar cdddar cdddr cddr cdr closure
 cond cons const_e const_pi cos cosh dec dec-c defun div
-eq eqn exp floor funcall funcs get-c gt gte if
-inc inc-c label lambda let let* list ln log lt
-lte make-variable-c max min mod mul nil nondef not null
-pow print quote rassoc reverse round setcar setcdr setq sin
-sinh sqrt sub symbol-value t tan tanh trunc while zerop
+eq eqn exp floatp floor funcall funcs get-c gt gte
+if inc inc-c integerp label lambda let let* list ln
+log lt lte make-variable-c max min mod mul nil nondef
+not null numberp pow print quote rassoc reverse round setcar
+setcdr setq sin sinh sqrt sub symbol-value t tan tanh
+trunc while zerop
 
 > (defun make-queue ()
 >   (let ((queue (cons nil nil)))
@@ -77,12 +78,12 @@ sinh sqrt sub symbol-value t tan tanh trunc while zerop
 atan atom c caaar caadr caar cadar caddar caddr cadr
 car cdaar cdadr cdar cddar cdddar cdddr cddr cdr closure
 cond cons const_e const_pi cos cosh dec dec-c defun div
-eq eqn exp floor funcall funcs get-c gt gte if
-inc inc-c label lambda let let* list ln log lt
-lte make-queue make-variable-c max min mod mul nil nondef not
-null pow print queue quote rassoc reverse round setcar setcdr
-setq sin sinh sqrt sub symbol-value t tan tanh trunc
-while zerop
+eq eqn exp floatp floor funcall funcs get-c gt gte
+if inc inc-c integerp label lambda let let* list ln
+log lt lte make-queue make-variable-c max min mod mul nil
+nondef not null numberp pow print queue quote rassoc reverse
+round setcar setcdr setq sin sinh sqrt sub symbol-value t
+tan tanh trunc while zerop
 
 > (defun en-queue (queue x)
 >   (let ((q (cons x nil)))
@@ -98,12 +99,12 @@ while zerop
 atan atom c caaar caadr caar cadar caddar caddr cadr
 car cdaar cdadr cdar cddar cdddar cdddr cddr cdr closure
 cond cons const_e const_pi cos cosh dec dec-c defun div
-en-queue eq eqn exp floor funcall funcs get-c gt gte
-if inc inc-c label lambda let let* list ln log
-lt lte make-queue make-variable-c max min mod mul nil nondef
-not null pow print q queue quote rassoc reverse round
-setcar setcdr setq sin sinh sqrt sub symbol-value t tan
-tanh trunc while x zerop
+en-queue eq eqn exp floatp floor funcall funcs get-c gt
+gte if inc inc-c integerp label lambda let let* list
+ln log lt lte make-queue make-variable-c max min mod mul
+nil nondef not null numberp pow print q queue quote
+rassoc reverse round setcar setcdr setq sin sinh sqrt sub
+symbol-value t tan tanh trunc while x zerop
 
 > (defun get-list (queue) (cdr queue))
 [str] (defun get-list (queue) (cdr queue))
@@ -115,12 +116,12 @@ tanh trunc while x zerop
 atan atom c caaar caadr caar cadar caddar caddr cadr
 car cdaar cdadr cdar cddar cdddar cdddr cddr cdr closure
 cond cons const_e const_pi cos cosh dec dec-c defun div
-en-queue eq eqn exp floor funcall funcs get-c get-list gt
-gte if inc inc-c label lambda let let* list ln
-log lt lte make-queue make-variable-c max min mod mul nil
-nondef not null pow print q queue quote rassoc reverse
-round setcar setcdr setq sin sinh sqrt sub symbol-value t
-tan tanh trunc while x zerop
+en-queue eq eqn exp floatp floor funcall funcs get-c get-list
+gt gte if inc inc-c integerp label lambda let let*
+list ln log lt lte make-queue make-variable-c max min mod
+mul nil nondef not null numberp pow print q queue
+quote rassoc reverse round setcar setcdr setq sin sinh sqrt
+sub symbol-value t tan tanh trunc while x zerop
 
 > (defun is-prime (p-list x)
 >   (if (null p-list) t
@@ -137,12 +138,13 @@ tan tanh trunc while x zerop
 atan atom c caaar caadr caar cadar caddar caddr cadr
 car cdaar cdadr cdar cddar cdddar cdddr cddr cdr closure
 cond cons const_e const_pi cos cosh dec dec-c defun div
-en-queue eq eqn exp floor funcall funcs get-c get-list gt
-gte if inc inc-c is-prime label lambda let let* list
-ln log lt lte make-queue make-variable-c max min mod mul
-nil nondef not null p p-list pow print q queue
-quote rassoc reverse round setcar setcdr setq sin sinh sqrt
-sub symbol-value t tan tanh trunc while x zerop
+en-queue eq eqn exp floatp floor funcall funcs get-c get-list
+gt gte if inc inc-c integerp is-prime label lambda let
+let* list ln log lt lte make-queue make-variable-c max min
+mod mul nil nondef not null numberp p p-list pow
+print q queue quote rassoc reverse round setcar setcdr setq
+sin sinh sqrt sub symbol-value t tan tanh trunc while
+x zerop
 
 > (defun primes (queue x max)
 >   (cond ((gt x max)
@@ -159,12 +161,13 @@ sub symbol-value t tan tanh trunc while x zerop
 atan atom c caaar caadr caar cadar caddar caddr cadr
 car cdaar cdadr cdar cddar cdddar cdddr cddr cdr closure
 cond cons const_e const_pi cos cosh dec dec-c defun div
-en-queue eq eqn exp floor funcall funcs get-c get-list gt
-gte if inc inc-c is-prime label lambda let let* list
-ln log lt lte make-queue make-variable-c max min mod mul
-nil nondef not null p p-list pow primes print q
-queue quote rassoc reverse round setcar setcdr setq sin sinh
-sqrt sub symbol-value t tan tanh trunc while x zerop
+en-queue eq eqn exp floatp floor funcall funcs get-c get-list
+gt gte if inc inc-c integerp is-prime label lambda let
+let* list ln log lt lte make-queue make-variable-c max min
+mod mul nil nondef not null numberp p p-list pow
+primes print q queue quote rassoc reverse round setcar setcdr
+setq sin sinh sqrt sub symbol-value t tan tanh trunc
+while x zerop
 
 > (primes (make-queue) 3 1000)
 [str] (primes (make-queue) 3 1000)
@@ -176,10 +179,11 @@ sqrt sub symbol-value t tan tanh trunc while x zerop
 atan atom c caaar caadr caar cadar caddar caddr cadr
 car cdaar cdadr cdar cddar cdddar cdddr cddr cdr closure
 cond cons const_e const_pi cos cosh dec dec-c defun div
-en-queue eq eqn exp floor funcall funcs get-c get-list gt
-gte if inc inc-c is-prime label lambda let let* list
-ln log lt lte make-queue make-variable-c max min mod mul
-nil nondef not null p p-list pow primes print q
-queue quote rassoc reverse round setcar setcdr setq sin sinh
-sqrt sub symbol-value t tan tanh trunc while x zerop
+en-queue eq eqn exp floatp floor funcall funcs get-c get-list
+gt gte if inc inc-c integerp is-prime label lambda let
+let* list ln log lt lte make-queue make-variable-c max min
+mod mul nil nondef not null numberp p p-list pow
+primes print q queue quote rassoc reverse round setcar setcdr
+setq sin sinh sqrt sub symbol-value t tan tanh trunc
+while x zerop
 ```
