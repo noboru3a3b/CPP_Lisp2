@@ -124,10 +124,10 @@ tanh trunc while x
 > (defun is-prime (p-list x)
 >   (if (null p-list) t
 >       (let ((p (car p-list)))
->       (cond ((gt (mul p p) x) t)
->             ((eqn 0 (mod x p)) nil)
->             (t (is-prime (cdr p-list) x))))))
-[str] (defun is-prime (p-list x)   (if (null p-list) t       (let ((p (car p-list)))       (cond ((gt (mul p p) x) t)             ((eqn 0 (mod x p)) nil)             (t (is-prime (cdr p-list) x))))))
+>         (cond ((gt (mul p p) x) t)
+>               ((eqn 0 (mod x p)) nil)
+>               (t (is-prime (cdr p-list) x))))))
+[str] (defun is-prime (p-list x)   (if (null p-list) t       (let ((p (car p-list)))         (cond ((gt (mul p p) x) t)               ((eqn 0 (mod x p)) nil)               (t (is-prime (cdr p-list) x))))))
 [exp] (defun is-prime (p-list x) (if (null p-list) t (let ((p (car p-list))) (cond ((gt (mul p p) x) t) ((eqn 0 (mod x p)) nil) (t (is-prime (cdr p-list) x))))))
 [eval] is-prime
  ---------- atoms ----------

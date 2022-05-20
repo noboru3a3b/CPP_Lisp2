@@ -54,9 +54,9 @@
 (defun is-prime (p-list x)
   (if (null p-list) t
       (let ((p (car p-list)))
-      	(cond ((gt (mul p p) x) t)
-	            ((eqn 0 (mod x p)) nil)
-      	      (t (is-prime (cdr p-list) x))))))
+        (cond ((gt (mul p p) x) t)
+              ((eqn 0 (mod x p)) nil)
+              (t (is-prime (cdr p-list) x))))))
 
 (defun primes (queue x max)
   (cond ((gt x max)
