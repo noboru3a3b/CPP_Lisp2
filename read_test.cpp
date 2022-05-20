@@ -84,6 +84,7 @@ Atom *p_gte = mp->get_atom("gte");
 Atom *p_lt = mp->get_atom("lt");
 Atom *p_lte = mp->get_atom("lte");
 Atom *p_zerop = mp->get_atom("zerop");
+Atom *p_integerp = mp->get_atom("integerp");
 Atom *p_addf = mp->get_atom("+");
 Atom *p_subf = mp->get_atom("-");
 Atom *p_mulf = mp->get_atom("*");
@@ -96,6 +97,8 @@ Atom *p_gtef = mp->get_atom(">=");
 Atom *p_ltf = mp->get_atom("<");
 Atom *p_ltef = mp->get_atom("<=");
 Atom *p_zeropf = mp->get_atom("0=");
+Atom *p_floatp = mp->get_atom("floatp");
+Atom *p_numberp = mp->get_atom("numberp");
 Atom *p_min = mp->get_atom("min");
 Atom *p_max = mp->get_atom("max");
 
@@ -2012,6 +2015,19 @@ Object *evzerop(Object *x, Object *a)
   }
 }
 
+// Integerp (Int)
+Object *evintegerp(Object *x, Object *a)
+{
+  if (typeid(*s_eval(car(x), a)) == id_Num_int)
+  {
+    return p_t;
+  }
+  else
+  {
+    return p_nil;
+  }
+}
+
 // to Float
 double to_float(Object *x, Object *a)
 {
@@ -2247,6 +2263,33 @@ Object *evltef(Object *x, Object *a)
 Object *evzeropf(Object *x, Object *a)
 {
   if (to_float(car(x), a) == (double)0)
+  {
+    return p_t;
+  }
+  else
+  {
+    return p_nil;
+  }
+}
+
+// Floatp (Float)
+Object *evfloatp(Object *x, Object *a)
+{
+  if (typeid(*s_eval(car(x), a)) == id_Num_float)
+  {
+    return p_t;
+  }
+  else
+  {
+    return p_nil;
+  }
+}
+
+// Numberp (Int / Float)
+Object *evnumberp(Object *x, Object *a)
+{
+  if ((typeid(*s_eval(car(x), a)) == id_Num_int) ||
+      (typeid(*s_eval(car(x), a)) == id_Num_float))
   {
     return p_t;
   }
@@ -2902,6 +2945,7 @@ int main()
   p_lt->func = evlt;
   p_lte->func = evlte;
   p_zerop->func = evzerop;
+  p_integerp->func = evintegerp;
   p_addf->func = evaddf;
   p_subf->func = evsubf;
   p_mulf->func = evmulf;
@@ -2914,6 +2958,8 @@ int main()
   p_ltf->func = evltf;
   p_ltef->func = evltef;
   p_zeropf->func = evzeropf;
+  p_floatp->func = evfloatp;
+  p_numberp->func = evnumberp;
   p_min->func = evmin;
   p_max->func = evmax;
 
