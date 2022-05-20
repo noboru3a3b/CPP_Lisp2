@@ -128,6 +128,8 @@ Atom *p_symbolvalue = mp->get_atom("symbol-value");
 Atom *p_funcall = mp->get_atom("funcall");
 Atom *p_apply = mp->get_atom("apply");
 Atom *p_closure = mp->get_atom("closure");
+Atom *p_setcar = mp->get_atom("setcar");
+Atom *p_setcdr = mp->get_atom("setcdr");
 
 //Atom *p_pair = mp->get_atom("pair");
 
@@ -2790,6 +2792,24 @@ Object *evclosure(Object *e, Object *a)
 {
   return cons(p_closure, cons(a, e));
 }
+// (setcar exp exp
+Object *evsetcar(Object *e, Object *a)
+{
+  Object *p;
+
+  p = s_eval(cadr(e), a);
+  ((Cell *)s_eval(car(e), a))->set_car(p);
+  return p;
+}
+// (setcdr exp exp
+Object *evsetcdr(Object *e, Object *a)
+{
+  Object *p;
+
+  p = s_eval(cadr(e), a);
+  ((Cell *)s_eval(car(e), a))->set_cdr(p);
+  return p;
+}
 
 
 // --------------- Main Loop ---------------
@@ -2898,6 +2918,8 @@ int main()
   p_funcall->func = evfuncall;
   p_apply->func = evapply;
   p_closure->func = evclosure;
+  p_setcar->func = evsetcar;
+  p_setcdr->func = evsetcdr;
 
 
   while (1)
@@ -2942,11 +2964,11 @@ int main()
 
       // Clean Objects
       // Input Exp
-      if (p->ref_cnt == 0)
-      {
-        cout << "[exp] Delete Object [Class ID]= " << typeid(*p).name() << endl;
-        delete p;
-      }
+//      if (p->ref_cnt == 0)
+//      {
+//        cout << "[exp] Delete Object [Class ID]= " << typeid(*p).name() << endl;
+//        delete p;
+//      }
 
       // Output Exp
 //      if (q->ref_cnt == 0)
