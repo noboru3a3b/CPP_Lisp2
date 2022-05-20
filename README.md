@@ -124,10 +124,10 @@ tanh trunc while x
 > (defun is-prime (p-list x)
 >   (if (null p-list) t
 >       (let ((p (car p-list)))
-> (cond ((gt (mul p p) x) t)
->       ((eqn 0 (mod x p)) nil)
->       (t (is-prime (cdr p-list) x))))))
-[str] (defun is-prime (p-list x)   (if (null p-list) t       (let ((p (car p-list))) (cond ((gt (mul p p) x) t)       ((eqn 0 (mod x p)) nil)       (t (is-prime (cdr p-list) x))))))
+>       (cond ((gt (mul p p) x) t)
+>             ((eqn 0 (mod x p)) nil)
+>             (t (is-prime (cdr p-list) x))))))
+[str] (defun is-prime (p-list x)   (if (null p-list) t       (let ((p (car p-list)))       (cond ((gt (mul p p) x) t)             ((eqn 0 (mod x p)) nil)             (t (is-prime (cdr p-list) x))))))
 [exp] (defun is-prime (p-list x) (if (null p-list) t (let ((p (car p-list))) (cond ((gt (mul p p) x) t) ((eqn 0 (mod x p)) nil) (t (is-prime (cdr p-list) x))))))
 [eval] is-prime
  ---------- atoms ----------
@@ -145,11 +145,11 @@ symbol-value t tan tanh trunc while x
 
 > (defun primes (queue x max)
 >   (cond ((gt x max)
->        (cons 2 (get-list queue)))
->       ((is-prime (get-list queue) x)
->        (primes (en-queue queue x) (add x 2) max))
->       (t (primes queue (add x 2) max))))
-[str] (defun primes (queue x max)   (cond ((gt x max)        (cons 2 (get-list queue)))       ((is-prime (get-list queue) x)        (primes (en-queue queue x) (add x 2) max))       (t (primes queue (add x 2) max))))
+>          (cons 2 (get-list queue)))
+>         ((is-prime (get-list queue) x)
+>          (primes (en-queue queue x) (add x 2) max))
+>         (t (primes queue (add x 2) max))))
+[str] (defun primes (queue x max)   (cond ((gt x max)          (cons 2 (get-list queue)))         ((is-prime (get-list queue) x)          (primes (en-queue queue x) (add x 2) max))         (t (primes queue (add x 2) max))))
 [exp] (defun primes (queue x max) (cond ((gt x max) (cons 2 (get-list queue))) ((is-prime (get-list queue) x) (primes (en-queue queue x) (add x 2) max)) (t (primes queue (add x 2) max))))
 [eval] primes
  ---------- atoms ----------
