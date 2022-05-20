@@ -83,6 +83,7 @@ Atom *p_gt = mp->get_atom("gt");
 Atom *p_gte = mp->get_atom("gte");
 Atom *p_lt = mp->get_atom("lt");
 Atom *p_lte = mp->get_atom("lte");
+Atom *p_zerop = mp->get_atom("zerop");
 Atom *p_addf = mp->get_atom("+");
 Atom *p_subf = mp->get_atom("-");
 Atom *p_mulf = mp->get_atom("*");
@@ -94,6 +95,7 @@ Atom *p_gtf = mp->get_atom(">");
 Atom *p_gtef = mp->get_atom(">=");
 Atom *p_ltf = mp->get_atom("<");
 Atom *p_ltef = mp->get_atom("<=");
+Atom *p_zeropf = mp->get_atom("0=");
 Atom *p_min = mp->get_atom("min");
 Atom *p_max = mp->get_atom("max");
 
@@ -1997,6 +1999,19 @@ Object *evlte(Object *x, Object *a)
   return lte0(cdr(x), to_int(car(x), a), a);
 }
 
+// Zerop (Int)
+Object *evzerop(Object *x, Object *a)
+{
+  if (to_int(car(x), a) == (long)0)
+  {
+    return p_t;
+  }
+  else
+  {
+    return p_nil;
+  }
+}
+
 // to Float
 double to_float(Object *x, Object *a)
 {
@@ -2226,6 +2241,19 @@ Atom *ltef0(Object *x, double y, Object *a)
 Object *evltef(Object *x, Object *a)
 {
   return ltef0(cdr(x), to_float(car(x), a), a);
+}
+
+// Zeropf (Float)
+Object *evzeropf(Object *x, Object *a)
+{
+  if (to_float(car(x), a) == (double)0)
+  {
+    return p_t;
+  }
+  else
+  {
+    return p_nil;
+  }
 }
 
 // min (Float)
@@ -2873,6 +2901,7 @@ int main()
   p_gte->func = evgte;
   p_lt->func = evlt;
   p_lte->func = evlte;
+  p_zerop->func = evzerop;
   p_addf->func = evaddf;
   p_subf->func = evsubf;
   p_mulf->func = evmulf;
@@ -2884,6 +2913,7 @@ int main()
   p_gtef->func = evgtef;
   p_ltf->func = evltf;
   p_ltef->func = evltef;
+  p_zeropf->func = evzeropf;
   p_min->func = evmin;
   p_max->func = evmax;
 
