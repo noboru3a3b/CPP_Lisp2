@@ -23,7 +23,7 @@ int main()
   p->set_name("sakura");
 
   q = new Num_int;
-  q->set_value((long)-100000);
+  q->set_value((long8 )-100000);
 
   r = new String;
   r->set_value("PAPER MOON");

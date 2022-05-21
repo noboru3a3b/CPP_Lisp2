@@ -10,7 +10,7 @@ using namespace std;
 class Num_int  : public Object
 {
  public:
-  long value;
+  long8 value;
   
   Num_int();
   ~Num_int();
@@ -18,7 +18,7 @@ class Num_int  : public Object
   void print();
   void print_car();
   void print_cdr();
-  void set_value(long n);
+  void set_value(long8 n);
 };
 
 #endif // __NUM_INT_H__

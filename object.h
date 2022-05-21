@@ -3,6 +3,8 @@
 #ifndef __OBJECT_H__
 #define __OBJECT_H__
 
+#define long8 long long
+
 #include <string>
 
 using namespace std;
@@ -10,7 +12,7 @@ using namespace std;
 class Object
 {
  public:
-  unsigned long ref_cnt;
+  unsigned long8 ref_cnt;
 
   Object();
   virtual ~Object();
@@ -27,7 +29,7 @@ class Object
   virtual void set_value(string s);
 
   // for Num_int
-  virtual void set_value(long n);
+  virtual void set_value(long8 n);
 
   // for Num_float
   virtual void set_value(double n);
@@ -39,9 +41,9 @@ class Object
   virtual void set_cdr(Object *p);
 
   // for Vector
-  virtual long get_size();
-  virtual void set_value(long i, Object *p);
-  virtual Object *get_value(long i);
+  virtual long8 get_size();
+  virtual void set_value(long8 i, Object *p);
+  virtual Object *get_value(long8 i);
 };
 
 #endif // __OBJECT_H__

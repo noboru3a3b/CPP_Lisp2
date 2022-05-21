@@ -45,7 +45,7 @@ void Object::set_value(string s)
 }
 
 // for Num_int
-void Object::set_value(long n)
+void Object::set_value(long8 n)
 {
 
 }
@@ -78,17 +78,17 @@ void Object::set_cdr(Object *p)
 }
 
 // for Vector
-long Object::get_size()
+long8 Object::get_size()
 {
   return 0;
 }
 
-void Object::set_value(long i, Object *p)
+void Object::set_value(long8 i, Object *p)
 {
 
 }
 
-Object *Object::get_value(long i)
+Object *Object::get_value(long8 i)
 {
   return NULL;
 }

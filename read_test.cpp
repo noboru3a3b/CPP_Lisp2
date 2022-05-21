@@ -691,7 +691,7 @@ string get_elem(string text, int *idx, Type *type)
   {
     try
     {
-      long l = stol(s);
+      long8 l = stol(s);
       *type = Type::Num_Int;
     }
     catch(const std::exception& e)
@@ -884,7 +884,7 @@ Object *s_read(vector<Token> *tokens, int idx, int *rest_idx)
   else if (type == Type::Num_Int)
   {
     p = new Num_int;
-    p->set_value(stol(s));
+    p->set_value((long8)stol(s));
     return p;
   }
 
@@ -1023,7 +1023,7 @@ Object *s_cdr_read(vector<Token> *tokens, int idx, int *rest_idx)
     p = new Cell;
 
     p_car = new Num_int;
-    p_car->set_value(stol(s));
+    p_car->set_value((long8)stol(s));
 
     p->set_car(p_car);
     p_cdr = s_cdr_read(tokens, *rest_idx, &cdr_rest_idx);
@@ -1151,7 +1151,7 @@ void v_rest_read(Object *v, int i, vector<Token> *tokens, int idx, int *rest_idx
   else if (type == Type::Num_Int)
   {
     p = new Num_int;
-    p->set_value(stol(s));	// Conv error may occur
+    p->set_value((long8)stol(s));	// Conv error may occur
 
     v->set_value(i, p);
     v_rest_read(v, i + 1, tokens, *rest_idx, &cdr_rest_idx);
@@ -1750,7 +1750,7 @@ Object *evparam2(Object *e, Object *a)
 }
 
 // to Int
-long to_int(Object *x, Object *a)
+long8 to_int(Object *x, Object *a)
 {
   if (typeid(*s_eval(x, a)) == id_Num_float)
   {
@@ -1763,7 +1763,7 @@ long to_int(Object *x, Object *a)
 }
 
 // Add (Int)
-long add0(Object *x, long y, Object *a)
+long8 add0(Object *x, long8 y, Object *a)
 {
   if (null(x) == p_t)
   {
@@ -1785,7 +1785,7 @@ Object *evadd(Object *x, Object *a)
 }
 
 // Sub (Int)
-long sub0(Object *x, long y, Object *a)
+long8 sub0(Object *x, long8 y, Object *a)
 {
   if (null(x) == p_t)
   {
@@ -1807,7 +1807,7 @@ Object *evsub(Object *x, Object *a)
 }
 
 // Mul (Int)
-long mul0(Object *x, long y, Object *a)
+long8 mul0(Object *x, long8 y, Object *a)
 {
   if (null(x) == p_t)
   {
@@ -1829,7 +1829,7 @@ Object *evmul(Object *x, Object *a)
 }
 
 // Div (Int)
-long div0(Object *x, long y, Object *a)
+long8 div0(Object *x, long8 y, Object *a)
 {
   if (null(x) == p_t)
   {
@@ -1851,7 +1851,7 @@ Object *evdiv(Object *x, Object *a)
 }
 
 // Mod (Int)
-long mod0(Object *x, long y, Object *a)
+long8 mod0(Object *x, long8 y, Object *a)
 {
   if (null(x) == p_t)
   {
@@ -1893,7 +1893,7 @@ Object *evdec(Object *x, Object *a)
 }
 
 // Eqn (Int)
-Atom *eqn0(Object *x, long y, Object *a)
+Atom *eqn0(Object *x, long8 y, Object *a)
 {
   if (null(x) == p_t)
   {
@@ -1915,7 +1915,7 @@ Object *eveqn(Object *x, Object *a)
 }
 
 // Gt (Int)
-Atom *gt0(Object *x, long y, Object *a)
+Atom *gt0(Object *x, long8 y, Object *a)
 {
   if (null(x) == p_t)
   {
@@ -1937,7 +1937,7 @@ Object *evgt(Object *x, Object *a)
 }
 
 // Gte (Int)
-Atom *gte0(Object *x, long y, Object *a)
+Atom *gte0(Object *x, long8 y, Object *a)
 {
   if (null(x) == p_t)
   {
@@ -1959,7 +1959,7 @@ Object *evgte(Object *x, Object *a)
 }
 
 // Lt (Int)
-Atom *lt0(Object *x, long y, Object *a)
+Atom *lt0(Object *x, long8 y, Object *a)
 {
   if (null(x) == p_t)
   {
@@ -1981,7 +1981,7 @@ Object *evlt(Object *x, Object *a)
 }
 
 // Lte (Int)
-Atom *lte0(Object *x, long y, Object *a)
+Atom *lte0(Object *x, long8 y, Object *a)
 {
   if (null(x) == p_t)
   {

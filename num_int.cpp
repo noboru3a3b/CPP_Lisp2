@@ -28,7 +28,7 @@ void Num_int::print_cdr()
   cout << " . " << value << ")";
 }
 
-void Num_int::set_value(long n)
+void Num_int::set_value(long8 n)
 {
   value = n;
 }

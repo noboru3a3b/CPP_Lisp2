@@ -3,7 +3,7 @@
 #include <iostream>
 #include "vector.h"
 
-Vector::Vector(long n)
+Vector::Vector(long8 n)
 {
   size = n;
   vector = new Object * [size];
@@ -11,7 +11,7 @@ Vector::Vector(long n)
 
 Vector::~Vector()
 {
-  for (long i = 0; i < size; i++)
+  for (long8 i = 0; i < size; i++)
   {
     if (vector[i] != NULL)
     {
@@ -25,7 +25,7 @@ Vector::~Vector()
 void Vector::print()
 {
   cout << "#(";
-  for (long i = 0; i < size; i++)
+  for (long8 i = 0; i < size; i++)
   {
     if (i > 0) cout << " ";
     vector[i]->print();
@@ -36,7 +36,7 @@ void Vector::print()
 void Vector::print_car()
 {
   cout << "#(";
-  for (long i = 0; i < size; i++)
+  for (long8 i = 0; i < size; i++)
   {
     if (i > 0) cout << " ";
     vector[i]->print();
@@ -49,7 +49,7 @@ void Vector::print_cdr()
   cout << " . ";
   {
     cout << "#(";
-    for (long i = 0; i < size; i++)
+    for (long8 i = 0; i < size; i++)
     {
       if (i > 0) cout << " ";
       vector[i]->print();
@@ -59,18 +59,18 @@ void Vector::print_cdr()
   cout << ")";
 }
 
-long Vector::get_size()
+long8 Vector::get_size()
 {
   return size;
 }
 
-void Vector::set_value(long i, Object *p)
+void Vector::set_value(long8 i, Object *p)
 {
   vector[i] = p;
   p->ref_cnt++;
 }
 
-Object *Vector::get_value(long i)
+Object *Vector::get_value(long8 i)
 {
   return vector[i];
 }

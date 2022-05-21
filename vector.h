@@ -10,18 +10,18 @@ using namespace std;
 class Vector  : public Object
 {
  public:
-  long size;
+  long8 size;
   Object **vector;
   
-  Vector( long n );
+  Vector( long8 n );
   ~Vector();
   
   void print();
   void print_car();
   void print_cdr();
-  long get_size();
-  void set_value(long i, Object *p);
-  Object *get_value(long i);
+  long8 get_size();
+  void set_value(long8 i, Object *p);
+  Object *get_value(long8 i);
 };
 
 #endif // __VECTOR_H__
