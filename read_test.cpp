@@ -861,7 +861,7 @@ Object *s_read(vector<Token> *tokens, int idx, int *rest_idx)
 
 //    cout << "[n] " << n << endl;
 
-    p = new Vector((long)n);
+    p = new Vector((long8)n);
     p_car = s_read(tokens, *rest_idx, &car_rest_idx);
 
     p->set_value(0, p_car);
@@ -985,7 +985,7 @@ Object *s_cdr_read(vector<Token> *tokens, int idx, int *rest_idx)
 
 //    cout << "[cdr n] " << n << endl;
 
-    q = new Vector((long)n);
+    q = new Vector((long8)n);
     q_car = s_read(tokens, *rest_idx, &car_rest_idx);
 
     q->set_value(0, q_car);
@@ -1124,7 +1124,7 @@ void v_rest_read(Object *v, int i, vector<Token> *tokens, int idx, int *rest_idx
 
 //    cout << "[v_rest n] " << n << endl;
 
-    p = new Vector((long)n);
+    p = new Vector((long8)n);
     p_car = s_read(tokens, *rest_idx, &car_rest_idx);
 
     p->set_value(0, p_car);
@@ -1754,7 +1754,7 @@ long8 to_int(Object *x, Object *a)
 {
   if (typeid(*s_eval(x, a)) == id_Num_float)
   {
-    return (long)(((Num_float *)s_eval(x, a))->value);
+    return (long8)(((Num_float *)s_eval(x, a))->value);
   }
   else
   {
@@ -1780,7 +1780,7 @@ Object *evadd(Object *x, Object *a)
   Num_int *q;
 
   q = new Num_int;
-  q->set_value(add0(x, (long)0, a));
+  q->set_value(add0(x, (long8)0, a));
   return (Object *)q;
 }
 
@@ -1824,7 +1824,7 @@ Object *evmul(Object *x, Object *a)
   Num_int *q;
 
   q = new Num_int;
-  q->set_value(mul0(x, (long)1, a));
+  q->set_value(mul0(x, (long8)1, a));
   return (Object *)q;
 }
 
@@ -2005,7 +2005,7 @@ Object *evlte(Object *x, Object *a)
 // Zerop (Int)
 Object *evzerop(Object *x, Object *a)
 {
-  if (to_int(car(x), a) == (long)0)
+  if (to_int(car(x), a) == (long8)0)
   {
     return p_t;
   }

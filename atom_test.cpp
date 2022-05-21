@@ -13,7 +13,7 @@ int main()
   s->set_value("string");
 
   t = new Num_int;
-  t->set_value((long)99999999);
+  t->set_value((long8)99999999);
 
   u = new Atom;
   u->set_name("atom");
