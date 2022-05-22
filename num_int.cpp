@@ -8,6 +8,11 @@ Num_int::Num_int()
 
 }
 
+Num_int::Num_int(long8 n)
+{
+  value = n;
+}
+
 Num_int::~Num_int()
 {
 

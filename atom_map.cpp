@@ -29,7 +29,7 @@ Atom *AtomMap::get_atom(string s)
   return atom_map[s];
 }
 
-void AtomMap::print_all()
+int AtomMap::print_all()
 {
   int i = 0;
 
@@ -48,4 +48,6 @@ void AtomMap::print_all()
   {
     cout << endl;
   }
+
+  return i;
 }

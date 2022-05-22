@@ -13,6 +13,7 @@ class Num_int  : public Object
   long8 value;
   
   Num_int();
+  Num_int(long8 n);
   ~Num_int();
   
   void print();

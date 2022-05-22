@@ -18,7 +18,7 @@ class AtomMap
   ~AtomMap();
   
   Atom *get_atom(string s);
-  void print_all();
+  int print_all();
 };
 
 #endif // __ATOM_MAP_H__

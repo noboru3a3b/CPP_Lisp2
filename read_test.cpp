@@ -136,6 +136,8 @@ Atom *p_closure = mp->get_atom("closure");
 Atom *p_setcar = mp->get_atom("setcar");
 Atom *p_setcdr = mp->get_atom("setcdr");
 
+Atom *p_printatoms = mp->get_atom("print-atoms");
+
 //Atom *p_pair = mp->get_atom("pair");
 
 //tom *p_evcon = mp->get_atom("evcon");
@@ -2881,6 +2883,14 @@ Object *evsetcdr(Object *e, Object *a)
   ((Cell *)s_eval(car(e), a))->set_cdr(p);
   return p;
 }
+// (print-atoms)
+Object *evprintatoms(Object *e, Object *a)
+{
+  int i;
+
+  i = mp->print_all();
+  return new Num_int((long8)i);
+}
 
 
 // --------------- Main Loop ---------------
@@ -2997,6 +3007,8 @@ int main()
   p_setcar->func = evsetcar;
   p_setcdr->func = evsetcdr;
 
+  p_printatoms->func = evprintatoms;
+
 
   while (1)
   {
@@ -3017,7 +3029,7 @@ int main()
     if (is_space(str) == false)
     {
       // Input String
-      cout << "[str] " << str << endl;
+//      cout << "[str] " << str << endl;
 
       // read
       p = s_read(&tokens, 0, &rst_idx);
@@ -3036,7 +3048,7 @@ int main()
       cout << endl;
 
       // All Atoms
-      mp->print_all();
+//     mp->print_all();
 
       // Clean Objects
       // Input Exp
