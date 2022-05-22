@@ -2992,7 +2992,7 @@ Object *evload(Object *e, Object *a)
   }
 
   // Start of FILE
-  cout << endl;
+  cout << "----------" << endl;
 
   while (1)
   {
@@ -3008,7 +3008,7 @@ Object *evload(Object *e, Object *a)
     // End of FILE 
     if (str == "")
     {
-      cout << endl;
+      cout << "----------" << endl;
       return p_t;
     }
 
