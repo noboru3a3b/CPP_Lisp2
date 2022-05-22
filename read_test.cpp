@@ -772,7 +772,7 @@ string get_elem(string text, int *idx, Type *type)
       long8 l = stol(s);
       *type = Type::Num_Int;
     }
-    catch(const std::exception& e)
+    catch(const exception& e)
     {
       *type = Type::Atom;
     }
@@ -785,7 +785,7 @@ string get_elem(string text, int *idx, Type *type)
       double d = stod(s);
       *type = Type::Num_Float;
     }
-    catch(const std::exception& e)
+    catch(const exception& e)
     {
       *type = Type::Atom;
     }
@@ -2980,14 +2980,14 @@ Object *evload(Object *e, Object *a)
 
   if (typeid(*p) != id_String)
   {
-    std::cerr << "Parameter is not String." << std::endl;
+    cerr << "Parameter is not String." << endl;
     return p_nil;
   }
 
-  std::ifstream ifs(((String *)p)->value);
+  ifstream ifs(((String *)p)->value);
   if (ifs.fail())
   {
-    std::cerr << "Failed to open file." << std::endl;
+    cerr << "Failed to open file." << endl;
     return p_nil;
   }
 
