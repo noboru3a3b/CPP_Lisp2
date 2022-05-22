@@ -2991,6 +2991,9 @@ Object *evload(Object *e, Object *a)
     return p_nil;
   }
 
+  // Start of FILE
+  cout << endl;
+
   while (1)
   {
     str = s_input_file(&ifs);
@@ -3002,8 +3005,10 @@ Object *evload(Object *e, Object *a)
     tokens.clear();
     get_elems(str, &tokens);
 
+    // End of FILE 
     if (str == "")
     {
+      cout << endl;
       return p_t;
     }
 
