@@ -33,7 +33,6 @@ int AtomMap::print_all()
 {
   int i = 0;
 
-  cout << " ---------- atoms ---------- " << endl;
   for (auto itr = atom_map.begin(); itr != atom_map.end(); ++itr)
   {
     cout << itr->first << " ";
