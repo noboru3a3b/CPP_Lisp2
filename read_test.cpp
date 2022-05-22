@@ -2,6 +2,7 @@
 
 #define _USE_MATH_DEFINES
 
+#include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -137,6 +138,7 @@ Atom *p_setcar = mp->get_atom("setcar");
 Atom *p_setcdr = mp->get_atom("setcdr");
 
 Atom *p_printatoms = mp->get_atom("print-atoms");
+Atom *p_load = mp->get_atom("load");
 
 //Atom *p_pair = mp->get_atom("pair");
 
@@ -245,6 +247,80 @@ string s_input()
   //
   // 'ABC '(...)
   //  s_text = expand_quote( s_text );
+
+  return s_text;
+}
+
+string s_input_file(ifstream *ifs)
+{
+  char str[256];
+  string line_text;
+  string s_text = "";
+  int leftp_cnt = 0;
+  int rightp_cnt = 0;
+  int text_size;
+  int in_string = 0;
+
+  do
+  {
+    // getline from FILE
+    if (!(*ifs).getline(str, 256))
+    {
+      return "";
+    }
+
+    cout << str << endl;
+
+    line_text = str;
+    text_size = line_text.size();
+
+    for (int i = 0; i < text_size; i++)
+    {
+      // In String
+      if (in_string != 0)
+      {
+        // Close String
+        if (line_text[i] == '"')
+        {
+          in_string = 0;
+        }
+        else
+        {
+          if (line_text[i] =='\\')
+          {
+            i++;
+            if (i == text_size) break;
+          }
+        }
+      }
+      // Out of String
+      else
+      {
+        // Open String
+        if (line_text[i] == '"')
+        {
+          in_string = 1;
+        }
+        else
+        {
+          if (line_text[i] == '(')
+          {
+            leftp_cnt++;
+          }
+          else if (line_text[i] == ')')
+          {
+            rightp_cnt++;
+          }
+        }
+      }
+    }
+
+    s_text += line_text;
+    if (in_string == 0)
+    {
+      s_text += " ";
+    }
+  } while ((leftp_cnt > rightp_cnt) || (in_string != 0));
 
   return s_text;
 }
@@ -2891,6 +2967,66 @@ Object *evprintatoms(Object *e, Object *a)
   i = mp->print_all();
   return new Num_int((long8)i);
 }
+// (load "FILENAME"
+Object *evload(Object *e, Object *a)
+{
+  string str;
+  vector<Token> tokens;
+  int rst_idx;
+  Object *p;
+  Object *q;
+
+  p = s_eval(car(e), a);
+
+  if (typeid(*p) != id_String)
+  {
+    std::cerr << "Parameter is not String." << std::endl;
+    return p_nil;
+  }
+
+  std::ifstream ifs(((String *)p)->value);
+  if (ifs.fail())
+  {
+    std::cerr << "Failed to open file." << std::endl;
+    return p_nil;
+  }
+
+  while (1)
+  {
+    str = s_input_file(&ifs);
+
+    // Expand #' '
+    str = expand_function(str);
+    str = expand_quote(str);
+
+    tokens.clear();
+    get_elems(str, &tokens);
+
+    if (str == "")
+    {
+      return p_t;
+    }
+
+    if (is_space(str) == false)
+    {
+      // read
+      p = s_read(&tokens, 0, &rst_idx);
+
+      // print
+      cout << "[exp] ";
+      p->print();
+      cout << endl;
+
+      // eval
+      q = s_eval(p, p_nil);
+
+      // print
+      cout << "[eval] ";
+      q->print();
+      cout << endl;
+    }
+  }
+}
 
 
 // --------------- Main Loop ---------------
@@ -3008,6 +3144,7 @@ int main()
   p_setcdr->func = evsetcdr;
 
   p_printatoms->func = evprintatoms;
+  p_load->func = evload;
 
 
   while (1)
