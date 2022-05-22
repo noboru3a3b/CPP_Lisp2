@@ -9,7 +9,6 @@
   (print y)
   (cons x y))
 
-
 (defun sqr+0 (x y)
   (if (null x) y
       (sqr+0 (cdr x) (+ (* (car x) (car x)) y))))
@@ -18,7 +17,6 @@
   (sqr+0 x 0))
 
 (sqr+ '(1 2 3 4 5))
-
 
 (defun make-variable-c ()
   (let ((c 0))
@@ -36,7 +34,6 @@
   (print (funcall get-c))
   (funcall dec-c)
   (print (funcall get-c)))
-
 
 (defun make-queue ()
   (let ((queue (cons nil nil)))
@@ -66,4 +63,3 @@
         (t (primes queue (add x 2) max))))
 
 (primes (make-queue) 3 1000)
-
