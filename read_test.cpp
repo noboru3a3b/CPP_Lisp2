@@ -139,6 +139,10 @@ Atom *p_setcdr = mp->get_atom("setcdr");
 
 Atom *p_printatoms = mp->get_atom("print-atoms");
 Atom *p_load = mp->get_atom("load");
+Atom *p_makevector = mp->get_atom("make-vector");
+Atom *p_vectorp = mp->get_atom("vectorp");
+Atom *p_vref = mp->get_atom("vref");
+Atom *p_vset = mp->get_atom("vset");
 
 //Atom *p_pair = mp->get_atom("pair");
 
@@ -3032,6 +3036,87 @@ Object *evload(Object *e, Object *a)
     }
   }
 }
+// (make-vector n exp
+Object *evmakevector(Object *e, Object *a)
+{
+  Object *p;
+  Object *q;
+  Object *v;
+  long8 n;
+
+  // Int, Exp
+  p = s_eval(car(e), a);
+  q = s_eval(cadr(e), a);
+
+  // n
+  n = ((Num_int *)p)->value;
+
+  // vector
+  v = new Vector(n);
+
+  for (int i = 0; i < n; i++)
+  {
+    v->set_value(i, q);
+  }
+
+  return v;
+}
+// (vectorp Vector
+Object *evvectorp(Object *e, Object *a)
+{
+  Object *p;
+
+  p = s_eval(car(e), a);
+
+  if (typeid(*p) == id_Vector)
+  {
+    return p_t;
+  }
+
+  return p_nil;
+}
+// (vref Vector Int
+Object *evvref(Object *e, Object *a)
+{
+  Object *p;
+  Object *q;
+  long8 n;
+
+  // Vector
+  p = s_eval(car(e), a);
+
+  // Int
+  q = s_eval(cadr(e), a);
+
+  // n
+  n = ((Num_int *)q)->value;
+
+  return p->get_value(n);
+}
+// (vset Vector Int Exp
+Object *evvset(Object *e, Object *a)
+{
+  Object *p;
+  Object *q;
+  Object *v;
+  long8 n;
+
+  // Vector
+  p = s_eval(car(e), a);
+
+  // Int
+  q = s_eval(cadr(e), a);
+
+  // n
+  n = ((Num_int *)q)->value;
+
+  // Exp
+  v = s_eval(caddr(e), a);
+
+  p->set_value(n, v);
+
+  return v;
+}
 
 
 // --------------- Main Loop ---------------
@@ -3150,6 +3235,10 @@ int main()
 
   p_printatoms->func = evprintatoms;
   p_load->func = evload;
+  p_makevector->func = evmakevector;
+  p_vectorp->func = evvectorp;
+  p_vref->func = evvref;
+  p_vset->func = evvset;
 
 
   while (1)
