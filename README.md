@@ -24,11 +24,12 @@ atan atom caaar caadr caar cadar caddar caddr cadr car
 cdaar cdadr cdar cddar cdddar cdddr cddr cdr closure cond
 cons const_e const_pi cos cosh dec defun div eq eqn
 exp floatp floor funcall gt gte if inc integerp label
-lambda let let* list ln load log lt lte max
-min mod mul nil nondef not null numberp pow print
-print-atoms quote rassoc reverse round setcar setcdr setq sin sinh
-sqrt sub symbol-value t tan tanh trunc while zerop
-[eval] 99
+lambda let let* list ln load log lt lte make-vector
+max min mod mul nil nondef not null numberp pow
+print print-atoms quote rassoc reverse round setcar setcdr setq sin
+sinh sqrt sub symbol-value t tan tanh trunc vectorp vref
+vset while zerop
+[eval] 103
 
 > (load "sample.lisp")
 [exp] (load "sample.lisp")
@@ -139,22 +140,56 @@ sqrt sub symbol-value t tan tanh trunc while zerop
 (primes (make-queue) 3 1000)
 [exp] (primes (make-queue) 3 1000)
 [eval] (2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101 103 107 109 113 127 131 137 139 149 151 157 163 167 173 179 181 191 193 197 199 211 223 227 229 233 239 241 251 257 263 269 271 277 281 283 293 307 311 313 317 331 337 347 349 353 359 367 373 379 383 389 397 401 409 419 421 431 433 439 443 449 457 461 463 467 479 487 491 499 503 509 521 523 541 547 557 563 569 571 577 587 593 599 601 607 613 617 619 631 641 643 647 653 659 661 673 677 683 691 701 709 719 727 733 739 743 751 757 761 769 773 787 797 809 811 821 823 827 829 839 853 857 859 863 877 881 883 887 907 911 919 929 937 941 947 953 967 971 977 983 991 997)
+
+(setq data #(1 2 3 4 5 6 7 8 9 10))
+[exp] (setq data #(1 2 3 4 5 6 7 8 9 10))
+[eval] #(1 2 3 4 5 6 7 8 9 10)
+data
+[exp] data
+[eval] #(1 2 3 4 5 6 7 8 9 10)
+
+(setq data (make-vector 10 0))
+[exp] (setq data (make-vector 10 0))
+[eval] #(0 0 0 0 0 0 0 0 0 0)
+data
+[exp] data
+[eval] #(0 0 0 0 0 0 0 0 0 0)
+
+(vset data 0 'It)
+[exp] (vset data 0 (quote It))
+[eval] It
+(vset data 1 'is)
+[exp] (vset data 1 (quote is))
+[eval] is
+(vset data 2 'I,)
+[exp] (vset data 2 (quote I,))
+[eval] I,
+(vset data 3 'Sea)
+[exp] (vset data 3 (quote Sea))
+[eval] Sea
+(vset data 4 'Gull.)
+[exp] (vset data 4 (quote Gull.))
+[eval] Gull.
+data
+[exp] data
+[eval] #(It is I, Sea Gull. 0 0 0 0 0)
 ----------
 [eval] t
 
 > (print-atoms)
 [exp] (print-atoms)
 * + - / 0= 1+ 1- < <= =
-> >= abs acos add and append apply asin assoc
-atan atom c caaar caadr caar cadar caddar caddr cadr
-car cdaar cdadr cdar cddar cdddar cdddr cddr cdr closure
-cond cons const_e const_pi cos cosh dec dec-c defun div
-en-queue eq eqn exp floatp floor funcall funcs get-c get-list
-gt gte if inc inc-c integerp is-prime label lambda let
-let* list ln load log lt lte make-queue make-variable-c max
-min mod mul n nil nondef not null numberp p
-p-list pow primes print print-atoms q queue quote rassoc reverse
-round setcar setcdr setq sin sinh sqr+ sqr+0 sqrt sub
-symbol-value t tan tanh trunc while x y zerop
-[eval] 119
+> >= Gull. I, It Sea abs acos add and
+append apply asin assoc atan atom c caaar caadr caar
+cadar caddar caddr cadr car cdaar cdadr cdar cddar cdddar
+cdddr cddr cdr closure cond cons const_e const_pi cos cosh
+data dec dec-c defun div en-queue eq eqn exp floatp
+floor funcall funcs get-c get-list gt gte if inc inc-c
+integerp is is-prime label lambda let let* list ln load
+log lt lte make-queue make-variable-c make-vector max min mod mul
+n nil nondef not null numberp p p-list pow primes
+print print-atoms q queue quote rassoc reverse round setcar setcdr
+setq sin sinh sqr+ sqr+0 sqrt sub symbol-value t tan
+tanh trunc vectorp vref vset while x y zerop
+[eval] 129
 ```

@@ -63,3 +63,16 @@
         (t (primes queue (add x 2) max))))
 
 (primes (make-queue) 3 1000)
+
+(setq data #(1 2 3 4 5 6 7 8 9 10))
+data
+
+(setq data (make-vector 10 0))
+data
+
+(vset data 0 'It)
+(vset data 1 'is)
+(vset data 2 'I,)
+(vset data 3 'Sea)
+(vset data 4 'Gull.)
+data
