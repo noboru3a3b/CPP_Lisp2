@@ -76,3 +76,9 @@ data
 (vset data 3 'Sea)
 (vset data 4 'Gull.)
 data
+
+(let ((len (length data))
+      (i 0))
+  (while (lt i len)
+    (print (vref data i))
+    (setq i (inc i))))
