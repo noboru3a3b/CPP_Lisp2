@@ -38,6 +38,7 @@ void Vector::print()
 
     vector[i]->print();
   }
+
   cout << ")";
   if (ofs_on) {ofs << ")";}
 }
@@ -54,6 +55,7 @@ void Vector::print_car()
  
     vector[i]->print();
   }
+
   cout << ")";
   if (ofs_on) {ofs << ")";}
 }
@@ -74,9 +76,11 @@ void Vector::print_cdr()
 
       vector[i]->print();
     }
+
     cout << ")";
     if (ofs_on) {ofs << ")";}
   }
+
   cout << ")";
   if (ofs_on) {ofs << ")";}
 }

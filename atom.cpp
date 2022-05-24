@@ -25,7 +25,6 @@ Atom::~Atom()
 
 void Atom::print()
 {
-  //  cout << "name=" << name << endl;
   cout << name;
   if (ofs_on) {ofs << name;}
 }

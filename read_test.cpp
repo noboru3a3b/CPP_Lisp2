@@ -154,7 +154,6 @@ Atom *p_vset = mp->get_atom("vset");
 ofstream ofs;
 bool ofs_on = false;
 
-
 // Create Type_IDs
 const type_info& id_Atom = typeid(Atom);
 const type_info& id_String = typeid(String);
