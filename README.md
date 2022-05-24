@@ -31,8 +31,8 @@ sinh sqrt sub symbol-value t tan tanh trunc vectorp vref
 vset while zerop
 [eval] 103
 
-> (load "sample.lisp")
-[exp] (load "sample.lisp")
+> [exp] (load "sample.lisp" "sample.txt")
+[exp] (load "sample.lisp" "sample.txt")
 ----------
 (let ((n 0))
   (while (< n 10)
