@@ -143,6 +143,7 @@ Atom *p_makevector = mp->get_atom("make-vector");
 Atom *p_vectorp = mp->get_atom("vectorp");
 Atom *p_vref = mp->get_atom("vref");
 Atom *p_vset = mp->get_atom("vset");
+Atom *p_length = mp->get_atom("length");
 
 //Atom *p_pair = mp->get_atom("pair");
 
@@ -3161,6 +3162,46 @@ Object *evvset(Object *e, Object *a)
 
   return v;
 }
+// (length Exp
+Object *evlength(Object *e, Object *a)
+{
+  Object *p;
+  int max = 256 * 256 * 256;
+
+  p = s_eval(car(e), a);
+
+  // Vector
+  if (typeid(*p) == id_Vector)
+  {
+    return new Num_int(((Vector *)p)->size);
+  }
+  // String
+  else if (typeid(*p) == id_String)
+  {
+    string s = ((String *)p)->value;
+    return new Num_int(s.size());
+  }
+  // Cell
+  else if (typeid(*p) == id_Cell)
+  {
+    for (int i = 0; i < max; i++)
+    {
+      p = cdr(p);
+
+      if (typeid(*p) != id_Cell)
+      {
+        return new Num_int(i + 1);
+      }
+    }
+
+    return p_nil;
+  }
+  // Atom Num_int Num_float
+  else
+  {
+    return p_nil;
+  }
+}
 
 
 // --------------- Main Loop ---------------
@@ -3283,6 +3324,7 @@ int main()
   p_vectorp->func = evvectorp;
   p_vref->func = evvref;
   p_vset->func = evvset;
+  p_length->func = evlength;
 
 
   while (1)
