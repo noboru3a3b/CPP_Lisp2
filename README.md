@@ -22,14 +22,14 @@ make read_test
 > >= abs acos add and append apply asin assoc
 atan atom caaar caadr caar cadar caddar caddr cadr car
 cdaar cdadr cdar cddar cdddar cdddr cddr cdr closure cond
-cons const_e const_pi cos cosh dec defun div eq eqn
-exp floatp floor funcall gt gte if inc integerp label
-lambda length let let* list ln load log lt lte
-make-vector max min mod mul nil nondef not null numberp
-pow print print-atoms quote rassoc reverse round setcar setcdr setq
-sin sinh sqrt sub symbol-value t tan tanh trunc vectorp
-vref vset while zerop
-[eval] 104
+cons const_e const_pi cos cosh dec decq defun div eq
+eqn exp floatp floor funcall gt gte if inc incq
+integerp label lambda length let let* list ln load log
+lt lte make-vector max min mod mul nil nondef not
+null numberp pow print print-atoms quote rassoc reverse round setcar
+setcdr setq sin sinh sqrt sub symbol-value t tan tanh
+trunc vectorp vref vset while zerop
+[eval] 106
 
 > (load "sample.lisp" "sample.txt")
 [exp] (load "sample.lisp" "sample.txt")
@@ -178,8 +178,8 @@ data
       (i 0))
   (while (lt i len)
     (print (vref data i))
-    (setq i (inc i))))
-[exp] (let ((len (length data)) (i 0)) (while (lt i len) (print (vref data i)) (setq i (inc i))))
+    (incq i)))
+[exp] (let ((len (length data)) (i 0)) (while (lt i len) (print (vref data i)) (incq i)))
 It
 is
 I,
@@ -201,14 +201,14 @@ Gull.
 append apply asin assoc atan atom c caaar caadr caar
 cadar caddar caddr cadr car cdaar cdadr cdar cddar cdddar
 cdddr cddr cdr closure cond cons const_e const_pi cos cosh
-data dec dec-c defun div en-queue eq eqn exp floatp
-floor funcall funcs get-c get-list gt gte i if inc
-inc-c integerp is is-prime label lambda len length let let*
-list ln load log lt lte make-queue make-variable-c make-vector max
-min mod mul n nil nondef not null numberp p
-p-list pow primes print print-atoms q queue quote rassoc reverse
-round setcar setcdr setq sin sinh sqr+ sqr+0 sqrt sub
-symbol-value t tan tanh trunc vectorp vref vset while x
-y zerop
-[eval] 132
+data dec dec-c decq defun div en-queue eq eqn exp
+floatp floor funcall funcs get-c get-list gt gte i if
+inc inc-c incq integerp is is-prime label lambda len length
+let let* list ln load log lt lte make-queue make-variable-c
+make-vector max min mod mul n nil nondef not null
+numberp p p-list pow primes print print-atoms q queue quote
+rassoc reverse round setcar setcdr setq sin sinh sqr+ sqr+0
+sqrt sub symbol-value t tan tanh trunc vectorp vref vset
+while x y zerop
+[eval] 134
 ```

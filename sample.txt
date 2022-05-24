@@ -59,7 +59,7 @@
 [eval] Gull.
 [exp] data
 [eval] #(It is I, Sea Gull. 0 0 0 0 0)
-[exp] (let ((len (length data)) (i 0)) (while (lt i len) (print (vref data i)) (setq i (inc i))))
+[exp] (let ((len (length data)) (i 0)) (while (lt i len) (print (vref data i)) (incq i)))
 It
 is
 I,

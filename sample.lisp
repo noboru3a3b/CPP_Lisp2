@@ -81,4 +81,4 @@ data
       (i 0))
   (while (lt i len)
     (print (vref data i))
-    (setq i (inc i))))
+    (incq i)))
