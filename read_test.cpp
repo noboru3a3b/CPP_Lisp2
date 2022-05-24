@@ -150,6 +150,11 @@ Atom *p_vset = mp->get_atom("vset");
 //Atom *p_evlis = mp->get_atom("evlis");
 //Atom *p_eval = mp->get_atom("eval");
 
+// Output FILE Stream
+ofstream ofs;
+bool ofs_on = false;
+
+
 // Create Type_IDs
 const type_info& id_Atom = typeid(Atom);
 const type_info& id_String = typeid(String);
@@ -2866,7 +2871,10 @@ Object *evdefun(Object *e, Object *a)
 Object *evprint(Object *e, Object *a)
 {
   (s_eval(car(e), a))->print();
+
   cout << endl;
+  if (ofs_on) {ofs << endl;}
+
   return s_eval(car(e), a);
 }
 // (let ((a exp1) (b exp2) ... ) exp)
@@ -2978,6 +2986,7 @@ Object *evload(Object *e, Object *a)
   vector<Token> tokens;
   int rst_idx;
   Object *p;
+  Object *p2;
   Object *q;
 
   p = s_eval(car(e), a);
@@ -2994,6 +3003,29 @@ Object *evload(Object *e, Object *a)
     cerr << "Failed to open file." << endl;
     return p_nil;
   }
+
+  // 2nd param Exist
+  if (cadr(e) != p_nil)
+  {
+    p2 = s_eval(cadr(e), a);
+
+    if (typeid(*p2) != id_String)
+    {
+      cerr << "2nd Parameter is not String." << endl;
+      return p_nil;
+    }
+
+    // Open Output FILE
+    ofs.open(((String *)p2)->value);
+    if (ofs.fail())
+    {
+      cerr << "Failed to open file." << endl;
+      return p_nil;
+    }
+
+    ofs_on = true;
+  }
+
 
   // Start of FILE
   cout << "----------" << endl;
@@ -3013,6 +3045,11 @@ Object *evload(Object *e, Object *a)
     if (str == "")
     {
       cout << "----------" << endl;
+
+      // Close Output FILE
+      ofs.close();
+      ofs_on = false;
+
       return p_t;
     }
 
@@ -3023,16 +3060,24 @@ Object *evload(Object *e, Object *a)
 
       // print
       cout << "[exp] ";
+      if (ofs_on) {ofs << "[exp] ";}
+
       p->print();
+
       cout << endl;
+      if (ofs_on) {ofs << endl;}
 
       // eval
       q = s_eval(p, p_nil);
 
       // print
       cout << "[eval] ";
+      if (ofs_on) {ofs << "[eval] ";}
+
       q->print();
+
       cout << endl;
+      if (ofs_on) {ofs << endl;}
     }
   }
 }

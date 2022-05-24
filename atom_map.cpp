@@ -3,6 +3,10 @@
 #include <iostream>
 #include "atom_map.h"
 
+// Output FILE Stream
+extern ofstream ofs;
+extern bool ofs_on;
+
 AtomMap::AtomMap()
 {
 
@@ -36,9 +40,12 @@ int AtomMap::print_all()
   for (auto itr = atom_map.begin(); itr != atom_map.end(); ++itr)
   {
     cout << itr->first << " ";
+    if (ofs_on) {ofs << itr->first << " ";}
+
     if ((i % 10) == 9)
     {
       cout << endl;
+      if (ofs_on) {ofs << endl;}
     }
     i++;
   }
@@ -46,6 +53,7 @@ int AtomMap::print_all()
   if ((i % 10) != 0)
   {
     cout << endl;
+    if (ofs_on) {ofs << endl;}
   }
 
   return i;

@@ -3,6 +3,10 @@
 #include <iostream>
 #include "atom.h"
 
+// Output FILE Stream
+extern ofstream ofs;
+extern bool ofs_on;
+
 Atom::Atom()
 {
   value = NULL;
@@ -23,6 +27,7 @@ void Atom::print()
 {
   //  cout << "name=" << name << endl;
   cout << name;
+  if (ofs_on) {ofs << name;}
 }
 
 void Atom::print_value()
@@ -33,6 +38,7 @@ void Atom::print_value()
 void Atom::print_car()
 {
   cout << name;
+  if (ofs_on) {ofs << name;}
 }
 
 void Atom::print_cdr()
@@ -40,10 +46,12 @@ void Atom::print_cdr()
   if (name == "nil")
   {
     cout << ")";
+    if (ofs_on) {ofs << ")";}
   }
   else
   {
     cout << " . " << name << ")";
+    if (ofs_on) {ofs << " . " << name << ")";}
   }
 }
 

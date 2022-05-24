@@ -3,6 +3,10 @@
 #include <iostream>
 #include "cell.h"
 
+// Output FILE Stream
+extern ofstream ofs;
+extern bool ofs_on;
+
 using namespace std;
 
 Cell::Cell()
@@ -30,6 +34,8 @@ Cell::~Cell()
 void Cell::print()
 {
   cout << "(";
+  if (ofs_on) {ofs << "(";}
+
   car->print_car();
   cdr->print_cdr();
 }
@@ -37,6 +43,8 @@ void Cell::print()
 void Cell::print_car()
 {
   cout << "(";
+  if (ofs_on) {ofs << "(";}
+
   car->print_car();
   cdr->print_cdr();
 }
@@ -44,6 +52,8 @@ void Cell::print_car()
 void Cell::print_cdr()
 {
   cout << " ";
+  if (ofs_on) {ofs << " ";}
+
   car->print_car();
   cdr->print_cdr();
 }
