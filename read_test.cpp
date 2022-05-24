@@ -79,6 +79,8 @@ Atom *p_div = mp->get_atom("div");
 Atom *p_mod = mp->get_atom("mod");
 Atom *p_inc = mp->get_atom("inc");
 Atom *p_dec = mp->get_atom("dec");
+Atom *p_incq = mp->get_atom("incq");
+Atom *p_decq = mp->get_atom("decq");
 Atom *p_eqn = mp->get_atom("eqn");
 Atom *p_gt = mp->get_atom("gt");
 Atom *p_gte = mp->get_atom("gte");
@@ -1979,6 +1981,62 @@ Object *evdec(Object *x, Object *a)
   return (Object *)q;
 }
 
+// (incq a
+Object *evincq(Object *x, Object *a)
+{
+  Num_int *q;
+  Object *p;
+
+  q = new Num_int;
+  q->set_value(to_int(car(x), a) + 1);
+
+  // Get (var value) list
+  p = assoc2(car(x), a);
+
+  // Local var
+  if (p != p_nondef)
+  {
+    cdr(((Cell *)p))->set_car(q);
+    return cadr((Cell *)p);
+  }
+
+  // Global var
+  else
+  {
+    p = car(x);
+    ((Atom *)p)->set_value(q);
+    return ((Atom *)p)->value;
+  }
+}
+
+// (decq a
+Object *evdecq(Object *x, Object *a)
+{
+  Num_int *q;
+  Object *p;
+
+  q = new Num_int;
+  q->set_value(to_int(car(x), a) - 1);
+
+  // Get (var value) list
+  p = assoc2(car(x), a);
+
+  // Local var
+  if (p != p_nondef)
+  {
+    cdr(((Cell *)p))->set_car(q);
+    return cadr((Cell *)p);
+  }
+
+  // Global var
+  else
+  {
+    p = car(x);
+    ((Atom *)p)->set_value(q);
+    return ((Atom *)p)->value;
+  }
+}
+
 // Eqn (Int)
 Atom *eqn0(Object *x, long8 y, Object *a)
 {
@@ -2823,6 +2881,8 @@ Object *evreverse(Object *e, Object *a)
 // (mod -> evmod() ↑
 // (inc -> evinc() ↑
 // (dec -> evdec() ↑
+// (incq -> evincq() ↑
+// (decq -> evdecq() ↑
 // (eqn -> eveqn() ↑
 // (gt -> evgt() ↑
 // (gte -> evgte() ↑
@@ -3260,6 +3320,8 @@ int main()
   p_mod->func = evmod;
   p_inc->func = evinc;
   p_dec->func = evdec;
+  p_incq->func = evincq;
+  p_decq->func = evdecq;
   p_eqn->func = eveqn;
   p_gt->func = evgt;
   p_gte->func = evgte;
