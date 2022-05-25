@@ -141,74 +141,67 @@ trunc vectorp vref vset while zerop
 [exp] (primes (make-queue) 3 1000)
 [eval] (2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101 103 107 109 113 127 131 137 139 149 151 157 163 167 173 179 181 191 193 197 199 211 223 227 229 233 239 241 251 257 263 269 271 277 281 283 293 307 311 313 317 331 337 347 349 353 359 367 373 379 383 389 397 401 409 419 421 431 433 439 443 449 457 461 463 467 479 487 491 499 503 509 521 523 541 547 557 563 569 571 577 587 593 599 601 607 613 617 619 631 641 643 647 653 659 661 673 677 683 691 701 709 719 727 733 739 743 751 757 761 769 773 787 797 809 811 821 823 827 829 839 853 857 859 863 877 881 883 887 907 911 919 929 937 941 947 953 967 971 977 983 991 997)
 
-(setq data #(1 2 3 4 5 6 7 8 9 10))
-[exp] (setq data #(1 2 3 4 5 6 7 8 9 10))
-[eval] #(1 2 3 4 5 6 7 8 9 10)
-data
-[exp] data
-[eval] #(1 2 3 4 5 6 7 8 9 10)
+(setq pvect (make-vector 100 0))
+[exp] (setq pvect (make-vector 100 0))
+[eval] #(0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+(setq pidx 1)
+[exp] (setq pidx 1)
+[eval] 1
+(setq plen (length pvect))
+[exp] (setq plen (length pvect))
+[eval] 100
 
-(setq data (make-vector 10 0))
-[exp] (setq data (make-vector 10 0))
-[eval] #(0 0 0 0 0 0 0 0 0 0)
-data
-[exp] data
-[eval] #(0 0 0 0 0 0 0 0 0 0)
+(defun primeset (x)
+  (if (eqn pidx plen) nil
+      (and (vset pvect pidx x)
+           (incq pidx))))
+[exp] (defun primeset (x) (if (eqn pidx plen) nil (and (vset pvect pidx x) (incq pidx))))
+[eval] primeset
 
-(vset data 0 'It)
-[exp] (vset data 0 (quote It))
-[eval] It
-(vset data 1 'is)
-[exp] (vset data 1 (quote is))
-[eval] is
-(vset data 2 'I,)
-[exp] (vset data 2 (quote I,))
-[eval] I,
-(vset data 3 'Sea)
-[exp] (vset data 3 (quote Sea))
-[eval] Sea
-(vset data 4 'Gull.)
-[exp] (vset data 4 (quote Gull.))
-[eval] Gull.
-data
-[exp] data
-[eval] #(It is I, Sea Gull. 0 0 0 0 0)
+(defun is-prime (x i)
+  (let ((p (vref pvect i)))
+    (cond ((zerop p) t)
+          ((gt (mul p p) x) t)
+          ((zerop (mod x p)) nil)
+          (t (is-prime x (inc i))))))
+[exp] (defun is-prime (x i) (let ((p (vref pvect i))) (cond ((zerop p) t) ((gt (mul p p) x) t) ((zerop (mod x p)) nil) (t (is-prime x (inc i))))))
+[eval] is-prime
 
-(let ((len (length data))
-      (i 0))
-  (while (lt i len)
-    (print (vref data i))
-    (incq i)))
-[exp] (let ((len (length data)) (i 0)) (while (lt i len) (print (vref data i)) (incq i)))
-It
-is
-I,
-Sea
-Gull.
-0
-0
-0
-0
-0
-[eval] 10
+(defun primes (x)
+  (cond ((is-prime x 1)
+         (and (primeset x)
+              (primes (add x 2))))
+        (t (primes (add x 2)))))
+[exp] (defun primes (x) (cond ((is-prime x 1) (and (primeset x) (primes (add x 2)))) (t (primes (add x 2)))))
+[eval] primes
+
+(primes 3)
+[exp] (primes 3)
+[eval] nil
+(vset pvect 0 2)
+[exp] (vset pvect 0 2)
+[eval] 2
+pvect
+[exp] pvect
+[eval] #(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101 103 107 109 113 127 131 137 139 149 151 157 163 167 173 179 181 191 193 197 199 211 223 227 229 233 239 241 251 257 263 269 271 277 281 283 293 307 311 313 317 331 337 347 349 353 359 367 373 379 383 389 397 401 409 419 421 431 433 439 443 449 457 461 463 467 479 487 491 499 503 509 521 523 541)
 ----------
 [eval] t
 
 > (print-atoms)
 [exp] (print-atoms)
 * + - / 0= 1+ 1- < <= =
-> >= Gull. I, It Sea abs acos add and
-append apply asin assoc atan atom c caaar caadr caar
-cadar caddar caddr cadr car cdaar cdadr cdar cddar cdddar
-cdddr cddr cdr closure cond cons const_e const_pi cos cosh
-data dec dec-c decq defun div en-queue eq eqn exp
-floatp floor funcall funcs get-c get-list gt gte i if
-inc inc-c incq integerp is is-prime label lambda len length
-let let* list ln load log lt lte make-queue make-variable-c
-make-vector max min mod mul n nil nondef not null
-numberp p p-list pow primes print print-atoms q queue quote
-rassoc reverse round setcar setcdr setq sin sinh sqr+ sqr+0
-sqrt sub symbol-value t tan tanh trunc vectorp vref vset
-while x y zerop
-[eval] 134
+> >= abs acos add and append apply asin assoc
+atan atom c caaar caadr caar cadar caddar caddr cadr
+car cdaar cdadr cdar cddar cdddar cdddr cddr cdr closure
+cond cons const_e const_pi cos cosh dec dec-c decq defun
+div en-queue eq eqn exp floatp floor funcall funcs get-c
+get-list gt gte i if inc inc-c incq integerp is-prime
+label lambda length let let* list ln load log lt
+lte make-queue make-variable-c make-vector max min mod mul n nil
+nondef not null numberp p p-list pidx plen pow primes
+primeset print print-atoms pvect q queue quote rassoc reverse round
+setcar setcdr setq sin sinh sqr+ sqr+0 sqrt sub symbol-value
+t tan tanh trunc vectorp vref vset while x y
+zerop
+[eval] 131
 ```

@@ -64,21 +64,28 @@
 
 (primes (make-queue) 3 1000)
 
-(setq data #(1 2 3 4 5 6 7 8 9 10))
-data
+(setq pvect (make-vector 100 0))
+(setq pidx 1)
+(setq plen (length pvect))
 
-(setq data (make-vector 10 0))
-data
+(defun primeset (x)
+  (if (eqn pidx plen) nil
+      (and (vset pvect pidx x)
+           (incq pidx))))
 
-(vset data 0 'It)
-(vset data 1 'is)
-(vset data 2 'I,)
-(vset data 3 'Sea)
-(vset data 4 'Gull.)
-data
+(defun is-prime (x i)
+  (let ((p (vref pvect i)))
+    (cond ((zerop p) t)
+          ((gt (mul p p) x) t)
+          ((zerop (mod x p)) nil)
+          (t (is-prime x (inc i))))))
 
-(let ((len (length data))
-      (i 0))
-  (while (lt i len)
-    (print (vref data i))
-    (incq i)))
+(defun primes (x)
+  (cond ((is-prime x 1)
+         (and (primeset x)
+              (primes (add x 2))))
+        (t (primes (add x 2)))))
+
+(primes 3)
+(vset pvect 0 2)
+pvect
