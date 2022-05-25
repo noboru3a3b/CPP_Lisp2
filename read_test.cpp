@@ -3184,17 +3184,13 @@ Object *evvectorp(Object *e, Object *a)
 Object *evvref(Object *e, Object *a)
 {
   Object *p;
-  Object *q;
   long8 n;
 
   // Vector
   p = s_eval(car(e), a);
 
-  // Int
-  q = s_eval(cadr(e), a);
-
   // n
-  n = ((Num_int *)q)->value;
+  n = to_int(cadr(e), a);
 
   return p->get_value(n);
 }
@@ -3202,18 +3198,14 @@ Object *evvref(Object *e, Object *a)
 Object *evvset(Object *e, Object *a)
 {
   Object *p;
-  Object *q;
   Object *v;
   long8 n;
 
   // Vector
   p = s_eval(car(e), a);
 
-  // Int
-  q = s_eval(cadr(e), a);
-
   // n
-  n = ((Num_int *)q)->value;
+  n = to_int(cadr(e), a);
 
   // Exp
   v = s_eval(caddr(e), a);
