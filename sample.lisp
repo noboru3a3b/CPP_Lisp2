@@ -67,8 +67,8 @@
 (defun make-pvect ()
   (setq pvect (make-vector 100 0))
   (vset pvect 0 2)
-  (setq plen (length pvect))
-  (setq pidx 1))
+  (setq pidx 1)
+  (setq plen (length pvect)))
 
 (defun primeset (x)
   (if (eqn pidx plen) nil
@@ -83,10 +83,10 @@
           (t (is-prime x (inc i))))))
 
 (defun primes (x)
-  (cond ((is-prime x 1)
-         (and (primeset x)
-              (primes (add x 2))))
-        (t (primes (add x 2)))))
+  (if (is-prime x 1)
+        (if (null (primeset x)) x
+            (primes (add x 2)))
+      (primes (add x 2))))
 
 (make-pvect)
 (primes 3)

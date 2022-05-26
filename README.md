@@ -144,9 +144,9 @@ trunc vectorp vref vset while zerop
 (defun make-pvect ()
   (setq pvect (make-vector 100 0))
   (vset pvect 0 2)
-  (setq plen (length pvect))
-  (setq pidx 1))
-[exp] (defun make-pvect nil (setq pvect (make-vector 100 0)) (vset pvect 0 2) (setq plen (length pvect)) (setq pidx 1))
+  (setq pidx 1)
+  (setq plen (length pvect)))
+[exp] (defun make-pvect nil (setq pvect (make-vector 100 0)) (vset pvect 0 2) (setq pidx 1) (setq plen (length pvect)))
 [eval] make-pvect
 
 (defun primeset (x)
@@ -166,19 +166,19 @@ trunc vectorp vref vset while zerop
 [eval] is-prime
 
 (defun primes (x)
-  (cond ((is-prime x 1)
-         (and (primeset x)
-              (primes (add x 2))))
-        (t (primes (add x 2)))))
-[exp] (defun primes (x) (cond ((is-prime x 1) (and (primeset x) (primes (add x 2)))) (t (primes (add x 2)))))
+  (if (is-prime x 1)
+        (if (null (primeset x)) x
+            (primes (add x 2)))
+      (primes (add x 2))))
+[exp] (defun primes (x) (if (is-prime x 1) (if (null (primeset x)) x (primes (add x 2))) (primes (add x 2))))
 [eval] primes
 
 (make-pvect)
 [exp] (make-pvect)
-[eval] 1
+[eval] 100
 (primes 3)
 [exp] (primes 3)
-[eval] nil
+[eval] 547
 pvect
 [exp] pvect
 [eval] #(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101 103 107 109 113 127 131 137 139 149 151 157 163 167 173 179 181 191 193 197 199 211 223 227 229 233 239 241 251 257 263 269 271 277 281 283 293 307 311 313 317 331 337 347 349 353 359 367 373 379 383 389 397 401 409 419 421 431 433 439 443 449 457 461 463 467 479 487 491 499 503 509 521 523 541)
