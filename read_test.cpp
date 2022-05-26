@@ -1763,12 +1763,16 @@ Object *evif(Object *c, Object *a)
 
 Object *evand(Object *c, Object *a)
 {
-  if (c == p_nil)
+  Object *p;
+
+  p = s_eval(car(c), a);
+
+  if (p != p_nil)
   {
-    return p_t;
-  }
-  if (s_eval(car(c), a) != p_nil)
-  {
+    if (cdr(c) == p_nil)
+    {
+      return p;
+    }
     return evand(cdr(c), a);
   }
   else
