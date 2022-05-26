@@ -45,7 +45,7 @@
 [eval] primeset
 [exp] (defun is-prime (x i) (let ((p (vref pvect i))) (cond ((zerop p) t) ((gt (mul p p) x) t) ((zerop (mod x p)) nil) (t (is-prime x (inc i))))))
 [eval] is-prime
-[exp] (defun primes (x) (if (is-prime x 1) (if (null (primeset x)) x (primes (add x 2))) (primes (add x 2))))
+[exp] (defun primes (x) (if (is-prime x 1) (if (primeset x) (primes (add x 2)) x) (primes (add x 2))))
 [eval] primes
 [exp] (make-pvect)
 [eval] 100

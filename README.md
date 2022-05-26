@@ -167,10 +167,10 @@ trunc vectorp vref vset while zerop
 
 (defun primes (x)
   (if (is-prime x 1)
-        (if (null (primeset x)) x
-            (primes (add x 2)))
+        (if (primeset x) (primes (add x 2))
+            x)
       (primes (add x 2))))
-[exp] (defun primes (x) (if (is-prime x 1) (if (null (primeset x)) x (primes (add x 2))) (primes (add x 2))))
+[exp] (defun primes (x) (if (is-prime x 1) (if (primeset x) (primes (add x 2)) x) (primes (add x 2))))
 [eval] primes
 
 (make-pvect)
