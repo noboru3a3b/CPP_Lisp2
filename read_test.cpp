@@ -68,6 +68,7 @@ Atom *p_list = mp->get_atom("list");
 Atom *p_null = mp->get_atom("null");
 Atom *p_if = mp->get_atom("if");
 Atom *p_and = mp->get_atom("and");
+Atom *p_seq = mp->get_atom("seq");
 Atom *p_not = mp->get_atom("not");
 Atom *p_append = mp->get_atom("append");
 Atom *p_reverse = mp->get_atom("reverse");
@@ -1765,6 +1766,11 @@ Object *evand(Object *c, Object *a)
 {
   Object *p;
 
+  if (c == p_nil)
+  {
+    return p_t;
+  }
+
   p = s_eval(car(c), a);
 
   if (p != p_nil)
@@ -1779,6 +1785,24 @@ Object *evand(Object *c, Object *a)
   {
     return p_nil;
   }
+}
+
+Object *evseq(Object *c, Object *a)
+{
+  Object *p;
+
+  if (c == p_nil)
+  {
+    return p_nil;
+  }
+
+  p = s_eval(car(c), a);
+
+  if (cdr(c) == p_nil)
+  {
+    return p;
+  }
+  return evseq(cdr(c), a);
 }
 
 Object *evlis(Object *m, Object *a)
@@ -2863,6 +2887,7 @@ Object *evnull(Object *e, Object *a)
 }
 // (if -> evif() ↑
 // (and -> evand() ↑
+// (seq -> evseq() ↑
 // (not
 Object *evnot(Object *e, Object *a)
 {
@@ -3305,6 +3330,7 @@ int main()
   p_null->func = evnull;
   p_if->func = evif;
   p_and->func = evand;
+  p_seq->func = evseq;
   p_not->func = evnot;
   p_append->func = evappend;
   p_reverse->func = evreverse;
