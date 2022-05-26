@@ -26,10 +26,10 @@ cons const_e const_pi cos cosh dec decq defun div eq
 eqn exp floatp floor funcall gt gte if inc incq
 integerp label lambda length let let* list ln load log
 lt lte make-vector max min mod mul nil nondef not
-null numberp pow print print-atoms quote rassoc reverse round setcar
-setcdr setq sin sinh sqrt sub symbol-value t tan tanh
-trunc vectorp vref vset while zerop
-[eval] 106
+null numberp pow print print-atoms quote rassoc reverse round seq
+setcar setcdr setq sin sinh sqrt sub symbol-value t tan
+tanh trunc vectorp vref vset while zerop
+[eval] 107
 
 > (load "sample.lisp" "sample.txt")
 [exp] (load "sample.lisp" "sample.txt")
@@ -150,9 +150,9 @@ trunc vectorp vref vset while zerop
 
 (defun primeset (x)
   (if (eqn pidx plen) nil
-      (and (vset pvect pidx x)
+      (seq (vset pvect pidx x)
            (incq pidx))))
-[exp] (defun primeset (x) (if (eqn pidx plen) nil (and (vset pvect pidx x) (incq pidx))))
+[exp] (defun primeset (x) (if (eqn pidx plen) nil (seq (vset pvect pidx x) (incq pidx))))
 [eval] primeset
 
 (defun is-prime (x i)
@@ -167,9 +167,9 @@ trunc vectorp vref vset while zerop
 (defun primes (x)
   (if (is-prime x 1)
         (if (primeset x) (primes (add x 2))
-            (and (vset pvect 0 2) pvect))
+            (seq (vset pvect 0 2) pvect))
       (primes (add x 2))))
-[exp] (defun primes (x) (if (is-prime x 1) (if (primeset x) (primes (add x 2)) (and (vset pvect 0 2) pvect)) (primes (add x 2))))
+[exp] (defun primes (x) (if (is-prime x 1) (if (primeset x) (primes (add x 2)) (seq (vset pvect 0 2) pvect)) (primes (add x 2))))
 [eval] primes
 
 (make-pvect)
@@ -194,8 +194,8 @@ label lambda length let let* list ln load log lt
 lte make-pvect make-queue make-variable-c make-vector max min mod mul n
 nil nondef not null numberp p p-list pidx plen pow
 primes primeset print print-atoms pvect q queue quote rassoc reverse
-round setcar setcdr setq sin sinh sqr+ sqr+0 sqrt sub
-symbol-value t tan tanh trunc vectorp vref vset while x
-y zerop
-[eval] 132
+round seq setcar setcdr setq sin sinh sqr+ sqr+0 sqrt
+sub symbol-value t tan tanh trunc vectorp vref vset while
+x y zerop
+[eval] 133
 ```
