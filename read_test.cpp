@@ -148,6 +148,10 @@ Atom *p_vref = mp->get_atom("vref");
 Atom *p_vset = mp->get_atom("vset");
 Atom *p_length = mp->get_atom("length");
 
+Atom *p_splitstring = mp->get_atom("split-string");
+Atom *p_concat = mp->get_atom("concat");
+Atom *p_stringp = mp->get_atom("stringp");
+
 //Atom *p_pair = mp->get_atom("pair");
 
 //tom *p_evcon = mp->get_atom("evcon");
@@ -1738,6 +1742,25 @@ Object *rassoc2(Object *x, Object *y)
   }
 }
 
+vector<string> split_naive(const string &s, char delim)
+{
+  vector<string> elems;
+  string item;
+  for (char ch: s) {
+      if (ch == delim) {
+          if (!item.empty())
+              elems.push_back(item);
+          item.clear();
+      }
+      else {
+          item += ch;
+      }
+  }
+  if (!item.empty())
+      elems.push_back(item);
+  return elems;
+}
+
 Object *evcon(Object *c, Object *a)
 {
   if (s_eval(caar(c), a) != p_nil)
@@ -3077,6 +3100,7 @@ Object *evload(Object *e, Object *a)
   Object *p;
   Object *p2;
   Object *q;
+  string s;
 
   p = s_eval(car(e), a);
 
@@ -3086,7 +3110,9 @@ Object *evload(Object *e, Object *a)
     return p_nil;
   }
 
-  ifstream ifs(((String *)p)->value);
+  s = ((String *)p)->value;
+
+  ifstream ifs(s);
   if (ifs.fail())
   {
     cerr << "Failed to open file." << endl;
@@ -3106,14 +3132,24 @@ Object *evload(Object *e, Object *a)
 
     // Open Output FILE
     ofs.open(((String *)p2)->value);
-    if (ofs.fail())
-    {
-      cerr << "Failed to open file." << endl;
-      return p_nil;
-    }
 
-    ofs_on = true;
   }
+  // Create 2nd Param
+  else
+  {
+    vector<string> v = split_naive(s, '.');
+
+    // Open Output FILE
+    ofs.open(v[0] + ".txt");
+  }
+
+  if (ofs.fail())
+  {
+    cerr << "Failed to open file." << endl;
+    return p_nil;
+  }
+
+  ofs_on = true;
 
 
   // Start of FILE
@@ -3283,6 +3319,76 @@ Object *evlength(Object *e, Object *a)
     return p_nil;
   }
 }
+// (split-string Exp Exp
+Object *evsplitstring(Object *e, Object *a)
+{
+  Object *p;
+  Object *q;
+  Object *r;
+
+  p = s_eval(car(e), a);
+  q = s_eval(cadr(e), a);
+
+  // String
+  if ((typeid(*p) == id_String) &&
+      (typeid(*q) == id_String))
+  {
+    string s = ((String *)p)->value;
+    string d = ((String *)q)->value;
+    vector<string> v = split_naive(s, d[0]);
+
+    r = p_nil;
+
+    for (int i = v.size()-1; i >= 0; i--)
+    {
+      r = cons(new String(v[i]), r);
+    }
+    return r;
+  }
+  // others
+  else
+  {
+    return p_nil;
+  }
+}
+// (concat Exp Exp ...
+Object *evconcat(Object *e, Object *a)
+{
+  Object *p;
+
+  string s = "";
+
+  while (typeid(*e) == id_Cell)
+  {
+    p = s_eval(car(e), a);
+
+    if (typeid(*p) == id_String)
+    {
+      s += ((String *)p)->value;
+      e = cdr(e);
+    }
+    else
+    {
+      return new String(s);
+    }
+  }
+
+  return new String(s);
+}
+// (stringp String
+Object *evstringp(Object *e, Object *a)
+{
+  Object *p;
+
+  p = s_eval(car(e), a);
+
+  if (typeid(*p) == id_String)
+  {
+    return p_t;
+  }
+
+  return p_nil;
+}
 
 
 // --------------- Main Loop ---------------
@@ -3409,6 +3515,10 @@ int main()
   p_vref->func = evvref;
   p_vset->func = evvset;
   p_length->func = evlength;
+
+  p_splitstring->func = evsplitstring;
+  p_concat->func = evconcat;
+  p_stringp->func = evstringp;
 
 
   while (1)
