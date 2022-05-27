@@ -14,6 +14,7 @@ class String  : public Object
   string value;
   
   String();
+  String(string s);
   ~String();
   
   void print();

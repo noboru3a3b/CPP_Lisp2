@@ -12,6 +12,11 @@ String::String()
 
 }
 
+String::String(string s)
+{
+  value = s;
+}
+
 String::~String()
 {
 

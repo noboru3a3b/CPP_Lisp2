@@ -21,18 +21,18 @@ make read_test
 * + - / 0= 1+ 1- < <= =
 > >= abs acos add and append apply asin assoc
 atan atom caaar caadr caar cadar caddar caddr cadr car
-cdaar cdadr cdar cddar cdddar cdddr cddr cdr closure cond
-cons const_e const_pi cos cosh dec decq defun div eq
-eqn exp floatp floor funcall gt gte if inc incq
-integerp label lambda length let let* list ln load log
-lt lte make-vector max min mod mul nil nondef not
-null numberp pow print print-atoms quote rassoc reverse round seq
-setcar setcdr setq sin sinh sqrt sub symbol-value t tan
-tanh trunc vectorp vref vset while zerop
-[eval] 107
+cdaar cdadr cdar cddar cdddar cdddr cddr cdr closure concat
+cond cons const_e const_pi cos cosh dec decq defun div
+eq eqn exp floatp floor funcall gt gte if inc
+incq integerp label lambda length let let* list ln load
+log lt lte make-vector max min mod mul nil nondef
+not null numberp pow print print-atoms quote rassoc reverse round
+seq setcar setcdr setq sin sinh split-string sqrt stringp sub
+symbol-value t tan tanh trunc vectorp vref vset while zerop
+[eval] 110
 
-> (load "sample.lisp" "sample.txt")
-[exp] (load "sample.lisp" "sample.txt")
+> (load "sample.lisp")
+[exp] (load "sample.lisp")
 ----------
 (let ((n 0))
   (while (< n 10)
@@ -187,15 +187,15 @@ tanh trunc vectorp vref vset while zerop
 > >= abs acos add and append apply asin assoc
 atan atom c caaar caadr caar cadar caddar caddr cadr
 car cdaar cdadr cdar cddar cdddar cdddr cddr cdr closure
-cond cons const_e const_pi cos cosh dec dec-c decq defun
-div en-queue eq eqn exp floatp floor funcall funcs get-c
-get-list gt gte i if inc inc-c incq integerp is-prime
-label lambda length let let* list ln load log lt
-lte make-pvect make-queue make-variable-c make-vector max min mod mul n
-nil nondef not null numberp p p-list pidx plen pow
-primes primeset print print-atoms pvect q queue quote rassoc reverse
-round seq setcar setcdr setq sin sinh sqr+ sqr+0 sqrt
-sub symbol-value t tan tanh trunc vectorp vref vset while
-x y zerop
-[eval] 133
+concat cond cons const_e const_pi cos cosh dec dec-c decq
+defun div en-queue eq eqn exp floatp floor funcall funcs
+get-c get-list gt gte i if inc inc-c incq integerp
+is-prime label lambda length let let* list ln load log
+lt lte make-pvect make-queue make-variable-c make-vector max min mod mul
+n nil nondef not null numberp p p-list pidx plen
+pow primes primeset print print-atoms pvect q queue quote rassoc
+reverse round seq setcar setcdr setq sin sinh split-string sqr+
+sqr+0 sqrt stringp sub symbol-value t tan tanh trunc vectorp
+vref vset while x y zerop
+[eval] 136
 ```
