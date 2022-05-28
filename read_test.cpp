@@ -151,6 +151,11 @@ Atom *p_length = mp->get_atom("length");
 Atom *p_splitstring = mp->get_atom("split-string");
 Atom *p_concat = mp->get_atom("concat");
 Atom *p_stringp = mp->get_atom("stringp");
+Atom *p_makestring = mp->get_atom("make-string");
+Atom *p_substring = mp->get_atom("substring");
+Atom *p_stringeq = mp->get_atom("string=");
+Atom *p_stringlt = mp->get_atom("string<");
+Atom *p_stringgt = mp->get_atom("string>");
 
 //Atom *p_pair = mp->get_atom("pair");
 
@@ -3389,6 +3394,93 @@ Object *evstringp(Object *e, Object *a)
 
   return p_nil;
 }
+// (make-string n exp
+Object *evmakestring(Object *e, Object *a)
+{
+  Object *p;
+  Object *q;
+  long8 n;
+  string str;
+
+  // Int, Exp
+  p = s_eval(car(e), a);
+  q = s_eval(cadr(e), a);
+
+  // n
+  n = ((Num_int *)p)->value;
+
+  str = "";
+
+  for (int i = 0; i < n; i++)
+  {
+    str += ((String *)q)->value;
+  }
+
+  return new String(str);
+}
+// (substring Exp m n
+Object *evsubstring(Object *e, Object *a)
+{
+  string s;
+  long8 m;
+  long8 n;
+  long8 len;
+
+  s = ((String *)s_eval(car(e), a))->value;
+  len = s.size();
+
+  m = to_int(cadr(e), a);
+  if (m < 0) m = len + m;
+
+  n = to_int(caddr(e), a);
+  if (n < 0) n = len + n;
+
+  len = n - m;
+
+  // String
+  s = s.substr(m, len);
+
+  return new String(s);
+}
+// (string= Exp Exp
+Object *evstringeq(Object *e, Object *a)
+{
+  string s1;
+  string s2;
+
+  s1 = ((String *)s_eval(car(e), a))->value;
+  s2 = ((String *)s_eval(cadr(e), a))->value;
+
+  if (s1 == s2) return p_t;
+
+  return p_nil;
+}
+// (string< Exp Exp
+Object *evstringlt(Object *e, Object *a)
+{
+  string s1;
+  string s2;
+
+  s1 = ((String *)s_eval(car(e), a))->value;
+  s2 = ((String *)s_eval(cadr(e), a))->value;
+
+  if (s1 < s2) return p_t;
+
+  return p_nil;
+}
+// (string> Exp Exp
+Object *evstringgt(Object *e, Object *a)
+{
+  string s1;
+  string s2;
+
+  s1 = ((String *)s_eval(car(e), a))->value;
+  s2 = ((String *)s_eval(cadr(e), a))->value;
+
+  if (s1 > s2) return p_t;
+
+  return p_nil;
+}
 
 
 // --------------- Main Loop ---------------
@@ -3519,6 +3611,11 @@ int main()
   p_splitstring->func = evsplitstring;
   p_concat->func = evconcat;
   p_stringp->func = evstringp;
+  p_makestring->func = evmakestring;
+  p_substring->func = evsubstring;
+  p_stringeq->func = evstringeq;
+  p_stringlt->func = evstringlt;
+  p_stringgt->func = evstringgt;
 
 
   while (1)
