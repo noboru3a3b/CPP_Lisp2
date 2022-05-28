@@ -41,6 +41,7 @@ Atom *p_const_pi = mp->get_atom("const_pi");
 Atom *p_const_e = mp->get_atom("const_e");
 
 Atom *p_quote = mp->get_atom("quote");
+Atom *p_function = mp->get_atom("function");
 Atom *p_atom = mp->get_atom("atom");
 Atom *p_eq = mp->get_atom("eq");
 Atom *p_car = mp->get_atom("car");
@@ -3502,6 +3503,7 @@ int main()
 
   // Set Atom function 
   p_quote->func = evquote;
+  p_function->func = evquote;
   p_atom->func = evatom;
   p_eq->func = eveq;
   p_car->func = evcar;
