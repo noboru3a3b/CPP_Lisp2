@@ -25,11 +25,12 @@ cdaar cdadr cdar cddar cdddar cdddr cddr cdr closure concat
 cond cons const_e const_pi cos cosh dec decq defun div
 eq eqn exp floatp floor funcall gt gte if inc
 incq integerp label lambda length let let* list ln load
-log lt lte make-vector max min mod mul nil nondef
-not null numberp pow print print-atoms quote rassoc reverse round
-seq setcar setcdr setq sin sinh split-string sqrt stringp sub
-symbol-value t tan tanh trunc vectorp vref vset while zerop
-[eval] 110
+log lt lte make-string make-vector max min mod mul nil
+nondef not null numberp pow print print-atoms quote rassoc reverse
+round seq setcar setcdr setq sin sinh split-string sqrt string<
+string= string> stringp sub substring symbol-value t tan tanh trunc
+vectorp vref vset while zerop
+[eval] 115
 
 > (load "sample.lisp")
 [exp] (load "sample.lisp")
@@ -178,24 +179,35 @@ symbol-value t tan tanh trunc vectorp vref vset while zerop
 (primes 3)
 [exp] (primes 3)
 [eval] #(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101 103 107 109 113 127 131 137 139 149 151 157 163 167 173 179 181 191 193 197 199 211 223 227 229 233 239 241 251 257 263 269 271 277 281 283 293 307 311 313 317 331 337 347 349 353 359 367 373 379 383 389 397 401 409 419 421 431 433 439 443 449 457 461 463 467 479 487 491 499 503 509 521 523 541)
+
+(setq IN_FILE "sample.lisp")
+[exp] (setq IN_FILE "sample.lisp")
+[eval] "sample.lisp"
+(setq SPLIT_LIST (split-string IN_FILE "."))
+[exp] (setq SPLIT_LIST (split-string IN_FILE "."))
+[eval] ("sample" "lisp")
+(setq OUT_FILE (concat (car SPLIT_LIST) "." "txt"))
+[exp] (setq OUT_FILE (concat (car SPLIT_LIST) "." "txt"))
+[eval] "sample.txt"
 ----------
 [eval] t
 
 > (print-atoms)
 [exp] (print-atoms)
 * + - / 0= 1+ 1- < <= =
-> >= abs acos add and append apply asin assoc
-atan atom c caaar caadr caar cadar caddar caddr cadr
-car cdaar cdadr cdar cddar cdddar cdddr cddr cdr closure
-concat cond cons const_e const_pi cos cosh dec dec-c decq
-defun div en-queue eq eqn exp floatp floor funcall funcs
-get-c get-list gt gte i if inc inc-c incq integerp
-is-prime label lambda length let let* list ln load log
-lt lte make-pvect make-queue make-variable-c make-vector max min mod mul
-n nil nondef not null numberp p p-list pidx plen
-pow primes primeset print print-atoms pvect q queue quote rassoc
-reverse round seq setcar setcdr setq sin sinh split-string sqr+
-sqr+0 sqrt stringp sub symbol-value t tan tanh trunc vectorp
-vref vset while x y zerop
-[eval] 136
+> >= IN_FILE OUT_FILE SPLIT_LIST abs acos add and append
+apply asin assoc atan atom c caaar caadr caar cadar
+caddar caddr cadr car cdaar cdadr cdar cddar cdddar cdddr
+cddr cdr closure concat cond cons const_e const_pi cos cosh
+dec dec-c decq defun div en-queue eq eqn exp floatp
+floor funcall funcs get-c get-list gt gte i if inc
+inc-c incq integerp is-prime label lambda length let let* list
+ln load log lt lte make-pvect make-queue make-string make-variable-c make-vector
+max min mod mul n nil nondef not null numberp
+p p-list pidx plen pow primes primeset print print-atoms pvect
+q queue quote rassoc reverse round seq setcar setcdr setq
+sin sinh split-string sqr+ sqr+0 sqrt string< string= string> stringp
+sub substring symbol-value t tan tanh trunc vectorp vref vset
+while x y zerop
+[eval] 144
 ```
