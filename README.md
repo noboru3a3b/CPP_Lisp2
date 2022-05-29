@@ -22,15 +22,15 @@ make read_test
 > >= abs acos add and append apply asin assoc
 atan atom caaar caadr caar cadar caddar caddr cadr car
 cdaar cdadr cdar cddar cdddar cdddr cddr cdr closure concat
-cond cons const_e const_pi cos cosh dec decq defun div
-eq eqn exp floatp floor funcall function gt gte if
-inc incq integerp label lambda length let let* list ln
-load log lt lte make-string make-vector max min mod mul
-nil nondef not null numberp pow print print-atoms quote rassoc
-reverse round seq setcar setcdr setq sin sinh split-string sqrt
-string< string= string> stringp sub substring symbol-value t tan tanh
-trunc vectorp vref vset while zerop
-[eval] 116
+cond cons consp const_e const_pi cos cosh dec decq defun
+div eq eqn equal exp floatp floor funcall function gt
+gte if inc incq integerp label lambda length let let*
+list listp ln load log lt lte make-string make-vector max
+min mod mul nil nondef not null numberp pow print
+print-atoms quote rassoc reverse round seq setcar setcdr setq sin
+sinh split-string sqrt string< string= string> stringp sub substring symbol-value
+t tan tanh trunc vectorp vref vset while zerop
+[eval] 119
 
 > (load "sample.lisp")
 [exp] (load "sample.lisp")
@@ -198,16 +198,16 @@ trunc vectorp vref vset while zerop
 > >= IN_FILE OUT_FILE SPLIT_LIST abs acos add and append
 apply asin assoc atan atom c caaar caadr caar cadar
 caddar caddr cadr car cdaar cdadr cdar cddar cdddar cdddr
-cddr cdr closure concat cond cons const_e const_pi cos cosh
-dec dec-c decq defun div en-queue eq eqn exp floatp
-floor funcall funcs function get-c get-list gt gte i if
-inc inc-c incq integerp is-prime label lambda length let let*
-list ln load log lt lte make-pvect make-queue make-string make-variable-c
-make-vector max min mod mul n nil nondef not null
-numberp p p-list pidx plen pow primes primeset print print-atoms
-pvect q queue quote rassoc reverse round seq setcar setcdr
-setq sin sinh split-string sqr+ sqr+0 sqrt string< string= string>
-stringp sub substring symbol-value t tan tanh trunc vectorp vref
-vset while x y zerop
-[eval] 145
+cddr cdr closure concat cond cons consp const_e const_pi cos
+cosh dec dec-c decq defun div en-queue eq eqn equal
+exp floatp floor funcall funcs function get-c get-list gt gte
+i if inc inc-c incq integerp is-prime label lambda length
+let let* list listp ln load log lt lte make-pvect
+make-queue make-string make-variable-c make-vector max min mod mul n nil
+nondef not null numberp p p-list pidx plen pow primes
+primeset print print-atoms pvect q queue quote rassoc reverse round
+seq setcar setcdr setq sin sinh split-string sqr+ sqr+0 sqrt
+string< string= string> stringp sub substring symbol-value t tan tanh
+trunc vectorp vref vset while x y zerop
+[eval] 148
 ```
