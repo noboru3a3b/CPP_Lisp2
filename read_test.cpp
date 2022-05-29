@@ -73,6 +73,8 @@ Atom *p_seq = mp->get_atom("seq");
 Atom *p_not = mp->get_atom("not");
 Atom *p_append = mp->get_atom("append");
 Atom *p_reverse = mp->get_atom("reverse");
+Atom *p_consp = mp->get_atom("consp");
+Atom *p_listp = mp->get_atom("listp");
 
 Atom *p_add = mp->get_atom("add");
 Atom *p_sub = mp->get_atom("sub");
@@ -157,6 +159,7 @@ Atom *p_substring = mp->get_atom("substring");
 Atom *p_stringeq = mp->get_atom("string=");
 Atom *p_stringlt = mp->get_atom("string<");
 Atom *p_stringgt = mp->get_atom("string>");
+Atom *p_equal = mp->get_atom("equal");
 
 //Atom *p_pair = mp->get_atom("pair");
 
@@ -1748,6 +1751,105 @@ Object *rassoc2(Object *x, Object *y)
   }
 }
 
+Atom *equal(Object *p, Object *q)
+{
+  if (typeid(*p) == typeid(*q))
+  {
+    // Atom
+    if (typeid(*p) == id_Atom)
+    {
+     if (p == q)
+      {
+        return p_t;
+      }
+      else
+      {
+        return p_nil;
+      }
+    }
+    // Cell
+    else if (typeid(*p) == id_Cell)
+    {
+      if (equal(car(p), car(q)) != p_nil)
+      {
+        if (equal(cdr(p), cdr(q)) != p_nil)
+        {
+          return p_t;
+        }
+        else
+        {
+          return p_nil;  
+        }
+      }
+      else
+      {
+        return p_nil;
+      }
+    }
+    // Vector
+    else if (typeid(*p) == id_Vector)
+    {
+      if (((Vector *)p)->size == ((Vector *)q)->size)
+      {
+        for (int i = 0; i < ((Vector *)p)->size; i++)
+        {
+          if (equal(((Vector *)p)->vector[i], ((Vector *)q)->vector[i]) == p_nil)
+          {
+            return p_nil;  
+          }
+        }
+
+        return p_t;
+      }
+      else
+      {
+         return p_nil;  
+      }
+    }
+    else if (typeid(*p) == id_String)
+    {
+     if (((String *)p)->value == ((String *)q)->value)
+      {
+        return p_t;
+      }
+      else
+      {
+        return p_nil;
+      }
+    }
+    else if (typeid(*p) == id_Num_int)
+    {
+     if (((Num_int *)p)->value == ((Num_int *)q)->value)
+      {
+        return p_t;
+      }
+      else
+      {
+        return p_nil;
+      }
+    }
+      else if (typeid(*p) == id_Num_float)
+    {
+     if (((Num_float *)p)->value == ((Num_float *)q)->value)
+      {
+        return p_t;
+      }
+      else
+      {
+        return p_nil;
+      }
+    }
+    else
+    {
+        return p_nil;
+    }
+  }
+  else
+  {
+    return p_nil;
+  }
+}
+
 vector<string> split_naive(const string &s, char delim)
 {
   vector<string> elems;
@@ -2932,6 +3034,35 @@ Object *evreverse(Object *e, Object *a)
 {
   return reverse(s_eval(car(e), a));  
 }
+// (consp Cell
+Object *evconsp(Object *e, Object *a)
+{
+  Object *p;
+
+  p = s_eval(car(e), a);
+
+  if (typeid(*p) == id_Cell)
+  {
+    return p_t;
+  }
+
+  return p_nil;
+}
+// (listp List
+Object *evlistp(Object *e, Object *a)
+{
+  Object *p;
+
+  p = s_eval(car(e), a);
+
+  if ((typeid(*p) == id_Cell) ||
+      (p = p_nil))
+  {
+    return p_t;
+  }
+
+  return p_nil;
+}
 // (add -> evadd() ↑
 // (sub -> evsub() ↑
 // (mul -> evmul() ↑
@@ -3482,6 +3613,11 @@ Object *evstringgt(Object *e, Object *a)
 
   return p_nil;
 }
+// (equal Exp Exp
+Object *evequal(Object *e, Object *a)
+{
+  return equal(s_eval(car(e), a), s_eval(cadr(e), a));
+}
 
 
 // --------------- Main Loop ---------------
@@ -3534,6 +3670,8 @@ int main()
   p_not->func = evnot;
   p_append->func = evappend;
   p_reverse->func = evreverse;
+  p_consp->func = evconsp;
+  p_listp->func = evlistp;
 
   p_add->func = evadd;
   p_sub->func = evsub;
@@ -3618,6 +3756,7 @@ int main()
   p_stringeq->func = evstringeq;
   p_stringlt->func = evstringlt;
   p_stringgt->func = evstringgt;
+  p_equal->func = evequal;
 
 
   while (1)
