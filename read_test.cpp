@@ -350,7 +350,7 @@ string s_input_file(ifstream *ifs)
   return s_text;
 }
 
-string expand_function(string str)
+string expand_function(const string& str)
 {
   string line_text;
   int leftp_cnt = 0;
@@ -456,7 +456,7 @@ string expand_function(string str)
   return line_text;
 }
 
-string expand_quote(string str)
+string expand_quote(const string& str)
 {
   string line_text;
   int leftp_cnt = 0;
@@ -595,7 +595,7 @@ string expand_quote(string str)
   return line_text;
 }
 
-bool is_dot(string s)
+bool is_dot(const string& s)
 {
   char c = s[0];
   int length = s.size();
@@ -611,7 +611,7 @@ bool is_dot(string s)
 }
 
 
-bool is_int(string s)
+bool is_int(const string& s)
 {
   char c;
   int end = s.size();
@@ -640,7 +640,7 @@ bool is_int(string s)
 }
 
 
-bool is_float(string s)
+bool is_float(const string& s)
 {
   char c;
   int end = s.size();
@@ -671,7 +671,7 @@ bool is_float(string s)
 }
 
 
-void error_exit(string str)
+void error_exit(const string& str)
 {
   cout << str << endl;
   exit(1);
@@ -687,7 +687,7 @@ void error_exit(string str)
 // #(1 2 3)                        (Vector) *
 // #'(...)                         (function () (...)) -
 
-string get_elem(string text, int *idx, Type *type)
+string get_elem(const string& text, int *idx, Type *type)
 {
   int i;
   int i_start;
@@ -902,7 +902,7 @@ int count_items(vector<Token> *tokens, int idx, int i)
 
 // --------------- Read One S-Expression ---------------
 
-void get_elems(string text, vector<Token> *tokens)
+void get_elems(const string& text, vector<Token> *tokens)
 {
   string s;
   string rest;
@@ -1380,7 +1380,7 @@ void v_rest_skip(vector<Token> *tokens, int idx, int *rest_idx)
 }
 
 
-bool is_space(string str)
+bool is_space(const string& str)
 {
   for (int i = 0; i < str.size(); i++)
   {
