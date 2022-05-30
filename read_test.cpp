@@ -72,7 +72,9 @@ Atom *p_and = mp->get_atom("and");
 Atom *p_seq = mp->get_atom("seq");
 Atom *p_not = mp->get_atom("not");
 Atom *p_append = mp->get_atom("append");
+Atom *p_nconc = mp->get_atom("nconc");
 Atom *p_reverse = mp->get_atom("reverse");
+Atom *p_nreverse = mp->get_atom("nreverse");
 Atom *p_consp = mp->get_atom("consp");
 Atom *p_listp = mp->get_atom("listp");
 
@@ -1670,6 +1672,20 @@ Object *append(Object *x, Object *y)
   }
 }
 
+Object *nconc(Object *x, Object *y)
+{
+  if (cdr(x) == p_nil)
+  {
+    ((Cell *)x)->set_cdr(y);
+    return p_nil;
+  }
+  else
+  {
+    nconc(cdr(x), y);
+    return x; 
+  }
+}
+
 Object *rev0(Object *x, Object *y)
 {
   if (null(x) == p_t)
@@ -1685,6 +1701,34 @@ Object *rev0(Object *x, Object *y)
 Object *reverse(Object *x)
 {
   return rev0(x, p_nil);
+}
+
+Object *nrev0(Object *x, Object *y)
+{
+  Object *p;
+
+  if (cdr(y) == p_nil)
+  {
+    ((Cell *)y)->set_cdr(x);
+    return y;
+  }
+  else
+  {
+    p = cdr(y);
+
+    ((Cell *)y)->set_cdr(x);
+    return nrev0(y, p);
+
+  }
+}
+
+Object *nreverse(Object *x)
+{
+  Object *p;
+
+  p = cdr(x);
+  ((Cell *)x)->set_cdr(p_nil);
+  return nrev0(x, p);
 }
 
 Object *s_pair(Object *x, Object *y)
@@ -3027,12 +3071,36 @@ Object *evnot(Object *e, Object *a)
 // (append
 Object *evappend(Object *e, Object *a)
 {
-  return append(s_eval(car(e), a), s_eval(cadr(e), a));
+  if (cddr(e) == p_nil)
+  {
+    return append(s_eval(car(e), a), s_eval(cadr(e), a));
+  }
+  else
+  {
+    return append(s_eval(car(e), a), evappend(cdr(e), a));
+  }
+}
+// (nconc
+Object *evnconc(Object *e, Object *a)
+{
+  if (cddr(e) == p_nil)
+  {
+    return nconc(s_eval(car(e), a), s_eval(cadr(e), a));
+  }
+  else
+  {
+    return nconc(s_eval(car(e), a), evnconc(cdr(e), a));
+  }
 }
 // (reverse
 Object *evreverse(Object *e, Object *a)
 {
   return reverse(s_eval(car(e), a));  
+}
+// (nreverse
+Object *evnreverse(Object *e, Object *a)
+{
+  return nreverse(s_eval(car(e), a));  
 }
 // (consp Cell
 Object *evconsp(Object *e, Object *a)
@@ -3669,7 +3737,9 @@ int main()
   p_seq->func = evseq;
   p_not->func = evnot;
   p_append->func = evappend;
+  p_nconc->func = evnconc;
   p_reverse->func = evreverse;
+  p_nreverse->func = evnreverse;
   p_consp->func = evconsp;
   p_listp->func = evlistp;
 
