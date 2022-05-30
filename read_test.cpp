@@ -144,6 +144,7 @@ Atom *p_apply = mp->get_atom("apply");
 Atom *p_closure = mp->get_atom("closure");
 Atom *p_setcar = mp->get_atom("setcar");
 Atom *p_setcdr = mp->get_atom("setcdr");
+Atom *p_mapcar = mp->get_atom("mapcar");
 
 Atom *p_printatoms = mp->get_atom("print-atoms");
 Atom *p_load = mp->get_atom("load");
@@ -3288,6 +3289,64 @@ Object *evsetcdr(Object *e, Object *a)
   ((Cell *)s_eval(car(e), a))->set_cdr(p);
   return p;
 }
+// (mapvect fn v i size a
+Object *evmapvect(Object *fn, Object *v, long8 i, long8 size, Object *a)
+{
+  if (i == size)
+  {
+    return p_nil;
+  }
+  else
+  {
+    return cons(s_eval(list(fn, ((Vector *)v)->vector[i]), a), evmapvect(fn, v, i + 1, size, a));
+  }
+}
+// (maplist fn lst a
+Object *evmaplist(Object *fn, Object *lst, Object *a)
+{
+  if (lst == p_nil)
+  {
+    return p_nil;
+  }
+  else
+  {
+    return cons(s_eval(list(fn, car(lst)), a), evmaplist(fn, cdr(lst), a));
+  }
+}
+// (mapcar fn list
+Object *evmapcar(Object *e, Object *a)
+{
+  Object *fn;
+  Object *lst;
+
+  fn = s_eval(car(e), a);
+  lst = s_eval(cadr(e), a);
+
+  // Vector
+  if (typeid(*lst) == id_Vector)
+  {
+    if (((Vector *)lst)->size == 0)
+    {
+      return p_nil;
+    }
+    else
+    {
+      return evmapvect(fn, lst, 0, ((Vector *)lst)->size, a);
+    }
+  }
+  // Cell
+  else
+  {
+    if (lst == p_nil)
+    {
+      return p_nil;
+    }
+    else
+    {
+      return evmaplist(fn, lst, a);
+    }
+  }
+}
 // (print-atoms)
 Object *evprintatoms(Object *e, Object *a)
 {
@@ -3809,6 +3868,7 @@ int main()
   p_closure->func = evclosure;
   p_setcar->func = evsetcar;
   p_setcdr->func = evsetcdr;
+  p_mapcar->func = evmapcar;
 
   p_printatoms->func = evprintatoms;
   p_load->func = evload;
