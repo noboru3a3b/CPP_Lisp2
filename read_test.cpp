@@ -69,7 +69,7 @@ Atom *p_list = mp->get_atom("list");
 Atom *p_null = mp->get_atom("null");
 Atom *p_if = mp->get_atom("if");
 Atom *p_and = mp->get_atom("and");
-Atom *p_seq = mp->get_atom("seq");
+Atom *p_progn = mp->get_atom("progn");
 Atom *p_not = mp->get_atom("not");
 Atom *p_append = mp->get_atom("append");
 Atom *p_nconc = mp->get_atom("nconc");
@@ -1944,13 +1944,25 @@ Object *evcon(Object *c, Object *a)
 
 Object *evif(Object *c, Object *a)
 {
+  Object *p;
+  Object *r;
+
   if (s_eval(car(c), a) != p_nil)
   {
     return s_eval(cadr(c), a);
   }
   else
   {
-    return s_eval(caddr(c), a);
+    p = cddr(c);
+    r = p_nil;
+
+    while (p != p_nil)
+    {
+      r = s_eval(car(p), a);
+      p = cdr(p);
+    }
+
+    return r;
   }
 }
 
@@ -1979,7 +1991,7 @@ Object *evand(Object *c, Object *a)
   }
 }
 
-Object *evseq(Object *c, Object *a)
+Object *evprogn(Object *c, Object *a)
 {
   Object *p;
 
@@ -1994,7 +2006,7 @@ Object *evseq(Object *c, Object *a)
   {
     return p;
   }
-  return evseq(cdr(c), a);
+  return evprogn(cdr(c), a);
 }
 
 Object *evlis(Object *m, Object *a)
@@ -3079,7 +3091,7 @@ Object *evnull(Object *e, Object *a)
 }
 // (if -> evif() ↑
 // (and -> evand() ↑
-// (seq -> evseq() ↑
+// (progn -> evprogn() ↑
 // (not
 Object *evnot(Object *e, Object *a)
 {
@@ -4000,7 +4012,7 @@ int main()
   p_null->func = evnull;
   p_if->func = evif;
   p_and->func = evand;
-  p_seq->func = evseq;
+  p_progn->func = evprogn;
   p_not->func = evnot;
   p_append->func = evappend;
   p_nconc->func = evnconc;
