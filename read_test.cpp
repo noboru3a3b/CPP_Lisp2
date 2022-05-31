@@ -139,6 +139,7 @@ Atom *p_while = mp->get_atom("while");
 Atom *p_assoc = mp->get_atom("assoc");
 Atom *p_rassoc = mp->get_atom("rassoc");
 Atom *p_symbolvalue = mp->get_atom("symbol-value");
+Atom *p_symbolname = mp->get_atom("symbol-name");
 Atom *p_funcall = mp->get_atom("funcall");
 Atom *p_apply = mp->get_atom("apply");
 Atom *p_closure = mp->get_atom("closure");
@@ -147,6 +148,7 @@ Atom *p_setcdr = mp->get_atom("setcdr");
 Atom *p_mapcar = mp->get_atom("mapcar");
 Atom *p_mapc = mp->get_atom("mapc");
 Atom *p_mapcan = mp->get_atom("mapcan");
+Atom *p_mapconcat = mp->get_atom("mapconcat");
 
 Atom *p_printatoms = mp->get_atom("print-atoms");
 Atom *p_load = mp->get_atom("load");
@@ -3269,6 +3271,11 @@ Object *evsymbolvalue(Object *e, Object *a)
 {
   return s_eval(s_eval(car(e), a), a);
 }
+// symbol-name
+Object *evsymbolname(Object *e, Object *a)
+{
+  return new String(((Atom *)s_eval(car(e), a))->name);
+}
 // (funcall fn ... )
 Object *evfuncall(Object *e, Object *a)
 {
@@ -3376,6 +3383,32 @@ Object *evmapcanlist(Object *fn, Object *lst, Object *a)
     return nconc(s_eval(list(fn, list(p_quote, car(lst))), a), evmapcanlist(fn, cdr(lst), a));
   }
 }
+// (mapconcatvect fn v sp i size a
+string evmapconcatvect(Object *fn, Object *v, Object *sp, long8 i, long8 size, Object *a)
+{
+  if (i + 1 == size)
+  {
+    return ((String *)s_eval(list(fn, list(p_quote, ((Vector *)v)->vector[i])), a))->value;
+  }
+  else
+  {
+    return ((String *)s_eval(list(fn, list(p_quote, ((Vector *)v)->vector[i])), a))->value +
+           ((String *)sp)->value + evmapconcatvect(fn, v, sp, i + 1, size, a);
+  }
+}
+// (mapconcatlist fn lst sp a
+string evmapconcatlist(Object *fn, Object *lst, Object *sp, Object *a)
+{
+  if (cdr(lst) == p_nil)
+  {
+    return ((String *)s_eval(list(fn, list(p_quote, car(lst))), a))->value;
+  }
+  else
+  {
+    return ((String *)s_eval(list(fn, list(p_quote, car(lst))), a))->value +
+           ((String *)sp)->value + evmapconcatlist(fn, cdr(lst), sp, a);
+  }
+}
 // (mapcar fn list
 Object *evmapcar(Object *e, Object *a)
 {
@@ -3477,6 +3510,42 @@ Object *evmapcan(Object *e, Object *a)
     else
     {
       return evmapcanlist(fn, lst, a);
+    }
+  }
+}
+// (mapconcat fn list sp
+Object *evmapconcat(Object *e, Object *a)
+{
+  Object *fn;
+  Object *lst;
+  Object *sp;
+
+  fn = s_eval(car(e), a);
+  lst = s_eval(cadr(e), a);
+  sp = s_eval(caddr(e), a);
+
+  // Vector
+  if (typeid(*lst) == id_Vector)
+  {
+    if (((Vector *)lst)->size == 0)
+    {
+      return p_nil;
+    }
+    else
+    {
+      return new String(evmapconcatvect(fn, lst, sp, 0, ((Vector *)lst)->size, a));
+    }
+  }
+  // Cell
+  else
+  {
+    if (lst == p_nil)
+    {
+      return p_nil;
+    }
+    else
+    {
+      return new String(evmapconcatlist(fn, lst, sp, a));
     }
   }
 }
@@ -3996,6 +4065,7 @@ int main()
   p_assoc->func = evassoc;
   p_rassoc->func = evrassoc;
   p_symbolvalue->func = evsymbolvalue;
+  p_symbolname->func = evsymbolname;
   p_funcall->func = evfuncall;
   p_apply->func = evapply;
   p_closure->func = evclosure;
@@ -4004,6 +4074,7 @@ int main()
   p_mapcar->func = evmapcar;
   p_mapc->func = evmapc;
   p_mapcan->func = evmapcan;
+  p_mapconcat->func = evmapconcat;
 
   p_printatoms->func = evprintatoms;
   p_load->func = evload;
