@@ -63,3 +63,5 @@
 [eval] (a b c d e f)
 [exp] (mapc (function list) (quote (a b c d e f)))
 [eval] (a b c d e f)
+[exp] (mapconcat (function symbol-name) (quote (a b c d e f)) " ")
+[eval] "a b c d e f"

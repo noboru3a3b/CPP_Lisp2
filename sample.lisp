@@ -97,3 +97,4 @@
 (mapcar #'list '(a b c d e f))
 (mapcan #'list '(a b c d e f))
 (mapc #'list '(a b c d e f))
+(mapconcat #'symbol-name '(a b c d e f) " ")
