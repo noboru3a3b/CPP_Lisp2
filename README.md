@@ -26,8 +26,8 @@ div eq eqn equal exp floatp floor funcall function gt
 gte if inc incq integerp label lambda length let let*
 list listp ln load log lt lte make-string make-vector mapc
 mapcan mapcar mapconcat max min mod mul nconc nil nondef
-not nreverse null numberp pow print print-atoms quote rassoc reverse
-round seq setcar setcdr setq sin sinh split-string sqrt string<
+not nreverse null numberp pow print print-atoms progn quote rassoc
+reverse round setcar setcdr setq sin sinh split-string sqrt string<
 string= string> stringp sub substring symbol-name symbol-value t tan tanh
 trunc vectorp vref vset while zerop
 [eval] 126
@@ -136,8 +136,8 @@ trunc vectorp vref vset while zerop
 
 (defun primeset (x)
   (if (eqn pidx plen) nil
-      (seq (vset pvect pidx x)
-           (incq pidx))))
+      (vset pvect pidx x)
+      (incq pidx)))
 [eval] primeset
 
 (defun is-prime (x i)
@@ -151,7 +151,8 @@ trunc vectorp vref vset while zerop
 (defun primes (x)
   (if (is-prime x 1)
         (if (primeset x) (primes (add x 2))
-            (seq (vset pvect 0 2) pvect))
+            (vset pvect 0 2)
+            pvect)
       (primes (add x 2))))
 [eval] primes
 
@@ -191,8 +192,8 @@ integerp is-prime label lambda length let let* list listp ln
 load log lt lte make-pvect make-queue make-string make-variable-c make-vector mapc
 mapcan mapcar mapconcat max min mod mul n nconc nil
 nondef not nreverse null numberp p p-list pidx plen pow
-primes primeset print print-atoms pvect q queue quote rassoc reverse
-round seq setcar setcdr setq sin sinh split-string sqr+ sqr+0
+primes primeset print print-atoms progn pvect q queue quote rassoc
+reverse round setcar setcdr setq sin sinh split-string sqr+ sqr+0
 sqrt string< string= string> stringp sub substring symbol-name symbol-value t
 tan tanh trunc vectorp vref vset while x y zerop
 [eval] 160

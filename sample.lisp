@@ -71,8 +71,8 @@
 
 (defun primeset (x)
   (if (eqn pidx plen) nil
-      (seq (vset pvect pidx x)
-           (incq pidx))))
+      (vset pvect pidx x)
+      (incq pidx)))
 
 (defun is-prime (x i)
   (let ((p (vref pvect i)))
@@ -84,7 +84,8 @@
 (defun primes (x)
   (if (is-prime x 1)
         (if (primeset x) (primes (add x 2))
-            (seq (vset pvect 0 2) pvect))
+            (vset pvect 0 2)
+            pvect)
       (primes (add x 2))))
 
 (make-pvect)
