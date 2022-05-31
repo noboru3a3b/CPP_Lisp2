@@ -57,7 +57,9 @@
 [eval] ("sample" "lisp")
 [exp] (setq OUT_FILE (concat (car SPLIT_LIST) "." "txt"))
 [eval] "sample.txt"
-[exp] (mapcar (function car) (quote ((1 2) (3 4) (5 6) (7 8) (9 10))))
-[eval] (1 3 5 7 9)
-[exp] (mapcar (function cdr) (quote ((1 2) (3 4) (5 6) (7 8) (9 10))))
-[eval] ((2) (4) (6) (8) (10))
+[exp] (mapcar (function list) (quote (a b c d e f)))
+[eval] ((a) (b) (c) (d) (e) (f))
+[exp] (mapcan (function list) (quote (a b c d e f)))
+[eval] (a b c d e f)
+[exp] (mapc (function list) (quote (a b c d e f)))
+[eval] (a b c d e f)

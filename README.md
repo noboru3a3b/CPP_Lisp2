@@ -25,13 +25,13 @@ cdaar cdadr cdar cddar cdddar cdddr cddr cdr closure concat
 cond cons consp const_e const_pi cos cosh dec decq defun
 div eq eqn equal exp floatp floor funcall function gt
 gte if inc incq integerp label lambda length let let*
-list listp ln load log lt lte make-string make-vector mapcar
-max min mod mul nconc nil nondef not nreverse null
-numberp pow print print-atoms quote rassoc reverse round seq setcar
-setcdr setq sin sinh split-string sqrt string< string= string> stringp
-sub substring symbol-value t tan tanh trunc vectorp vref vset
-while zerop
-[eval] 122
+list listp ln load log lt lte make-string make-vector mapc
+mapcan mapcar max min mod mul nconc nil nondef not
+nreverse null numberp pow print print-atoms quote rassoc reverse round
+seq setcar setcdr setq sin sinh split-string sqrt string< string=
+string> stringp sub substring symbol-value t tan tanh trunc vectorp
+vref vset while zerop
+[eval] 124
 
 > (load "sample.lisp")
 [exp] (load "sample.lisp")
@@ -191,32 +191,35 @@ while zerop
 [exp] (setq OUT_FILE (concat (car SPLIT_LIST) "." "txt"))
 [eval] "sample.txt"
 
-(mapcar #'car '((1 2) (3 4) (5 6) (7 8) (9 10)))
-[exp] (mapcar (function car) (quote ((1 2) (3 4) (5 6) (7 8) (9 10))))
-[eval] (1 3 5 7 9)
-(mapcar #'cdr '((1 2) (3 4) (5 6) (7 8) (9 10)))
-[exp] (mapcar (function cdr) (quote ((1 2) (3 4) (5 6) (7 8) (9 10))))
-[eval] ((2) (4) (6) (8) (10))
+(mapcar #'list '(a b c d e f))
+[exp] (mapcar (function list) (quote (a b c d e f)))
+[eval] ((a) (b) (c) (d) (e) (f))
+(mapcan #'list '(a b c d e f))
+[exp] (mapcan (function list) (quote (a b c d e f)))
+[eval] (a b c d e f)
+(mapc #'list '(a b c d e f))
+[exp] (mapc (function list) (quote (a b c d e f)))
+[eval] (a b c d e f)
 ----------
 [eval] t
 
 > (print-atoms)
 [exp] (print-atoms)
 * + - / 0= 1+ 1- < <= =
-> >= IN_FILE OUT_FILE SPLIT_LIST abs acos add and append
-apply asin assoc atan atom c caaar caadr caar cadar
-caddar caddr cadr car cdaar cdadr cdar cddar cdddar cdddr
-cddr cdr closure concat cond cons consp const_e const_pi cos
-cosh dec dec-c decq defun div en-queue eq eqn equal
-exp floatp floor funcall funcs function get-c get-list gt gte
-i if inc inc-c incq integerp is-prime label lambda length
-let let* list listp ln load log lt lte make-pvect
-make-queue make-string make-variable-c make-vector mapcar max min mod mul n
-nconc nil nondef not nreverse null numberp p p-list pidx
-plen pow primes primeset print print-atoms pvect q queue quote
-rassoc reverse round seq setcar setcdr setq sin sinh split-string
-sqr+ sqr+0 sqrt string< string= string> stringp sub substring symbol-value
-t tan tanh trunc vectorp vref vset while x y
-zerop
-[eval] 151
+> >= IN_FILE OUT_FILE SPLIT_LIST a abs acos add and
+append apply asin assoc atan atom b c caaar caadr
+caar cadar caddar caddr cadr car cdaar cdadr cdar cddar
+cdddar cdddr cddr cdr closure concat cond cons consp const_e
+const_pi cos cosh d dec dec-c decq defun div e
+en-queue eq eqn equal exp f floatp floor funcall funcs
+function get-c get-list gt gte i if inc inc-c incq
+integerp is-prime label lambda length let let* list listp ln
+load log lt lte make-pvect make-queue make-string make-variable-c make-vector mapc
+mapcan mapcar max min mod mul n nconc nil nondef
+not nreverse null numberp p p-list pidx plen pow primes
+primeset print print-atoms pvect q queue quote rassoc reverse round
+seq setcar setcdr setq sin sinh split-string sqr+ sqr+0 sqrt
+string< string= string> stringp sub substring symbol-value t tan tanh
+trunc vectorp vref vset while x y zerop
+[eval] 158
 ```

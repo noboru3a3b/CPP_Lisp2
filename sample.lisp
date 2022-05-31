@@ -94,5 +94,6 @@
 (setq SPLIT_LIST (split-string IN_FILE "."))
 (setq OUT_FILE (concat (car SPLIT_LIST) "." "txt"))
 
-(mapcar #'car '((1 2) (3 4) (5 6) (7 8) (9 10)))
-(mapcar #'cdr '((1 2) (3 4) (5 6) (7 8) (9 10)))
+(mapcar #'list '(a b c d e f))
+(mapcan #'list '(a b c d e f))
+(mapc #'list '(a b c d e f))
