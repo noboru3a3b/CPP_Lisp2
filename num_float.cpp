@@ -6,6 +6,7 @@
 // Output FILE Stream
 extern ofstream ofs;
 extern bool ofs_on;
+extern bool cout_on;
 
 Num_float::Num_float()
 {
@@ -24,19 +25,19 @@ Num_float::~Num_float()
 
 void Num_float::print()
 {
-  cout << value;
+  if (cout_on) {cout << value;}
   if (ofs_on) {ofs << value;}
 }
 
 void Num_float::print_car()
 {
-  cout << value;
+  if (cout_on) {cout << value;}
   if (ofs_on) {ofs << value;}
 }
 
 void Num_float::print_cdr()
 {
-  cout << " . " << value << ")";
+  if (cout_on) {cout << " . " << value << ")";}
   if (ofs_on) {ofs << " . " << value << ")";}
 }
 

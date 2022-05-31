@@ -6,6 +6,7 @@
 // Output FILE Stream
 extern ofstream ofs;
 extern bool ofs_on;
+extern bool cout_on;
 
 Vector::Vector(long8 n)
 {
@@ -28,60 +29,60 @@ Vector::~Vector()
 
 void Vector::print()
 {
-  cout << "#(";
+  if (cout_on) {cout << "#(";}
   if (ofs_on) {ofs << "#(";}
 
   for (long8 i = 0; i < size; i++)
   {
-    if (i > 0) cout << " ";
+    if (i > 0) if (cout_on) {cout << " ";}
     if (i > 0) {if (ofs_on) {ofs << " ";}}
 
     vector[i]->print();
   }
 
-  cout << ")";
+  if (cout_on) {cout << ")";}
   if (ofs_on) {ofs << ")";}
 }
 
 void Vector::print_car()
 {
-  cout << "#(";
+  if (cout_on) {cout << "#(";}
   if (ofs_on) {ofs << "#(";}
 
   for (long8 i = 0; i < size; i++)
   {
-    if (i > 0) cout << " ";
+    if (i > 0) if (cout_on) {cout << " ";}
     if (i > 0) {if (ofs_on) {ofs << " ";}}
  
     vector[i]->print();
   }
 
-  cout << ")";
+  if (cout_on) {cout << ")";}
   if (ofs_on) {ofs << ")";}
 }
 
 void Vector::print_cdr()
 {
-  cout << " . ";
+  if (cout_on) {cout << " . ";}
   if (ofs_on) {ofs << " . ";}
 
   {
-    cout << "#(";
+    if (cout_on) {cout << "#(";}
     if (ofs_on) {ofs << "#(";}
   
     for (long8 i = 0; i < size; i++)
     {
-      if (i > 0) cout << " ";
+      if (i > 0) if (cout_on) {cout << " ";}
       if (i > 0) {if (ofs_on) {ofs << " ";}}
 
       vector[i]->print();
     }
 
-    cout << ")";
+    if (cout_on) {cout << ")";}
     if (ofs_on) {ofs << ")";}
   }
 
-  cout << ")";
+  if (cout_on) {cout << ")";}
   if (ofs_on) {ofs << ")";}
 }
 

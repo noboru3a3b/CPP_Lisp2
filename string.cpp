@@ -6,6 +6,7 @@
 // Output FILE Stream
 extern ofstream ofs;
 extern bool ofs_on;
+extern bool cout_on;
 
 String::String()
 {
@@ -24,19 +25,19 @@ String::~String()
 
 void String::print()
 {
-  cout << "\"" << value << "\"";
+  if (cout_on) {cout << "\"" << value << "\"";}
   if (ofs_on) {ofs << "\"" << value << "\"";}
 }
 
 void String::print_car()
 {
-  cout << "\"" << value << "\"";
+  if (cout_on) {cout << "\"" << value << "\"";}
   if (ofs_on) {ofs << "\"" << value << "\"";}
 }
 
 void String::print_cdr()
 {
-  cout << " . " << "\"" << value << "\"" << ")";
+  if (cout_on) {cout << " . " << "\"" << value << "\"" << ")";}
   if (ofs_on) {ofs << " . " << "\"" << value << "\"" << ")";}
 }
 

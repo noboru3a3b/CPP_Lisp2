@@ -6,6 +6,7 @@
 // Output FILE Stream
 extern ofstream ofs;
 extern bool ofs_on;
+extern bool cout_on;
 
 Num_int::Num_int()
 {
@@ -24,19 +25,19 @@ Num_int::~Num_int()
 
 void Num_int::print()
 {
-  cout << value;
+  if (cout_on) {cout << value;}
   if (ofs_on) {ofs << value;}
 }
 
 void Num_int::print_car()
 {
-  cout << value;
+  if (cout_on) {cout << value;}
   if (ofs_on) {ofs << value;}
 }
 
 void Num_int::print_cdr()
 {
-  cout << " . " << value << ")";
+  if (cout_on) {cout << " . " << value << ")";}
   if (ofs_on) {ofs << " . " << value << ")";}
 }
 

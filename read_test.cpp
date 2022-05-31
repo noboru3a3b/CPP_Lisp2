@@ -177,6 +177,7 @@ Atom *p_equal = mp->get_atom("equal");
 // Output FILE Stream
 ofstream ofs;
 bool ofs_on = false;
+bool cout_on = true;
 
 // Create Type_IDs
 const type_info& id_Atom = typeid(Atom);
@@ -3205,7 +3206,7 @@ Object *evprint(Object *e, Object *a)
 {
   (s_eval(car(e), a))->print();
 
-  cout << endl;
+  if (cout_on) {cout << endl;}
   if (ofs_on) {ofs << endl;}
 
   return s_eval(car(e), a);
@@ -3649,25 +3650,29 @@ Object *evload(Object *e, Object *a)
       // read
       p = s_read(&tokens, 0, &rst_idx);
 
+      cout_on = false;
+
       // print
-      cout << "[exp] ";
+      if (cout_on) {cout << "[exp] ";}
       if (ofs_on) {ofs << "[exp] ";}
 
       p->print();
 
-      cout << endl;
+      if (cout_on) {cout << endl;}
       if (ofs_on) {ofs << endl;}
+
+      cout_on = true;
 
       // eval
       q = s_eval(p, p_nil);
 
       // print
-      cout << "[eval] ";
+      if (cout_on) {cout << "[eval] ";}
       if (ofs_on) {ofs << "[eval] ";}
 
       q->print();
 
-      cout << endl;
+      if (cout_on) {cout << endl;}
       if (ofs_on) {ofs << endl;}
     }
   }
@@ -4120,9 +4125,9 @@ int main()
       p = s_read(&tokens, 0, &rst_idx);
 
       // print
-      cout << "[exp] ";
-      p->print();
-      cout << endl;
+//      cout << "[exp] ";
+//      p->print();
+//      cout << endl;
 
       // eval
       q = s_eval(p, p_nil);

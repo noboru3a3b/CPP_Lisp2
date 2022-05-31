@@ -6,6 +6,7 @@
 // Output FILE Stream
 extern ofstream ofs;
 extern bool ofs_on;
+extern bool cout_on;
 
 using namespace std;
 
@@ -33,7 +34,7 @@ Cell::~Cell()
 
 void Cell::print()
 {
-  cout << "(";
+  if (cout_on) {cout << "(";}
   if (ofs_on) {ofs << "(";}
 
   car->print_car();
@@ -42,7 +43,7 @@ void Cell::print()
 
 void Cell::print_car()
 {
-  cout << "(";
+  if (cout_on) {cout << "(";}
   if (ofs_on) {ofs << "(";}
 
   car->print_car();
@@ -51,7 +52,7 @@ void Cell::print_car()
 
 void Cell::print_cdr()
 {
-  cout << " ";
+  if (cout_on) {cout << " ";}
   if (ofs_on) {ofs << " ";}
 
   car->print_car();

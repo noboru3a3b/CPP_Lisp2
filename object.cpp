@@ -6,6 +6,7 @@
 // Output FILE Stream
 extern ofstream ofs;
 extern bool ofs_on;
+extern bool cout_on;
 
 Object::Object()
 {
@@ -19,13 +20,13 @@ Object::~Object()
 
 void Object::print_addr()
 {
-  cout << "address=" << this << endl;
+  if (cout_on) {cout << "address=" << this << endl;}
   if (ofs_on) {ofs << "address=" << this << endl;}
 }
 
 void Object::print()
 {
-  cout << "ref_cnt=" << ref_cnt << endl;
+  if (cout_on) {cout << "ref_cnt=" << ref_cnt << endl;}
   if (ofs_on) {ofs << "ref_cnt=" << ref_cnt << endl;}
 }
 
