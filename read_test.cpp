@@ -145,6 +145,8 @@ Atom *p_closure = mp->get_atom("closure");
 Atom *p_setcar = mp->get_atom("setcar");
 Atom *p_setcdr = mp->get_atom("setcdr");
 Atom *p_mapcar = mp->get_atom("mapcar");
+Atom *p_mapc = mp->get_atom("mapc");
+Atom *p_mapcan = mp->get_atom("mapcan");
 
 Atom *p_printatoms = mp->get_atom("print-atoms");
 Atom *p_load = mp->get_atom("load");
@@ -1673,17 +1675,28 @@ Object *append(Object *x, Object *y)
   }
 }
 
-Object *nconc(Object *x, Object *y)
+void nconc0(Object *x, Object *y)
 {
   if (cdr(x) == p_nil)
   {
     ((Cell *)x)->set_cdr(y);
-    return p_nil;
   }
   else
   {
-    nconc(cdr(x), y);
-    return x; 
+    nconc0(cdr(x), y);
+  }
+}
+
+Object *nconc(Object *x, Object *y)
+{
+  if (x == p_nil)
+  {
+    return y;
+  }
+  else
+  {
+    nconc0(x, y);
+    return x;
   }
 }
 
@@ -3289,8 +3302,8 @@ Object *evsetcdr(Object *e, Object *a)
   ((Cell *)s_eval(car(e), a))->set_cdr(p);
   return p;
 }
-// (mapvect fn v i size a
-Object *evmapvect(Object *fn, Object *v, long8 i, long8 size, Object *a)
+// (mapcarvect fn v i size a
+Object *evmapcarvect(Object *fn, Object *v, long8 i, long8 size, Object *a)
 {
   if (i == size)
   {
@@ -3298,11 +3311,11 @@ Object *evmapvect(Object *fn, Object *v, long8 i, long8 size, Object *a)
   }
   else
   {
-    return cons(s_eval(list(fn, ((Vector *)v)->vector[i]), a), evmapvect(fn, v, i + 1, size, a));
+    return cons(s_eval(list(fn, list(p_quote, ((Vector *)v)->vector[i])), a), evmapcarvect(fn, v, i + 1, size, a));
   }
 }
-// (maplist fn lst a
-Object *evmaplist(Object *fn, Object *lst, Object *a)
+// (mapcarlist fn lst a
+Object *evmapcarlist(Object *fn, Object *lst, Object *a)
 {
   if (lst == p_nil)
   {
@@ -3310,7 +3323,57 @@ Object *evmaplist(Object *fn, Object *lst, Object *a)
   }
   else
   {
-    return cons(s_eval(list(fn, car(lst)), a), evmaplist(fn, cdr(lst), a));
+    return cons(s_eval(list(fn, list(p_quote, car(lst))), a), evmapcarlist(fn, cdr(lst), a));
+  }
+}
+// (mapcvect fn v i size a
+void evmapcvect(Object *fn, Object *v, long8 i, long8 size, Object *a)
+{
+  if (i == size)
+  {
+    // End
+  }
+  else
+  {
+    s_eval(list(fn, list(p_quote, ((Vector *)v)->vector[i])), a);
+    evmapcvect(fn, v, i + 1, size, a);
+  }
+}
+// (mapclist fn lst a
+void evmapclist(Object *fn, Object *lst, Object *a)
+{
+  if (lst == p_nil)
+  {
+    // End
+  }
+  else
+  {
+    s_eval(list(fn, list(p_quote, car(lst))), a);
+    evmapclist(fn, cdr(lst), a);
+  }
+}
+// (mapcanvect fn v i size a
+Object *evmapcanvect(Object *fn, Object *v, long8 i, long8 size, Object *a)
+{
+  if (i + 2 == size)
+  {
+    return nconc(s_eval(list(fn, list(p_quote, ((Vector *)v)->vector[i])), a), s_eval(list(fn, list(p_quote, ((Vector *)v)->vector[i + 1])), a));
+  }
+  else
+  {
+    return nconc(s_eval(list(fn, list(p_quote, ((Vector *)v)->vector[i])), a), evmapcanvect(fn, v, i + 1, size, a));
+  }
+}
+// (mapcanlist fn lst a
+Object *evmapcanlist(Object *fn, Object *lst, Object *a)
+{
+  if (cddr(lst) == p_nil)
+  {
+    return nconc(s_eval(list(fn, list(p_quote, car(lst))), a), s_eval(list(fn, list(p_quote, cadr(lst))), a));
+  }
+  else
+  {
+    return nconc(s_eval(list(fn, list(p_quote, car(lst))), a), evmapcanlist(fn, cdr(lst), a));
   }
 }
 // (mapcar fn list
@@ -3331,7 +3394,7 @@ Object *evmapcar(Object *e, Object *a)
     }
     else
     {
-      return evmapvect(fn, lst, 0, ((Vector *)lst)->size, a);
+      return evmapcarvect(fn, lst, 0, ((Vector *)lst)->size, a);
     }
   }
   // Cell
@@ -3343,7 +3406,77 @@ Object *evmapcar(Object *e, Object *a)
     }
     else
     {
-      return evmaplist(fn, lst, a);
+      return evmapcarlist(fn, lst, a);
+    }
+  }
+}
+// (mapc fn list
+Object *evmapc(Object *e, Object *a)
+{
+  Object *fn;
+  Object *lst;
+
+  fn = s_eval(car(e), a);
+  lst = s_eval(cadr(e), a);
+
+  // Vector
+  if (typeid(*lst) == id_Vector)
+  {
+    if (((Vector *)lst)->size == 0)
+    {
+      return p_nil;
+    }
+    else
+    {
+      evmapcvect(fn, lst, 0, ((Vector *)lst)->size, a);
+      return lst;
+    }
+  }
+  // Cell
+  else
+  {
+    if (lst == p_nil)
+    {
+      return p_nil;
+    }
+    else
+    {
+      evmapclist(fn, lst, a);
+      return lst;
+    }
+  }
+}
+// (mapcan fn list
+Object *evmapcan(Object *e, Object *a)
+{
+  Object *fn;
+  Object *lst;
+
+  fn = s_eval(car(e), a);
+  lst = s_eval(cadr(e), a);
+
+  // Vector
+  if (typeid(*lst) == id_Vector)
+  {
+    if (((Vector *)lst)->size == 0)
+    {
+      return p_nil;
+    }
+    else
+    {
+      return evmapcanvect(fn, lst, 0, ((Vector *)lst)->size, a);
+    }
+  }
+  // Cell
+  else
+  {
+    if (lst == p_nil)
+    {
+      return p_nil;
+    }
+    else
+    {
+      return evmapcanlist(fn, lst, a);
     }
   }
 }
@@ -3869,6 +4002,8 @@ int main()
   p_setcar->func = evsetcar;
   p_setcdr->func = evsetcdr;
   p_mapcar->func = evmapcar;
+  p_mapc->func = evmapc;
+  p_mapcan->func = evmapcan;
 
   p_printatoms->func = evprintatoms;
   p_load->func = evload;
