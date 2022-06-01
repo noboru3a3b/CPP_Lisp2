@@ -69,6 +69,7 @@ Atom *p_list = mp->get_atom("list");
 Atom *p_null = mp->get_atom("null");
 Atom *p_if = mp->get_atom("if");
 Atom *p_and = mp->get_atom("and");
+Atom *p_or = mp->get_atom("or");
 Atom *p_progn = mp->get_atom("progn");
 Atom *p_not = mp->get_atom("not");
 Atom *p_append = mp->get_atom("append");
@@ -1932,8 +1933,22 @@ vector<string> split_naive(const string &s, char delim)
 
 Object *evcon(Object *c, Object *a)
 {
-  if (s_eval(caar(c), a) != p_nil)
+  Object *p;
+
+  if (c == p_nil)
   {
+    return p_nil;
+  }
+
+  p = s_eval(caar(c), a);
+
+  if (p != p_nil)
+  {
+    if (cdar(c) == p_nil)
+    {
+      return p;
+    }
+
     return s_eval(cadar(c), a);
   }
   else
@@ -1988,6 +2003,27 @@ Object *evand(Object *c, Object *a)
   else
   {
     return p_nil;
+  }
+}
+
+Object *evor(Object *c, Object *a)
+{
+  Object *p;
+
+  if (c == p_nil)
+  {
+    return p_nil;
+  }
+
+  p = s_eval(car(c), a);
+
+  if (p != p_nil)
+  {
+    return p;
+  }
+  else
+  {
+    return evor(cdr(c), a);
   }
 }
 
@@ -3091,6 +3127,7 @@ Object *evnull(Object *e, Object *a)
 }
 // (if -> evif() ↑
 // (and -> evand() ↑
+// (or -> evor() ↑
 // (progn -> evprogn() ↑
 // (not
 Object *evnot(Object *e, Object *a)
@@ -4012,6 +4049,7 @@ int main()
   p_null->func = evnull;
   p_if->func = evif;
   p_and->func = evand;
+  p_or->func = evor;
   p_progn->func = evprogn;
   p_not->func = evnot;
   p_append->func = evappend;
