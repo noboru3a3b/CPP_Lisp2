@@ -50,6 +50,7 @@ Atom *p_cons = mp->get_atom("cons");
 Atom *p_cond = mp->get_atom("cond");
 Atom *p_lambda = mp->get_atom("lambda");
 Atom *p_label = mp->get_atom("label");
+Atom *p_eval = mp->get_atom("eval");
 
 Atom *p_caar = mp->get_atom("caar");
 Atom *p_cadr = mp->get_atom("cadr");
@@ -136,6 +137,7 @@ Atom *p_print = mp->get_atom("print");
 Atom *p_let = mp->get_atom("let");
 Atom *p_let2 = mp->get_atom("let*");
 Atom *p_setq = mp->get_atom("setq");
+Atom *p_set = mp->get_atom("set");
 Atom *p_while = mp->get_atom("while");
 Atom *p_assoc = mp->get_atom("assoc");
 Atom *p_rassoc = mp->get_atom("rassoc");
@@ -3049,6 +3051,11 @@ Object *evlambda(Object *e, Object *a)
   return cons(p_lambda, e);
 }
 // (label ↑
+// (eval
+Object *eveval(Object *e, Object *a)
+{
+  return s_eval(s_eval(car(e), a), a); 
+}
 // (caar
 Object *evcaar(Object *e, Object *a)
 {
@@ -3288,6 +3295,29 @@ Object *evsetq(Object *e, Object *a)
   else
   {
     p = car(e);
+    ((Atom *)p)->set_value(s_eval(cadr(e), a));
+    return ((Atom *)p)->value;
+  }
+}
+// (set a exp)
+Object *evset(Object *e, Object *a)
+{
+  Object *p;
+  Object *q;
+
+  // Get (var value) list
+  p = s_eval(car(e), a);
+  q = assoc2(s_eval(car(e), a), a);
+
+  // Local var
+  if (q != p_nondef)
+  {
+    cdr(((Cell *)q))->set_car(s_eval(cadr(e), a));
+    return cadr((Cell *)q);
+  }
+  // Global var
+  else
+  {
     ((Atom *)p)->set_value(s_eval(cadr(e), a));
     return ((Atom *)p)->value;
   }
@@ -4029,6 +4059,7 @@ int main()
   p_cdr->func = evcdr;
   p_cons->func = evcons;
   p_lambda->func = evlambda;
+  p_eval->func = eveval;
   p_cond->func = evcon;
 
   p_caar->func = evcaar;
@@ -4116,6 +4147,7 @@ int main()
   p_let->func = evlet;
   p_let2->func = evlet2;
   p_setq->func = evsetq;
+  p_set->func = evset;
   p_while->func = evwhile;
   p_assoc->func = evassoc;
   p_rassoc->func = evrassoc;
