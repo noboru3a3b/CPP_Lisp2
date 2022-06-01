@@ -26,11 +26,11 @@ div eq eqn equal exp floatp floor funcall function gt
 gte if inc incq integerp label lambda length let let*
 list listp ln load log lt lte make-string make-vector mapc
 mapcan mapcar mapconcat max min mod mul nconc nil nondef
-not nreverse null numberp pow print print-atoms progn quote rassoc
-reverse round setcar setcdr setq sin sinh split-string sqrt string<
-string= string> stringp sub substring symbol-name symbol-value t tan tanh
-trunc vectorp vref vset while zerop
-[eval] 126
+not nreverse null numberp or pow print print-atoms progn quote
+rassoc reverse round setcar setcdr setq sin sinh split-string sqrt
+string< string= string> stringp sub substring symbol-name symbol-value t tan
+tanh trunc vectorp vref vset while zerop
+[eval] 127
 
 > (load "sample.lisp")
 ----------
@@ -191,10 +191,11 @@ function get-c get-list gt gte i if inc inc-c incq
 integerp is-prime label lambda length let let* list listp ln
 load log lt lte make-pvect make-queue make-string make-variable-c make-vector mapc
 mapcan mapcar mapconcat max min mod mul n nconc nil
-nondef not nreverse null numberp p p-list pidx plen pow
-primes primeset print print-atoms progn pvect q queue quote rassoc
-reverse round setcar setcdr setq sin sinh split-string sqr+ sqr+0
-sqrt string< string= string> stringp sub substring symbol-name symbol-value t
-tan tanh trunc vectorp vref vset while x y zerop
-[eval] 160
+nondef not nreverse null numberp or p p-list pidx plen
+pow primes primeset print print-atoms progn pvect q queue quote
+rassoc reverse round setcar setcdr setq sin sinh split-string sqr+
+sqr+0 sqrt string< string= string> stringp sub substring symbol-name symbol-value
+t tan tanh trunc vectorp vref vset while x y
+zerop
+[eval] 161
 ```
