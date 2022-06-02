@@ -28,9 +28,9 @@ let* list listp ln load log lt lte make-string make-vector
 mapc mapcan mapcar mapconcat max min mod mul nconc nil
 nondef not nreverse null numberp or pow print print-atoms progn
 quote rassoc reverse round set setcar setcdr setq sin sinh
-split-string sqrt string< string= string> stringp sub substring symbol-name symbol-value
-t tan tanh trunc vectorp vref vset while zerop
-[eval] 129
+split-string sqrt string< string= string> stringp sub substring symbol-function symbol-name
+symbol-value t tan tanh trunc vectorp vref vset while zerop
+[eval] 130
 
 > (load "sample.lisp")
 ----------
@@ -195,7 +195,7 @@ nil nondef not nreverse null numberp or p p-list pidx
 plen pow primes primeset print print-atoms progn pvect q queue
 quote rassoc reverse round set setcar setcdr setq sin sinh
 split-string sqr+ sqr+0 sqrt string< string= string> stringp sub substring
-symbol-name symbol-value t tan tanh trunc vectorp vref vset while
-x y zerop
-[eval] 163
+symbol-function symbol-name symbol-value t tan tanh trunc vectorp vref vset
+while x y zerop
+[eval] 164
 ```
