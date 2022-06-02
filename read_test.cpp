@@ -173,10 +173,8 @@ Atom *p_stringgt = mp->get_atom("string>");
 Atom *p_equal = mp->get_atom("equal");
 
 //Atom *p_pair = mp->get_atom("pair");
-
 //tom *p_evcon = mp->get_atom("evcon");
 //Atom *p_evlis = mp->get_atom("evlis");
-//Atom *p_eval = mp->get_atom("eval");
 
 // Output FILE Stream
 ofstream ofs;
@@ -277,13 +275,6 @@ string s_input()
       s_text += " ";
     }
   } while ((leftp_cnt > rightp_cnt) || (in_string != 0));
-
-  // これは後で
-  // #'(...)
-  //  s_text = expand_function( s_text );
-  //
-  // 'ABC '(...)
-  //  s_text = expand_quote( s_text );
 
   return s_text;
 }
@@ -4263,9 +4254,4 @@ int main()
 
   return 0;
 }
-
-//
-// get_elem() が何度も呼ばれるのは効率が悪いので、
-// get_elems() 関数で、一気に string -> token 変換することにする。
-//
 
