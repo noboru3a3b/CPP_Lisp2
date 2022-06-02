@@ -143,6 +143,7 @@ Atom *p_assoc = mp->get_atom("assoc");
 Atom *p_rassoc = mp->get_atom("rassoc");
 Atom *p_symbolvalue = mp->get_atom("symbol-value");
 Atom *p_symbolname = mp->get_atom("symbol-name");
+Atom *p_symbolfunction = mp->get_atom("symbol-function");
 Atom *p_funcall = mp->get_atom("funcall");
 Atom *p_apply = mp->get_atom("apply");
 Atom *p_closure = mp->get_atom("closure");
@@ -3356,6 +3357,22 @@ Object *evsymbolname(Object *e, Object *a)
 {
   return new String(((Atom *)s_eval(car(e), a))->name);
 }
+// symbol-function
+Object *evsymbolfunction(Object *e, Object *a)
+{
+  if (((Atom *)s_eval(car(e), a))->func != NULL)
+  {
+    return new String("#<subr " + ((Atom *)s_eval(car(e), a))->name + ">");
+  }
+  else if (((Atom *)s_eval(car(e), a))->lambda != NULL)
+  {
+    return ((Atom *)s_eval(car(e), a))->lambda;
+  }
+  else
+  {
+    return p_nil;
+  }
+}
 // (funcall fn ... )
 Object *evfuncall(Object *e, Object *a)
 {
@@ -4155,6 +4172,7 @@ int main()
   p_rassoc->func = evrassoc;
   p_symbolvalue->func = evsymbolvalue;
   p_symbolname->func = evsymbolname;
+  p_symbolfunction->func = evsymbolfunction;
   p_funcall->func = evfuncall;
   p_apply->func = evapply;
   p_closure->func = evclosure;
