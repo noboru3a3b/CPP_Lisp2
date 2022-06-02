@@ -1787,7 +1787,7 @@ Object *assoc2(Object *x, Object *y)
 {
   if (y == p_nil)
   {
-    return p_nondef;
+    return p_nil;
   }
   else if (eq(caar(y), x) == p_t)
   {
@@ -1803,7 +1803,7 @@ Object *rassoc2(Object *x, Object *y)
 {
   if (y == p_nil)
   {
-    return p_nondef;
+    return p_nil;
   }
   else if (eq(cadar(y), x) == p_t)
   {
@@ -2264,7 +2264,7 @@ Object *evincq(Object *x, Object *a)
   p = assoc2(car(x), a);
 
   // Local var
-  if (p != p_nondef)
+  if (p != p_nil)
   {
     cdr(((Cell *)p))->set_car(q);
     return cadr((Cell *)p);
@@ -2292,7 +2292,7 @@ Object *evdecq(Object *x, Object *a)
   p = assoc2(car(x), a);
 
   // Local var
-  if (p != p_nondef)
+  if (p != p_nil)
   {
     cdr(((Cell *)p))->set_car(q);
     return cadr((Cell *)p);
@@ -3286,7 +3286,7 @@ Object *evsetq(Object *e, Object *a)
   p = assoc2(car(e), a);
 
   // Local var
-  if (p != p_nondef)
+  if (p != p_nil)
   {
     cdr(((Cell *)p))->set_car(s_eval(cadr(e), a));
     return cadr((Cell *)p);
@@ -3310,7 +3310,7 @@ Object *evset(Object *e, Object *a)
   q = assoc2(s_eval(car(e), a), a);
 
   // Local var
-  if (q != p_nondef)
+  if (q != p_nil)
   {
     cdr(((Cell *)q))->set_car(s_eval(cadr(e), a));
     return cadr((Cell *)q);
@@ -4044,6 +4044,8 @@ int main()
   Object *q;
 
   // Set Atom value
+  p_nondef->value = p_nondef;
+
   p_t->value = p_t;
   p_nil->value = p_nil;
 
