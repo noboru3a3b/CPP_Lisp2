@@ -156,6 +156,9 @@ Atom *p_mapconcat = mp->get_atom("mapconcat");
 
 Atom *p_printatoms = mp->get_atom("print-atoms");
 Atom *p_load = mp->get_atom("load");
+Atom *p_exit = mp->get_atom("exit");
+Atom *p_quit = mp->get_atom("quit");
+
 Atom *p_makevector = mp->get_atom("make-vector");
 Atom *p_vectorp = mp->get_atom("vectorp");
 Atom *p_vref = mp->get_atom("vref");
@@ -3764,6 +3767,11 @@ Object *evload(Object *e, Object *a)
     }
   }
 }
+// (exit
+Object *evexit(Object *e, Object *a)
+{
+  exit(0);
+}
 // (make-vector n exp
 Object *evmakevector(Object *e, Object *a)
 {
@@ -4176,6 +4184,9 @@ int main()
 
   p_printatoms->func = evprintatoms;
   p_load->func = evload;
+  p_exit->func = evexit;
+  p_quit->func = evexit;
+
   p_makevector->func = evmakevector;
   p_vectorp->func = evvectorp;
   p_vref->func = evvref;
