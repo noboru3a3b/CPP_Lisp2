@@ -12,6 +12,11 @@ Vector::Vector(long8 n)
 {
   size = n;
   vector = new Object * [size];
+
+  for (long8 i = 0; i < size; i++)
+  {
+    vector[i] = NULL;
+  }
 }
 
 Vector::~Vector()
@@ -93,6 +98,11 @@ long8 Vector::get_size()
 
 void Vector::set_value(long8 i, Object *p)
 {
+  if (vector[i] != NULL)
+  {
+    vector[i]->ref_cnt--;
+  }
+
   vector[i] = p;
   p->ref_cnt++;
 }

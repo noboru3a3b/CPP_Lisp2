@@ -22,6 +22,12 @@ Atom::~Atom()
     value->ref_cnt--;
     if (value->ref_cnt == 0) delete value;
   }
+
+  if (lambda != NULL)
+  {
+    lambda->ref_cnt--;
+    if (lambda->ref_cnt == 0) delete value;
+  }
 }
 
 void Atom::print()

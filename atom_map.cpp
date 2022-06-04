@@ -21,16 +21,17 @@ AtomMap::~AtomMap()
 Atom *AtomMap::get_atom(string s)
 {
   if (atom_map.find(s) == atom_map.end())
-    {
-      // new atom
-      atom_map[s] = new Atom;
-      atom_map[s]->set_name(s);
-      atom_map[s]->ref_cnt++;	// by Reference from AtomMap
-    }
-    else
-    {
-//      atom_map[s]->ref_cnt++;
-    }
+  {
+    // new atom
+    atom_map[s] = new Atom;
+    atom_map[s]->set_name(s);
+    atom_map[s]->ref_cnt++;	// by Reference from AtomMap
+  }
+  else
+  {
+    // already exists
+  }
+
   return atom_map[s];
 }
 
