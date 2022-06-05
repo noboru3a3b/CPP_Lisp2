@@ -91,6 +91,9 @@
 (make-pvect)
 (primes 3)
 
+(symbol-function #'primes)
+(symbol-function #'add)
+
 (setq IN_FILE "sample.lisp")
 (setq SPLIT_LIST (split-string IN_FILE "."))
 (setq OUT_FILE (concat (car SPLIT_LIST) "." "txt"))
