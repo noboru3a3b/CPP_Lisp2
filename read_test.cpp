@@ -32,8 +32,6 @@ using namespace std;
 AtomMap *mp = new AtomMap;
 
 // Create Atoms
-Atom *p_nondef = mp->get_atom("nondef");
-
 Atom *p_t = mp->get_atom("t");
 Atom *p_nil = mp->get_atom("nil");
 
@@ -1761,52 +1759,36 @@ Object *s_pair(Object *x, Object *y)
     return p_nil;
   }
 }
-/*
+
 Object *assoc(Object *x, Object *y)
 {
   if (y == p_nil)
   {
-    return p_nondef;
+    return p_nil;
   }
   else if (eq(caar(y), x) == p_t)
   {
-    return cadar(y);
+    return car(y);
   }
   else
   {
     return assoc(x, cdr(y));
   }
 }
-*/
-Object *assoc2(Object *x, Object *y)
-{
-  if (y == p_nil)
-  {
-    return p_nil;
-  }
-  else if (eq(caar(y), x) == p_t)
-  {
-    return car(y);
-  }
-  else
-  {
-    return assoc2(x, cdr(y));
-  }
-}
 
-Object *rassoc2(Object *x, Object *y)
+Object *rassoc(Object *x, Object *y)
 {
   if (y == p_nil)
   {
     return p_nil;
   }
-  else if (eq(cadar(y), x) == p_t)
+  else if (eq(cdar(y), x) == p_t)
   {
     return car(y);
   }
   else
   {
-    return rassoc2(x, cdr(y));
+    return rassoc(x, cdr(y));
   }
 }
 
@@ -2256,7 +2238,7 @@ Object *evincq(Object *x, Object *a)
   q->set_value(to_int(car(x), a) + 1);
 
   // Get (var value) list
-  p = assoc2(car(x), a);
+  p = assoc(car(x), a);
 
   // Local var
   if (p != p_nil)
@@ -2284,7 +2266,7 @@ Object *evdecq(Object *x, Object *a)
   q->set_value(to_int(car(x), a) - 1);
 
   // Get (var value) list
-  p = assoc2(car(x), a);
+  p = assoc(car(x), a);
 
   // Local var
   if (p != p_nil)
@@ -2959,9 +2941,9 @@ Object *s_eval(Object *e, Object *a)
   }
   else if (atom(e) == p_t)
   {
-    if (assoc2(e, a) != p_nil)
+    if (assoc(e, a) != p_nil)
     {
-      return cdr(assoc2(e, a));
+      return cdr(assoc(e, a));
     }
 
     return ((Atom *)e)->value;
@@ -2986,7 +2968,7 @@ Object *s_eval(Object *e, Object *a)
     // Exec Local function
     else
     {
-      return s_eval(cons(cdr(assoc2(car(e), a)), cdr(e)), a);
+      return s_eval(cons(cdr(assoc(car(e), a)), cdr(e)), a);
     }
   }
   else if (caar(e) == p_label)
@@ -3278,7 +3260,7 @@ Object *evsetq(Object *e, Object *a)
   Object *p;
 
   // Get (var value) list
-  p = assoc2(car(e), a);
+  p = assoc(car(e), a);
 
   // Local var
   if (p != p_nil)
@@ -3302,7 +3284,7 @@ Object *evset(Object *e, Object *a)
 
   // Get (var value) list
   p = s_eval(car(e), a);
-  q = assoc2(s_eval(car(e), a), a);
+  q = assoc(s_eval(car(e), a), a);
 
   // Local var
   if (q != p_nil)
@@ -3334,12 +3316,12 @@ Object *evwhile(Object *e, Object *a)
 // assoc
 Object *evassoc(Object *e, Object *a)
 {
-  return assoc2(s_eval(car(e), a), s_eval(cadr(e), a));
+  return assoc(s_eval(car(e), a), s_eval(cadr(e), a));
 }
 // rassoc
 Object *evrassoc(Object *e, Object *a)
 {
-  return rassoc2(s_eval(car(e), a), s_eval(cadr(e), a));
+  return rassoc(s_eval(car(e), a), s_eval(cadr(e), a));
 }
 // symbol-value
 Object *evsymbolvalue(Object *e, Object *a)
@@ -4060,8 +4042,6 @@ int main()
   Object *q;
 
   // Set Atom value
-  p_nondef->value = p_nondef;
-
   p_t->value = p_t;
   p_nil->value = p_nil;
 
