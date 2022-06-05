@@ -1754,14 +1754,14 @@ Object *s_pair(Object *x, Object *y)
   }
   else if (s_and(s_not(atom(x)), s_not(atom(y))) == p_t)
   {
-    return cons(list(car(x), car(y)), s_pair(cdr(x), cdr(y)));
+    return cons(cons(car(x), car(y)), s_pair(cdr(x), cdr(y)));
   }
   else
   {
     return p_nil;
   }
 }
-
+/*
 Object *assoc(Object *x, Object *y)
 {
   if (y == p_nil)
@@ -1777,7 +1777,7 @@ Object *assoc(Object *x, Object *y)
     return assoc(x, cdr(y));
   }
 }
-
+*/
 Object *assoc2(Object *x, Object *y)
 {
   if (y == p_nil)
@@ -2086,7 +2086,7 @@ Object *evparam(Object *e, Object *a)
   }
   else
   {
-    return cons(list(caar(e), s_eval(cadar(e), a)), evparam(cdr(e), a));
+    return cons(cons(caar(e), s_eval(cadar(e), a)), evparam(cdr(e), a));
   }
 }
 
@@ -2099,7 +2099,7 @@ Object *evparam2(Object *e, Object *a)
   }
   else
   {
-    return cons(list(caar(e), s_eval(cadar(e), a)), evparam2(cdr(e), cons(list(caar(e), s_eval(cadar(e), a)), a)));
+    return cons(cons(caar(e), s_eval(cadar(e), a)), evparam2(cdr(e), cons(cons(caar(e), s_eval(cadar(e), a)), a)));
   }
 }
 
@@ -2261,8 +2261,8 @@ Object *evincq(Object *x, Object *a)
   // Local var
   if (p != p_nil)
   {
-    cdr(((Cell *)p))->set_car(q);
-    return cadr((Cell *)p);
+    ((Cell *)p)->set_cdr(q);
+    return cdr((Cell *)p);
   }
 
   // Global var
@@ -2289,8 +2289,8 @@ Object *evdecq(Object *x, Object *a)
   // Local var
   if (p != p_nil)
   {
-    cdr(((Cell *)p))->set_car(q);
-    return cadr((Cell *)p);
+    ((Cell *)p)->set_cdr(q);
+    return cdr((Cell *)p);
   }
 
   // Global var
@@ -2959,9 +2959,9 @@ Object *s_eval(Object *e, Object *a)
   }
   else if (atom(e) == p_t)
   {
-    if (assoc(e, a) != p_nondef)
+    if (assoc2(e, a) != p_nil)
     {
-      return assoc(e, a);
+      return cdr(assoc2(e, a));
     }
 
     return ((Atom *)e)->value;
@@ -2986,12 +2986,12 @@ Object *s_eval(Object *e, Object *a)
     // Exec Local function
     else
     {
-      return s_eval(cons(assoc(car(e), a), cdr(e)), a);
+      return s_eval(cons(cdr(assoc2(car(e), a)), cdr(e)), a);
     }
   }
   else if (caar(e) == p_label)
   {
-    return s_eval(cons(caddar(e), cdr(e)), cons(list(cadar(e), car(e)), a));
+    return s_eval(cons(caddar(e), cdr(e)), cons(cons(cadar(e), car(e)), a));
   }
   else if (caar(e) == p_lambda)
   {
@@ -3283,8 +3283,8 @@ Object *evsetq(Object *e, Object *a)
   // Local var
   if (p != p_nil)
   {
-    cdr(((Cell *)p))->set_car(s_eval(cadr(e), a));
-    return cadr((Cell *)p);
+    ((Cell *)p)->set_cdr(s_eval(cadr(e), a));
+    return cdr((Cell *)p);
   }
   // Global var
   else
@@ -3307,8 +3307,8 @@ Object *evset(Object *e, Object *a)
   // Local var
   if (q != p_nil)
   {
-    cdr(((Cell *)q))->set_car(s_eval(cadr(e), a));
-    return cadr((Cell *)q);
+    ((Cell *)q)->set_cdr(s_eval(cadr(e), a));
+    return cdr((Cell *)q);
   }
   // Global var
   else
