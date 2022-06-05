@@ -99,3 +99,9 @@
 (mapcan #'list '(a b c d e f))
 (mapc #'list '(a b c d e f))
 (mapconcat #'symbol-name '(a b c d e f) " ")
+
+(setq tree '((a . 10) (b . 20) (c . 30) (d . 40)))
+(assoc 'b tree)
+(assoc 'e tree)
+(rassoc 30 tree)
+(rassoc 50 tree)

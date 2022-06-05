@@ -65,3 +65,13 @@
 [eval] (a b c d e f)
 [exp] (mapconcat (function symbol-name) (quote (a b c d e f)) " ")
 [eval] "a b c d e f"
+[exp] (setq tree (quote ((a . 10) (b . 20) (c . 30) (d . 40))))
+[eval] ((a . 10) (b . 20) (c . 30) (d . 40))
+[exp] (assoc (quote b) tree)
+[eval] (b . 20)
+[exp] (assoc (quote e) tree)
+[eval] nil
+[exp] (rassoc 30 tree)
+[eval] (c . 30)
+[exp] (rassoc 50 tree)
+[eval] nil
