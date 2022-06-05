@@ -26,12 +26,12 @@ div eq eqn equal eval exit exp floatp floor funcall
 function gt gte if inc incq integerp label lambda length
 let let* list listp ln load log lt lte make-string
 make-vector mapc mapcan mapcar mapconcat max min mod mul nconc
-nil nondef not nreverse null numberp or pow print print-atoms
-progn quit quote rassoc reverse round set setcar setcdr setq
-sin sinh split-string sqrt string< string= string> stringp sub substring
-symbol-function symbol-name symbol-value t tan tanh trunc vectorp vref vset
-while zerop
-[eval] 132
+nil not nreverse null numberp or pow print print-atoms progn
+quit quote rassoc reverse round set setcar setcdr setq sin
+sinh split-string sqrt string< string= string> stringp sub substring symbol-function
+symbol-name symbol-value t tan tanh trunc vectorp vref vset while
+zerop
+[eval] 131
 
 > (load "sample.lisp")
 ----------
@@ -177,6 +177,17 @@ while zerop
 [eval] (a b c d e f)
 (mapconcat #'symbol-name '(a b c d e f) " ")
 [eval] "a b c d e f"
+
+(setq tree '((a . 10) (b . 20) (c . 30) (d . 40)))
+[eval] ((a . 10) (b . 20) (c . 30) (d . 40))
+(assoc 'b tree)
+[eval] (b . 20)
+(assoc 'e tree)
+[eval] nil
+(rassoc 30 tree)
+[eval] (c . 30)
+(rassoc 50 tree)
+[eval] nil
 ----------
 [eval] t
 
@@ -192,11 +203,11 @@ funcall funcs function get-c get-list gt gte i if inc
 inc-c incq integerp is-prime label lambda length let let* list
 listp ln load log lt lte make-pvect make-queue make-string make-variable-c
 make-vector mapc mapcan mapcar mapconcat max min mod mul n
-nconc nil nondef not nreverse null numberp or p p-list
-pidx plen pow primes primeset print print-atoms progn pvect q
-queue quit quote rassoc reverse round set setcar setcdr setq
-sin sinh split-string sqr+ sqr+0 sqrt string< string= string> stringp
-sub substring symbol-function symbol-name symbol-value t tan tanh trunc vectorp
+nconc nil not nreverse null numberp or p p-list pidx
+plen pow primes primeset print print-atoms progn pvect q queue
+quit quote rassoc reverse round set setcar setcdr setq sin
+sinh split-string sqr+ sqr+0 sqrt string< string= string> stringp sub
+substring symbol-function symbol-name symbol-value t tan tanh tree trunc vectorp
 vref vset while x y zerop
 [eval] 166
 
