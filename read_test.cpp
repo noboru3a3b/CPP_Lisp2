@@ -4042,11 +4042,11 @@ int main()
   Object *q;
 
   // Set Atom value
-  p_t->value = p_t;
-  p_nil->value = p_nil;
+  p_t->set_value(p_t);
+  p_nil->set_value(p_nil);
 
-  p_const_pi->value = (new Num_float(M_PI));
-  p_const_e->value = (new Num_float(M_E));
+  p_const_pi->set_value(new Num_float(M_PI));
+  p_const_e->set_value(new Num_float(M_E));
 
   // Set Atom function 
   p_quote->func = evquote;
