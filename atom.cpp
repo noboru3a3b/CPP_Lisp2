@@ -26,7 +26,7 @@ Atom::~Atom()
   if (lambda != NULL)
   {
     lambda->ref_cnt--;
-    if (lambda->ref_cnt == 0) delete value;
+    if (lambda->ref_cnt == 0) delete lambda;
   }
 }
 
@@ -68,24 +68,56 @@ void Atom::set_name(string s)
 
 void Atom::set_value(Object *v)
 {
+  Object *save;
+
   if (value != NULL)
   {
-    value->ref_cnt--;
+    // Write Same Object
+    if (value == v)
+    {
+      // Do nothing
+      return;
+    }
+
+    save = value;
+
+    value = v;
+    value->ref_cnt++;
+
+    save->ref_cnt--;
+    if (save->ref_cnt == 0) delete save;
+    return;
   }
 
   value = v;
-  v->ref_cnt++;
+  value->ref_cnt++;
 }
 
 void Atom::set_lambda(Object *lmd)
 {
+  Object *save;
+
   if (lambda != NULL)
   {
-    lambda->ref_cnt--;
+    // Write Same Function
+    if (lambda == lmd)
+    {
+      // Do nothing
+      return;
+    }
+
+    save = lambda;
+  
+    lambda = lmd;
+    lambda->ref_cnt++;
+
+    save->ref_cnt--;
+    if (save->ref_cnt == 0) delete save;
+    return;
   }
 
   lambda = lmd;
-  lmd->ref_cnt++;
+  lambda->ref_cnt++;
 }
 
 void Atom::set_func(Object *(*fn)(Object *e, Object *))

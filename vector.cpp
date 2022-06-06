@@ -98,9 +98,25 @@ long8 Vector::get_size()
 
 void Vector::set_value(long8 i, Object *p)
 {
+  Object *save;
+
   if (vector[i] != NULL)
   {
-    vector[i]->ref_cnt--;
+    // Write Same Object
+    if (vector[i] == p)
+    {
+      // Do nothing
+      return;
+    }
+
+    save = vector[i];
+
+    vector[i] = p;
+    p->ref_cnt++;
+
+    save->ref_cnt--;
+    if (save->ref_cnt == 0) delete save;
+    return;
   }
 
   vector[i] = p;
