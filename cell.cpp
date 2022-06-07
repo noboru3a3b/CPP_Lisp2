@@ -74,7 +74,10 @@ void Cell::set_car(Object *p)
       car->ref_cnt++;
 
       save->ref_cnt--;
-      if (save->ref_cnt == 0) delete save;
+      if (save->ref_cnt == 0)
+      {
+        delete save;
+      }
     }
   }
   // First Write
@@ -100,7 +103,10 @@ void Cell::set_cdr(Object *p)
       cdr->ref_cnt++;
 
       save->ref_cnt--;
-      if (save->ref_cnt == 0) delete save;
+      if (save->ref_cnt == 0)
+      {
+        delete save;
+      }
     }
   }
   // First Write

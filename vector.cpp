@@ -26,7 +26,10 @@ Vector::~Vector()
     if (vector[i] != NULL)
     {
       vector[i]->ref_cnt--;
-      if (vector[i]->ref_cnt == 0) delete vector[i];
+      if (vector[i]->ref_cnt == 0)
+      {
+        delete vector[i];
+      }
     }
   }
   delete[] vector;
@@ -111,7 +114,10 @@ void Vector::set_value(long8 i, Object *p)
       vector[i]->ref_cnt++;
 
       save->ref_cnt--;
-      if (save->ref_cnt == 0) delete save;
+      if (save->ref_cnt == 0)
+      {
+        delete save;
+      }
     }
   }
   // First Write

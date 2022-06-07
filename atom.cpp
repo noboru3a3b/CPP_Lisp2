@@ -20,13 +20,19 @@ Atom::~Atom()
   if (value != NULL)
   {
     value->ref_cnt--;
-    if (value->ref_cnt == 0) delete value;
+    if (value->ref_cnt == 0)
+    {
+      delete value;
+    }
   }
 
   if (lambda != NULL)
   {
     lambda->ref_cnt--;
-    if (lambda->ref_cnt == 0) delete lambda;
+    if (lambda->ref_cnt == 0)
+    {
+      delete lambda;
+    }
   }
 }
 
@@ -81,7 +87,10 @@ void Atom::set_value(Object *v)
       value->ref_cnt++;
 
       save->ref_cnt--;
-      if (save->ref_cnt == 0) delete save;
+      if (save->ref_cnt == 0) 
+      {
+        delete save;
+      }
     }
   }
   // First Write
@@ -107,7 +116,10 @@ void Atom::set_lambda(Object *lmd)
       lambda->ref_cnt++;
 
       save->ref_cnt--;
-      if (save->ref_cnt == 0) delete save;
+      if (save->ref_cnt == 0)
+      {
+        delete save;
+      }
     }
   }
   // First Write

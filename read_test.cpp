@@ -990,16 +990,16 @@ Object *s_read(vector<Token> *tokens, int idx, int *rest_idx)
   // Number_int
   else if (type == Type::Num_Int)
   {
-    p = new Num_int;
-    p->set_value((long8)stol(s));
+    p = new Num_int((long8)stol(s));
+
     return p;
   }
 
   // Number_float
   else if (type == Type::Num_Float)
   {
-    p = new Num_float;
-    p->set_value(stod(s));
+    p = new Num_float(stod(s));
+
     return p;
   }
 
@@ -1129,8 +1129,7 @@ Object *s_cdr_read(vector<Token> *tokens, int idx, int *rest_idx)
   {
     p = new Cell;
 
-    p_car = new Num_int;
-    p_car->set_value((long8)stol(s));
+    p_car = new Num_int((long8)stol(s));
 
     p->set_car(p_car);
     p_cdr = s_cdr_read(tokens, *rest_idx, &cdr_rest_idx);
@@ -1146,8 +1145,7 @@ Object *s_cdr_read(vector<Token> *tokens, int idx, int *rest_idx)
   {
     p = new Cell;
 
-    p_car = new Num_float;
-    p_car->set_value(stod(s));
+    p_car = new Num_float(stod(s));
 
     p->set_car(p_car);
     p_cdr = s_cdr_read(tokens, *rest_idx, &cdr_rest_idx);
@@ -1257,8 +1255,7 @@ void v_rest_read(Object *v, int i, vector<Token> *tokens, int idx, int *rest_idx
   // Number_int
   else if (type == Type::Num_Int)
   {
-    p = new Num_int;
-    p->set_value((long8)stol(s));	// Conv error may occur
+    p = new Num_int((long8)stol(s));	// Conv error may occur
 
     v->set_value(i, p);
     v_rest_read(v, i + 1, tokens, *rest_idx, &cdr_rest_idx);
@@ -1269,8 +1266,7 @@ void v_rest_read(Object *v, int i, vector<Token> *tokens, int idx, int *rest_idx
   // Number_float
   else if (type == Type::Num_Float)
   {
-    p = new Num_float;
-    p->set_value(stod(s));	// Conv error may occur
+    p = new Num_float(stod(s));	// Conv error may occur
 
     v->set_value(i, p);
     v_rest_read(v, i + 1, tokens, *rest_idx, &cdr_rest_idx);
@@ -2115,8 +2111,8 @@ Object *evadd(Object *x, Object *a)
 {
   Num_int *q;
 
-  q = new Num_int;
-  q->set_value(add0(x, (long8)0, a));
+  q = new Num_int(add0(x, (long8)0, a));
+
   return (Object *)q;
 }
 
@@ -2137,8 +2133,8 @@ Object *evsub(Object *x, Object *a)
 {
   Num_int *q;
 
-  q = new Num_int;
-  q->set_value(sub0(cdr(x), to_int(car(x), a), a));
+  q = new Num_int(sub0(cdr(x), to_int(car(x), a), a));
+
   return (Object *)q;
 }
 
@@ -2159,8 +2155,8 @@ Object *evmul(Object *x, Object *a)
 {
   Num_int *q;
 
-  q = new Num_int;
-  q->set_value(mul0(x, (long8)1, a));
+  q = new Num_int(mul0(x, (long8)1, a));
+
   return (Object *)q;
 }
 
@@ -2181,8 +2177,8 @@ Object *evdiv(Object *x, Object *a)
 {
   Num_int *q;
 
-  q = new Num_int;
-  q->set_value(div0(cdr(x), to_int(car(x), a), a));
+  q = new Num_int(div0(cdr(x), to_int(car(x), a), a));
+
   return (Object *)q;
 }
 
@@ -2203,8 +2199,8 @@ Object *evmod(Object *x, Object *a)
 {
   Num_int *q;
 
-  q = new Num_int;
-  q->set_value(mod0(cdr(x), to_int(car(x), a), a));
+  q = new Num_int(mod0(cdr(x), to_int(car(x), a), a));
+
   return (Object *)q;
 }
 
@@ -2213,8 +2209,8 @@ Object *evinc(Object *x, Object *a)
 {
   Num_int *q;
 
-  q = new Num_int;
-  q->set_value(to_int(car(x), a) + 1);
+  q = new Num_int(to_int(car(x), a) + 1);
+
   return (Object *)q;
 }
 
@@ -2223,8 +2219,8 @@ Object *evdec(Object *x, Object *a)
 {
   Num_int *q;
 
-  q = new Num_int;
-  q->set_value(to_int(car(x), a) - 1);
+  q = new Num_int(to_int(car(x), a) - 1);
+
   return (Object *)q;
 }
 
@@ -2234,8 +2230,7 @@ Object *evincq(Object *x, Object *a)
   Num_int *q;
   Object *p;
 
-  q = new Num_int;
-  q->set_value(to_int(car(x), a) + 1);
+  q = new Num_int(to_int(car(x), a) + 1);
 
   // Get (var value) list
   p = assoc(car(x), a);
@@ -2262,8 +2257,7 @@ Object *evdecq(Object *x, Object *a)
   Num_int *q;
   Object *p;
 
-  q = new Num_int;
-  q->set_value(to_int(car(x), a) - 1);
+  q = new Num_int(to_int(car(x), a) + 1);
 
   // Get (var value) list
   p = assoc(car(x), a);
@@ -2450,8 +2444,8 @@ Object *evaddf(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float;
-  q->set_value(addf0(x, (double)0, a));
+  q = new Num_float(addf0(x, (double)0, a));
+
   return (Object *)q;
 }
 
@@ -2472,8 +2466,8 @@ Object *evsubf(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float;
-  q->set_value(subf0(cdr(x), to_float(car(x), a), a));
+  q = new Num_float(subf0(cdr(x), to_float(car(x), a), a));
+
   return (Object *)q;
 }
 
@@ -2494,8 +2488,8 @@ Object *evmulf(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float;
-  q->set_value(mulf0(x, (double)1, a));
+  q = new Num_float(mulf0(x, (double)1, a));
+
   return (Object *)q;
 }
 
@@ -2516,8 +2510,8 @@ Object *evdivf(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float;
-  q->set_value(divf0(cdr(x), to_float(car(x), a), a));
+  q = new Num_float(divf0(cdr(x), to_float(car(x), a), a));
+
   return (Object *)q;
 }
 
@@ -2526,8 +2520,8 @@ Object *evincf(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float;
-  q->set_value(to_float(car(x), a) + (double)1);
+  q = new Num_float(to_float(car(x), a) + (double)1);
+
   return (Object *)q;
 }
 
@@ -2536,8 +2530,8 @@ Object *evdecf(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float;
-  q->set_value(to_float(car(x), a) - (double)1);
+  q = new Num_float(to_float(car(x), a) - (double)1);
+
   return (Object *)q;
 }
 
@@ -2708,8 +2702,8 @@ Object *evmin(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float;
-  q->set_value(min0(x, (double)0, a));
+  q = new Num_float(min0(x, (double)0, a));
+
   return (Object *)q;
 }
 
@@ -2730,8 +2724,8 @@ Object *evmax(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float;
-  q->set_value(max0(x, (double)0, a));
+  q = new Num_float(max0(x, (double)0, a));
+
   return (Object *)q;
 }
 
@@ -2740,8 +2734,8 @@ Object *evsqrt(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float;
-  q->set_value(sqrt(to_float(car(x), a)));
+  q = new Num_float(max0(x, (double)0, a));
+
   return (Object *)q;
 }
 
@@ -2750,8 +2744,8 @@ Object *evsin(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float;
-  q->set_value(sin(to_float(car(x), a)));
+  q = new Num_float(sin(to_float(car(x), a)));
+
   return (Object *)q;
 }
 
@@ -2760,8 +2754,8 @@ Object *evcos(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float;
-  q->set_value(cos(to_float(car(x), a)));
+  q = new Num_float(cos(to_float(car(x), a)));
+
   return (Object *)q;
 }
 
@@ -2770,8 +2764,8 @@ Object *evtan(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float;
-  q->set_value(tan(to_float(car(x), a)));
+  q = new Num_float(tan(to_float(car(x), a)));
+
   return (Object *)q;
 }
 
@@ -2780,8 +2774,8 @@ Object *evasin(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float;
-  q->set_value(asin(to_float(car(x), a)));
+  q = new Num_float(asin(to_float(car(x), a)));
+
   return (Object *)q;
 }
 
@@ -2790,8 +2784,8 @@ Object *evacos(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float;
-  q->set_value(acos(to_float(car(x), a)));
+  q = new Num_float(acos(to_float(car(x), a)));
+
   return (Object *)q;
 }
 
@@ -2800,8 +2794,8 @@ Object *evatan(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float;
-  q->set_value(atan(to_float(car(x), a)));
+  q = new Num_float(atan(to_float(car(x), a)));
+
   return (Object *)q;
 }
 
@@ -2810,8 +2804,8 @@ Object *evsinh(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float;
-  q->set_value(sinh(to_float(car(x), a)));
+  q = new Num_float(sinh(to_float(car(x), a)));
+
   return (Object *)q;
 }
 
@@ -2820,8 +2814,8 @@ Object *evcosh(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float;
-  q->set_value(cosh(to_float(car(x), a)));
+  q = new Num_float(cosh(to_float(car(x), a)));
+
   return (Object *)q;
 }
 
@@ -2830,8 +2824,8 @@ Object *evtanh(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float;
-  q->set_value(tanh(to_float(car(x), a)));
+  q = new Num_float(tanh(to_float(car(x), a)));
+
   return (Object *)q;
 }
 
@@ -2840,8 +2834,8 @@ Object *evabs(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float;
-  q->set_value(abs(to_float(car(x), a)));
+  q = new Num_float(abs(to_float(car(x), a)));
+
   return (Object *)q;
 }
 
@@ -2850,8 +2844,8 @@ Object *evround(Object *x, Object *a)
 {
   Num_int *q;
 
-  q = new Num_int;
-  q->set_value(round(to_float(car(x), a)));
+  q = new Num_int(round(to_float(car(x), a)));
+
   return (Object *)q;
 }
 
@@ -2860,8 +2854,8 @@ Object *evtrunc(Object *x, Object *a)
 {
   Num_int *q;
 
-  q = new Num_int;
-  q->set_value(trunc(to_float(car(x), a)));
+  q = new Num_int(trunc(to_float(car(x), a)));
+
   return (Object *)q;
 }
 
@@ -2870,8 +2864,8 @@ Object *evfloor(Object *x, Object *a)
 {
   Num_int *q;
 
-  q = new Num_int;
-  q->set_value(floor(to_float(car(x), a)));
+  q = new Num_int(floor(to_float(car(x), a)));
+
   return (Object *)q;
 }
 
@@ -2880,8 +2874,8 @@ Object *evexp(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float;
-  q->set_value(exp(to_float(car(x), a)));
+  q = new Num_float(exp(to_float(car(x), a)));
+
   return (Object *)q;
 }
 
@@ -2890,8 +2884,8 @@ Object *evpow(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float;
-  q->set_value(pow(to_float(car(x), a), to_float(cadr(x), a)));
+  q = new Num_float(pow(to_float(car(x), a), to_float(cadr(x), a)));
+
   return (Object *)q;
 }
 
@@ -2900,8 +2894,8 @@ Object *evln(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float;
-  q->set_value(log(to_float(car(x), a)));
+  q = new Num_float(log(to_float(car(x), a)));
+
   return (Object *)q;
 }
 
@@ -2910,8 +2904,8 @@ Object *evlog(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float;
-  q->set_value(log10(to_float(car(x), a)));
+  q = new Num_float(log10(to_float(car(x), a)));
+
   return (Object *)q;
 }
 

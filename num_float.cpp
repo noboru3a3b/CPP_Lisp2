@@ -16,11 +16,12 @@ Num_float::Num_float()
 Num_float::Num_float(double n)
 {
   value = n;
+//  cout << " [fSET " << value << ":" << ref_cnt << "] ";
 }
 
 Num_float::~Num_float()
 {
-
+//  cout << " [fDEL " << value << ":" << ref_cnt << "] ";
 }
 
 void Num_float::print()
@@ -44,5 +45,6 @@ void Num_float::print_cdr()
 void Num_float::set_value(double n)
 {
   value = n;
+//  cout << " [fSET2 " << value << ":" << ref_cnt << "] ";
 }
 
