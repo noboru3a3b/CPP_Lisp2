@@ -62,22 +62,25 @@
          (primes (en-queue queue x) (add x 2) max))
         (t (primes queue (add x 2) max))))
 
-(primes (make-queue) 3 1000)
+(primes (make-queue) 3 100)
 
 (defun make-pvect ()
-  (setq plen 100)
+  (setq plen 25)
   (setq pidx 1)
-  (setq pvect (make-vector plen 0)))
+  (setq pvect (make-vector plen 0))
+  (setq ppvect (make-vector plen 0)))
 
 (defun primeset (x)
   (if (eqn pidx plen) nil
       (vset pvect pidx x)
+      (vset ppvect pidx (mul x x))
       (incq pidx)))
 
 (defun is-prime (x i)
-  (let ((p (vref pvect i)))
+  (let ((p (vref pvect i))
+        (pp (vref ppvect i)))
     (cond ((zerop p) t)
-          ((gt (mul p p) x) t)
+          ((gt pp x) t)
           ((zerop (mod x p)) nil)
           (t (is-prime x (inc i))))))
 

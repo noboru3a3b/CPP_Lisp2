@@ -126,25 +126,28 @@ zerop
         (t (primes queue (add x 2) max))))
 [eval] primes
 
-(primes (make-queue) 3 1000)
-[eval] (2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101 103 107 109 113 127 131 137 139 149 151 157 163 167 173 179 181 191 193 197 199 211 223 227 229 233 239 241 251 257 263 269 271 277 281 283 293 307 311 313 317 331 337 347 349 353 359 367 373 379 383 389 397 401 409 419 421 431 433 439 443 449 457 461 463 467 479 487 491 499 503 509 521 523 541 547 557 563 569 571 577 587 593 599 601 607 613 617 619 631 641 643 647 653 659 661 673 677 683 691 701 709 719 727 733 739 743 751 757 761 769 773 787 797 809 811 821 823 827 829 839 853 857 859 863 877 881 883 887 907 911 919 929 937 941 947 953 967 971 977 983 991 997)
+(primes (make-queue) 3 100)
+[eval] (2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97)
 
 (defun make-pvect ()
-  (setq plen 100)
+  (setq plen 25)
   (setq pidx 1)
-  (setq pvect (make-vector plen 0)))
+  (setq pvect (make-vector plen 0))
+  (setq ppvect (make-vector plen 0)))
 [eval] make-pvect
 
 (defun primeset (x)
   (if (eqn pidx plen) nil
       (vset pvect pidx x)
+      (vset ppvect pidx (mul x x))
       (incq pidx)))
 [eval] primeset
 
 (defun is-prime (x i)
-  (let ((p (vref pvect i)))
+  (let ((p (vref pvect i))
+        (pp (vref ppvect i)))
     (cond ((zerop p) t)
-          ((gt (mul p p) x) t)
+          ((gt pp x) t)
           ((zerop (mod x p)) nil)
           (t (is-prime x (inc i))))))
 [eval] is-prime
@@ -158,9 +161,9 @@ zerop
 [eval] primes
 
 (make-pvect)
-[eval] #(0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+[eval] #(0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
 (primes 3)
-[eval] #(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101 103 107 109 113 127 131 137 139 149 151 157 163 167 173 179 181 191 193 197 199 211 223 227 229 233 239 241 251 257 263 269 271 277 281 283 293 307 311 313 317 331 337 347 349 353 359 367 373 379 383 389 397 401 409 419 421 431 433 439 443 449 457 461 463 467 479 487 491 499 503 509 521 523 541)
+[eval] #(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97)
 
 (symbol-function #'primes)
 [eval] (lambda (x) (if (is-prime x 1) (if (primeset x) (primes (add x 2)) (vset pvect 0 2) pvect) (primes (add x 2))))
@@ -209,13 +212,13 @@ inc-c incq integerp is-prime label lambda length let let* list
 listp ln load log lt lte make-pvect make-queue make-string make-variable-c
 make-vector mapc mapcan mapcar mapconcat max min mod mul n
 nconc nil not nreverse null numberp or p p-list pidx
-plen pow primes primeset print print-atoms progn pvect q queue
-quit quote rassoc reverse round set setcar setcdr setq sin
-sinh split-string sqr+ sqr+0 sqrt string< string= string> stringp sub
-substring symbol-function symbol-name symbol-value t tan tanh tree trunc vectorp
-vref vset while x y zerop
-[eval] 166
+plen pow pp ppvect primes primeset print print-atoms progn pvect
+q queue quit quote rassoc reverse round set setcar setcdr
+setq sin sinh split-string sqr+ sqr+0 sqrt string< string= string>
+stringp sub substring symbol-function symbol-name symbol-value t tan tanh tree
+trunc vectorp vref vset while x y zerop
+[eval] 168
 
-> (exit)
+> (quit)
 
 ```
