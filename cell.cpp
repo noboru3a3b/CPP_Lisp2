@@ -65,25 +65,24 @@ void Cell::set_car(Object *p)
 
   if (car != NULL)
   {
-    // Write Same Object
-    if (car == p)
+    // Write Other Object
+    if (car != p)
     {
-      // Do nothing
-      return;
+      save = car;
+
+      car = p;
+      car->ref_cnt++;
+
+      save->ref_cnt--;
+      if (save->ref_cnt == 0) delete save;
     }
-
-    save = car;
-
+  }
+  // First Write
+  else
+  {
     car = p;
     car->ref_cnt++;
-
-    save->ref_cnt--;
-    if (save->ref_cnt == 0) delete save;
-    return;
   }
-
-  car = p;
-  car->ref_cnt++;
 }
 
 void Cell::set_cdr(Object *p)
@@ -92,23 +91,22 @@ void Cell::set_cdr(Object *p)
 
   if (cdr != NULL)
   {
-    // Write Same Object
-    if (cdr == p)
+    // Write Other Object
+    if (cdr != p)
     {
-      // Do nothing
-      return;
+      save = cdr;
+
+      cdr = p;
+      cdr->ref_cnt++;
+
+      save->ref_cnt--;
+      if (save->ref_cnt == 0) delete save;
     }
-
-    save = cdr;
-
+  }
+  // First Write
+  else
+  {
     cdr = p;
     cdr->ref_cnt++;
-
-    save->ref_cnt--;
-    if (save->ref_cnt == 0) delete save;
-    return;
   }
-
-  cdr = p;
-  cdr->ref_cnt++;
 }

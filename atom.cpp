@@ -72,25 +72,24 @@ void Atom::set_value(Object *v)
 
   if (value != NULL)
   {
-    // Write Same Object
-    if (value == v)
+    // Write Other Object
+    if (value != v)
     {
-      // Do nothing
-      return;
+      save = value;
+
+      value = v;
+      value->ref_cnt++;
+
+      save->ref_cnt--;
+      if (save->ref_cnt == 0) delete save;
     }
-
-    save = value;
-
+  }
+  // First Write
+  else
+  {
     value = v;
     value->ref_cnt++;
-
-    save->ref_cnt--;
-    if (save->ref_cnt == 0) delete save;
-    return;
   }
-
-  value = v;
-  value->ref_cnt++;
 }
 
 void Atom::set_lambda(Object *lmd)
@@ -99,25 +98,24 @@ void Atom::set_lambda(Object *lmd)
 
   if (lambda != NULL)
   {
-    // Write Same Function
-    if (lambda == lmd)
+    // Write Other Function
+    if (lambda != lmd)
     {
-      // Do nothing
-      return;
-    }
+      save = lambda;
 
-    save = lambda;
-  
+      lambda = lmd;
+      lambda->ref_cnt++;
+
+      save->ref_cnt--;
+      if (save->ref_cnt == 0) delete save;
+    }
+  }
+  // First Write
+  else
+  {
     lambda = lmd;
     lambda->ref_cnt++;
-
-    save->ref_cnt--;
-    if (save->ref_cnt == 0) delete save;
-    return;
   }
-
-  lambda = lmd;
-  lambda->ref_cnt++;
 }
 
 void Atom::set_func(Object *(*fn)(Object *e, Object *))

@@ -102,25 +102,24 @@ void Vector::set_value(long8 i, Object *p)
 
   if (vector[i] != NULL)
   {
-    // Write Same Object
-    if (vector[i] == p)
+    // Write Other Object
+    if (vector[i] != p)
     {
-      // Do nothing
-      return;
+      save = vector[i];
+
+      vector[i] = p;
+      vector[i]->ref_cnt++;
+
+      save->ref_cnt--;
+      if (save->ref_cnt == 0) delete save;
     }
-
-    save = vector[i];
-
+  }
+  // First Write
+  else
+  {
     vector[i] = p;
     p->ref_cnt++;
-
-    save->ref_cnt--;
-    if (save->ref_cnt == 0) delete save;
-    return;
   }
-
-  vector[i] = p;
-  p->ref_cnt++;
 }
 
 Object *Vector::get_value(long8 i)
