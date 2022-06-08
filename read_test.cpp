@@ -2071,26 +2071,32 @@ Object *evparam(Object *e, Object *a)
 // ((a exp1) (b exp2) ... ) -> ((a eval(exp1)) (b eval(exp2)) ... )
 Object *evparam2(Object *e, Object *a)
 {
+  Object *p;
+
   if (null(e) == p_t)
   {
     return p_nil;
   }
   else
   {
-    return cons(cons(caar(e), s_eval(cadar(e), a)), evparam2(cdr(e), cons(cons(caar(e), s_eval(cadar(e), a)), a)));
+    p = cons(caar(e), s_eval(cadar(e), a));
+    return cons(p, evparam2(cdr(e), cons(p, a)));
   }
 }
 
 // to Int
 long8 to_int(Object *x, Object *a)
 {
-  if (typeid(*s_eval(x, a)) == id_Num_float)
+  Object *p;
+
+  p = s_eval(x, a);
+  if (typeid(*p) == id_Num_float)
   {
-    return (long8)(((Num_float *)s_eval(x, a))->value);
+    return (long8)(((Num_float *)p)->value);
   }
   else
   {
-    return (((Num_int *)s_eval(x, a))->value);
+    return (((Num_int *)p)->value);
   }
 }
 
@@ -2417,13 +2423,16 @@ Object *evintegerp(Object *x, Object *a)
 // to Float
 double to_float(Object *x, Object *a)
 {
-  if (typeid(*s_eval(x, a)) == id_Num_int)
+  Object *p;
+
+  p = s_eval(x, a);
+  if (typeid(*p) == id_Num_int)
   {
-    return (double)(((Num_int *)s_eval(x, a))->value);
+    return (double)(((Num_int *)p)->value);
   }
   else
   {
-    return (((Num_float *)s_eval(x, a))->value);
+    return (((Num_float *)p)->value);
   }
 }
 
