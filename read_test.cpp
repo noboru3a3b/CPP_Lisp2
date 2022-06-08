@@ -2683,8 +2683,11 @@ Object *evfloatp(Object *x, Object *a)
 // Numberp (Int / Float)
 Object *evnumberp(Object *x, Object *a)
 {
-  if ((typeid(*s_eval(car(x), a)) == id_Num_int) ||
-      (typeid(*s_eval(car(x), a)) == id_Num_float))
+  Object *p;
+
+  p = s_eval(car(x), a);
+  if ((typeid(*p) == id_Num_int) ||
+      (typeid(*p) == id_Num_float))
   {
     return p_t;
   }
@@ -3240,12 +3243,15 @@ Object *evdefun(Object *e, Object *a)
 // (print
 Object *evprint(Object *e, Object *a)
 {
-  (s_eval(car(e), a))->print();
+  Object *p;
+
+  p = s_eval(car(e), a);
+  (p)->print();
 
   if (cout_on) {cout << endl;}
   if (ofs_on) {ofs << endl;}
 
-  return s_eval(car(e), a);
+  return p;
 }
 // (let ((a exp1) (b exp2) ... ) exp)
 Object *evlet(Object *e, Object *a)
@@ -3261,21 +3267,23 @@ Object *evlet2(Object *e, Object *a)
 Object *evsetq(Object *e, Object *a)
 {
   Object *p;
+  Object *r;
 
   // Get (var value) list
   p = assoc(car(e), a);
 
+  r = s_eval(cadr(e), a);
   // Local var
   if (p != p_nil)
   {
-    ((Cell *)p)->set_cdr(s_eval(cadr(e), a));
+    ((Cell *)p)->set_cdr(r);
     return cdr((Cell *)p);
   }
   // Global var
   else
   {
     p = car(e);
-    ((Atom *)p)->set_value(s_eval(cadr(e), a));
+    ((Atom *)p)->set_value(r);
     return ((Atom *)p)->value;
   }
 }
@@ -3284,21 +3292,23 @@ Object *evset(Object *e, Object *a)
 {
   Object *p;
   Object *q;
+  Object *r;
 
   // Get (var value) list
   p = s_eval(car(e), a);
-  q = assoc(s_eval(car(e), a), a);
+  q = assoc(p, a);
 
+  r = s_eval(cadr(e), a);
   // Local var
   if (q != p_nil)
   {
-    ((Cell *)q)->set_cdr(s_eval(cadr(e), a));
+    ((Cell *)q)->set_cdr(r);
     return cdr((Cell *)q);
   }
   // Global var
   else
   {
-    ((Atom *)p)->set_value(s_eval(cadr(e), a));
+    ((Atom *)p)->set_value(r);
     return ((Atom *)p)->value;
   }
 }
@@ -3339,13 +3349,16 @@ Object *evsymbolname(Object *e, Object *a)
 // symbol-function
 Object *evsymbolfunction(Object *e, Object *a)
 {
-  if (((Atom *)s_eval(car(e), a))->func != NULL)
+  Object *p;
+
+  p = s_eval(car(e), a);
+  if (((Atom *)p)->func != NULL)
   {
-    return new String("#<subr " + ((Atom *)s_eval(car(e), a))->name + ">");
+    return new String("#<subr " + ((Atom *)p)->name + ">");
   }
-  else if (((Atom *)s_eval(car(e), a))->lambda != NULL)
+  else if (((Atom *)p)->lambda != NULL)
   {
-    return ((Atom *)s_eval(car(e), a))->lambda;
+    return ((Atom *)p)->lambda;
   }
   else
   {
@@ -3438,50 +3451,62 @@ void evmapclist(Object *fn, Object *lst, Object *a)
 // (mapcanvect fn v i size a
 Object *evmapcanvect(Object *fn, Object *v, long8 i, long8 size, Object *a)
 {
+  Object *p;
+
+  p = s_eval(list(fn, list(p_quote, ((Vector *)v)->vector[i])), a);
   if (i + 2 == size)
   {
-    return nconc(s_eval(list(fn, list(p_quote, ((Vector *)v)->vector[i])), a), s_eval(list(fn, list(p_quote, ((Vector *)v)->vector[i + 1])), a));
+    return nconc(p, s_eval(list(fn, list(p_quote, ((Vector *)v)->vector[i + 1])), a));
   }
   else
   {
-    return nconc(s_eval(list(fn, list(p_quote, ((Vector *)v)->vector[i])), a), evmapcanvect(fn, v, i + 1, size, a));
+    return nconc(p, evmapcanvect(fn, v, i + 1, size, a));
   }
 }
 // (mapcanlist fn lst a
 Object *evmapcanlist(Object *fn, Object *lst, Object *a)
 {
+  Object *p;
+
+  p = s_eval(list(fn, list(p_quote, car(lst))), a);
   if (cddr(lst) == p_nil)
   {
-    return nconc(s_eval(list(fn, list(p_quote, car(lst))), a), s_eval(list(fn, list(p_quote, cadr(lst))), a));
+    return nconc(p, s_eval(list(fn, list(p_quote, cadr(lst))), a));
   }
   else
   {
-    return nconc(s_eval(list(fn, list(p_quote, car(lst))), a), evmapcanlist(fn, cdr(lst), a));
+    return nconc(p, evmapcanlist(fn, cdr(lst), a));
   }
 }
 // (mapconcatvect fn v sp i size a
 string evmapconcatvect(Object *fn, Object *v, Object *sp, long8 i, long8 size, Object *a)
 {
+  Object *p;
+
+  p = s_eval(list(fn, list(p_quote, ((Vector *)v)->vector[i])), a);
   if (i + 1 == size)
   {
-    return ((String *)s_eval(list(fn, list(p_quote, ((Vector *)v)->vector[i])), a))->value;
+    return ((String *)p)->value;
   }
   else
   {
-    return ((String *)s_eval(list(fn, list(p_quote, ((Vector *)v)->vector[i])), a))->value +
+    return ((String *)p)->value +
            ((String *)sp)->value + evmapconcatvect(fn, v, sp, i + 1, size, a);
   }
 }
 // (mapconcatlist fn lst sp a
 string evmapconcatlist(Object *fn, Object *lst, Object *sp, Object *a)
 {
+  Object *p;
+
+  p = s_eval(list(fn, list(p_quote, car(lst))), a);
   if (cdr(lst) == p_nil)
   {
-    return ((String *)s_eval(list(fn, list(p_quote, car(lst))), a))->value;
+    return ((String *)p)->value;
   }
   else
   {
-    return ((String *)s_eval(list(fn, list(p_quote, car(lst))), a))->value +
+    return ((String *)p)->value +
            ((String *)sp)->value + evmapconcatlist(fn, cdr(lst), sp, a);
   }
 }
