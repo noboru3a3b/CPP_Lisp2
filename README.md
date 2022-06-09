@@ -144,10 +144,8 @@ zerop
 [eval] primeset
 
 (defun is-prime (x)
-  (let ((pi 1)
-        (rtn 0))
-    (while (and (not (zerop (vref pvect pi)))
-                (eq rtn 0))
+  (let ((pi 1) (rtn 0))
+    (while (and (not (zerop (vref pvect pi))) (eq rtn 0))
       (cond ((gt (vref ppvect pi) x) (setq rtn t))
             ((zerop (mod x (vref pvect pi))) (setq rtn nil))
             (t (incq pi))))
@@ -158,10 +156,10 @@ zerop
   (let ((rtn 0))
     (while (eq rtn 0)
       (if (is-prime x)
-            (if (primeset x) (setq x (add x 2))
+            (if (primeset x) (incq x 2)
               (vset pvect 0 2)
               (setq rtn pvect))
-        (setq x (add x 2))))))
+        (incq x 2)))))
 [eval] primes
 
 (make-pvect)
@@ -170,9 +168,9 @@ zerop
 [eval] #(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97)
 
 (symbol-function #'primes)
-[eval] (lambda (x) (let ((rtn 0)) (while (eq rtn 0) (if (is-prime x) (if (primeset x) (setq x (add x 2)) (vset pvect 0 2) (setq rtn pvect)) (setq x (add x 2))))))
-(symbol-function #'add)
-[eval] "#<subr add>"
+[eval] (lambda (x) (let ((rtn 0)) (while (eq rtn 0) (if (is-prime x) (if (primeset x) (incq x 2) (vset pvect 0 2) (setq rtn pvect)) (incq x 2)))))
+(symbol-function #'incq)
+[eval] "#<subr incq>"
 
 (setq IN_FILE "sample.lisp")
 [eval] "sample.lisp"

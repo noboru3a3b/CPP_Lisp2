@@ -77,10 +77,8 @@
       (incq pidx)))
 
 (defun is-prime (x)
-  (let ((pi 1)
-        (rtn 0))
-    (while (and (not (zerop (vref pvect pi)))
-                (eq rtn 0))
+  (let ((pi 1) (rtn 0))
+    (while (and (not (zerop (vref pvect pi))) (eq rtn 0))
       (cond ((gt (vref ppvect pi) x) (setq rtn t))
             ((zerop (mod x (vref pvect pi))) (setq rtn nil))
             (t (incq pi))))
@@ -90,16 +88,16 @@
   (let ((rtn 0))
     (while (eq rtn 0)
       (if (is-prime x)
-            (if (primeset x) (setq x (add x 2))
+            (if (primeset x) (incq x 2)
               (vset pvect 0 2)
               (setq rtn pvect))
-        (setq x (add x 2))))))
+        (incq x 2)))))
 
 (make-pvect)
 (primes 3)
 
 (symbol-function #'primes)
-(symbol-function #'add)
+(symbol-function #'incq)
 
 (setq IN_FILE "sample.lisp")
 (setq SPLIT_LIST (split-string IN_FILE "."))
