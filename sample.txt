@@ -43,16 +43,16 @@
 [eval] make-pvect
 [exp] (defun primeset (x) (if (eqn pidx plen) nil (vset pvect pidx x) (vset ppvect pidx (mul x x)) (incq pidx)))
 [eval] primeset
-[exp] (defun is-prime (x i) (let ((p (vref pvect i)) (pp (vref ppvect i))) (cond ((zerop p) t) ((gt pp x) t) ((zerop (mod x p)) nil) (t (is-prime x (inc i))))))
+[exp] (defun is-prime (x) (let ((pi 1) (rtn 0)) (while (and (not (zerop (vref pvect pi))) (eq rtn 0)) (cond ((gt (vref ppvect pi) x) (setq rtn t)) ((zerop (mod x (vref pvect pi))) (setq rtn nil)) (t (incq pi)))) rtn))
 [eval] is-prime
-[exp] (defun primes (x) (if (is-prime x 1) (if (primeset x) (primes (add x 2)) (vset pvect 0 2) pvect) (primes (add x 2))))
+[exp] (defun primes (x) (let ((rtn 0)) (while (eq rtn 0) (if (is-prime x) (if (primeset x) (setq x (add x 2)) (vset pvect 0 2) (setq rtn pvect)) (setq x (add x 2))))))
 [eval] primes
 [exp] (make-pvect)
 [eval] #(0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
 [exp] (primes 3)
 [eval] #(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97)
 [exp] (symbol-function (function primes))
-[eval] (lambda (x) (if (is-prime x 1) (if (primeset x) (primes (add x 2)) (vset pvect 0 2) pvect) (primes (add x 2))))
+[eval] (lambda (x) (let ((rtn 0)) (while (eq rtn 0) (if (is-prime x) (if (primeset x) (setq x (add x 2)) (vset pvect 0 2) (setq rtn pvect)) (setq x (add x 2))))))
 [exp] (symbol-function (function add))
 [eval] "#<subr add>"
 [exp] (setq IN_FILE "sample.lisp")

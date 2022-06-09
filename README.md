@@ -143,21 +143,25 @@ zerop
       (incq pidx)))
 [eval] primeset
 
-(defun is-prime (x i)
-  (let ((p (vref pvect i))
-        (pp (vref ppvect i)))
-    (cond ((zerop p) t)
-          ((gt pp x) t)
-          ((zerop (mod x p)) nil)
-          (t (is-prime x (inc i))))))
+(defun is-prime (x)
+  (let ((pi 1)
+        (rtn 0))
+    (while (and (not (zerop (vref pvect pi)))
+                (eq rtn 0))
+      (cond ((gt (vref ppvect pi) x) (setq rtn t))
+            ((zerop (mod x (vref pvect pi))) (setq rtn nil))
+            (t (incq pi))))
+    rtn))
 [eval] is-prime
 
 (defun primes (x)
-  (if (is-prime x 1)
-        (if (primeset x) (primes (add x 2))
-            (vset pvect 0 2)
-            pvect)
-      (primes (add x 2))))
+  (let ((rtn 0))
+    (while (eq rtn 0)
+      (if (is-prime x)
+            (if (primeset x) (setq x (add x 2))
+              (vset pvect 0 2)
+              (setq rtn pvect))
+        (setq x (add x 2))))))
 [eval] primes
 
 (make-pvect)
@@ -166,7 +170,7 @@ zerop
 [eval] #(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97)
 
 (symbol-function #'primes)
-[eval] (lambda (x) (if (is-prime x 1) (if (primeset x) (primes (add x 2)) (vset pvect 0 2) pvect) (primes (add x 2))))
+[eval] (lambda (x) (let ((rtn 0)) (while (eq rtn 0) (if (is-prime x) (if (primeset x) (setq x (add x 2)) (vset pvect 0 2) (setq rtn pvect)) (setq x (add x 2))))))
 (symbol-function #'add)
 [eval] "#<subr add>"
 
@@ -207,13 +211,13 @@ caar cadar caddar caddr cadr car cdaar cdadr cdar cddar
 cdddar cdddr cddr cdr closure concat cond cons consp const_e
 const_pi cos cosh d dec dec-c decq defun div e
 en-queue eq eqn equal eval exit exp f floatp floor
-funcall funcs function get-c get-list gt gte i if inc
-inc-c incq integerp is-prime label lambda length let let* list
-listp ln load log lt lte make-pvect make-queue make-string make-variable-c
-make-vector mapc mapcan mapcar mapconcat max min mod mul n
-nconc nil not nreverse null numberp or p p-list pidx
-plen pow pp ppvect primes primeset print print-atoms progn pvect
-q queue quit quote rassoc reverse round set setcar setcdr
+funcall funcs function get-c get-list gt gte if inc inc-c
+incq integerp is-prime label lambda length let let* list listp
+ln load log lt lte make-pvect make-queue make-string make-variable-c make-vector
+mapc mapcan mapcar mapconcat max min mod mul n nconc
+nil not nreverse null numberp or p p-list pi pidx
+plen pow ppvect primes primeset print print-atoms progn pvect q
+queue quit quote rassoc reverse round rtn set setcar setcdr
 setq sin sinh split-string sqr+ sqr+0 sqrt string< string= string>
 stringp sub substring symbol-function symbol-name symbol-value t tan tanh tree
 trunc vectorp vref vset while x y zerop
