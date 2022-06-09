@@ -29,9 +29,9 @@ make-vector mapc mapcan mapcar mapconcat max min mod mul nconc
 nil not nreverse null numberp or pow print print-atoms progn
 quit quote rassoc reverse round set setcar setcdr setq sin
 sinh split-string sqrt string< string= string> stringp sub substring symbol-function
-symbol-name symbol-value t tan tanh trunc vectorp vref vset while
-zerop
-[eval] 131
+symbol-name symbol-value t tan tanh trunc unless vectorp vref vset
+when while zerop
+[eval] 133
 
 > (load "sample.lisp")
 ----------
@@ -145,8 +145,9 @@ zerop
 
 (defun is-prime (x)
   (let ((pi 1) (rtn 0))
-    (while (and (not (zerop (vref pvect pi))) (eq rtn 0))
-      (cond ((gt (vref ppvect pi) x) (setq rtn t))
+    (while (eq rtn 0)
+      (cond ((zerop (vref pvect pi)) (setq rtn t))
+            ((gt (vref ppvect pi) x) (setq rtn t))
             ((zerop (mod x (vref pvect pi))) (setq rtn nil))
             (t (incq pi))))
     rtn))
@@ -156,10 +157,11 @@ zerop
   (let ((rtn 0))
     (while (eq rtn 0)
       (if (is-prime x)
-            (if (primeset x) (incq x 2)
+            (unless (primeset x)
               (vset pvect 0 2)
-              (setq rtn pvect))
-        (incq x 2)))))
+              (setq rtn pvect)))
+      (incq x 2))
+    rtn))
 [eval] primes
 
 (make-pvect)
@@ -168,7 +170,7 @@ zerop
 [eval] #(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97)
 
 (symbol-function #'primes)
-[eval] (lambda (x) (let ((rtn 0)) (while (eq rtn 0) (if (is-prime x) (if (primeset x) (incq x 2) (vset pvect 0 2) (setq rtn pvect)) (incq x 2)))))
+[eval] (lambda (x) (let ((rtn 0)) (while (eq rtn 0) (if (is-prime x) (unless (primeset x) (vset pvect 0 2) (setq rtn pvect))) (incq x 2)) rtn))
 (symbol-function #'incq)
 [eval] "#<subr incq>"
 
@@ -218,8 +220,8 @@ plen pow ppvect primes primeset print print-atoms progn pvect q
 queue quit quote rassoc reverse round rtn set setcar setcdr
 setq sin sinh split-string sqr+ sqr+0 sqrt string< string= string>
 stringp sub substring symbol-function symbol-name symbol-value t tan tanh tree
-trunc vectorp vref vset while x y zerop
-[eval] 168
+trunc unless vectorp vref vset when while x y zerop
+[eval] 170
 
 > (quit)
 
