@@ -2230,13 +2230,22 @@ Object *evdec(Object *x, Object *a)
   return (Object *)q;
 }
 
-// (incq a
+// (incq a n
 Object *evincq(Object *x, Object *a)
 {
   Num_int *q;
   Object *p;
+  Object *r;
 
-  q = new Num_int(to_int(car(x), a) + 1);
+  r = cadr(x);
+  if (r == p_nil)
+  {
+    q = new Num_int(to_int(car(x), a) + 1);
+  }
+  else
+  {
+    q = new Num_int(to_int(car(x), a) + to_int(r, a));
+  }
 
   // Get (var value) list
   p = assoc(car(x), a);
@@ -2257,13 +2266,22 @@ Object *evincq(Object *x, Object *a)
   }
 }
 
-// (decq a
+// (decq a n
 Object *evdecq(Object *x, Object *a)
 {
   Num_int *q;
   Object *p;
+  Object *r;
 
-  q = new Num_int(to_int(car(x), a) + 1);
+  r = cadr(x);
+  if (r == p_nil)
+  {
+    q = new Num_int(to_int(car(x), a) + 1);
+  }
+  else
+  {
+    q = new Num_int(to_int(car(x), a) - to_int(r, a));
+  }
 
   // Get (var value) list
   p = assoc(car(x), a);
