@@ -67,6 +67,8 @@ Atom *p_cdddar = mp->get_atom("cdddar");
 Atom *p_list = mp->get_atom("list");
 Atom *p_null = mp->get_atom("null");
 Atom *p_if = mp->get_atom("if");
+Atom *p_when = mp->get_atom("when");
+Atom *p_unless = mp->get_atom("unless");
 Atom *p_and = mp->get_atom("and");
 Atom *p_or = mp->get_atom("or");
 Atom *p_progn = mp->get_atom("progn");
@@ -1954,6 +1956,48 @@ Object *evif(Object *c, Object *a)
 
     return r;
   }
+}
+
+Object *evwhen(Object *c, Object *a)
+{
+  Object *p;
+  Object *r;
+
+  r = p_nil;
+
+  if (s_eval(car(c), a) != p_nil)
+  {
+    p = cdr(c);
+
+    while (p != p_nil)
+    {
+      r = s_eval(car(p), a);
+      p = cdr(p);
+    }
+  }
+
+  return r;
+}
+
+Object *evunless(Object *c, Object *a)
+{
+  Object *p;
+  Object *r;
+
+  r = p_nil;
+
+  if (s_eval(car(c), a) == p_nil)
+  {
+    p = cdr(c);
+
+    while (p != p_nil)
+    {
+      r = s_eval(car(p), a);
+      p = cdr(p);
+    }
+  }
+
+  return r;
 }
 
 Object *evand(Object *c, Object *a)
@@ -4123,6 +4167,8 @@ int main()
   p_list->func = evlis;
   p_null->func = evnull;
   p_if->func = evif;
+  p_when->func = evwhen;
+  p_unless->func = evunless;
   p_and->func = evand;
   p_or->func = evor;
   p_progn->func = evprogn;
