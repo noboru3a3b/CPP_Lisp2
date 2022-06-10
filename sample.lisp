@@ -67,6 +67,7 @@
 (defun make-pvect ()
   (setq plen 25)
   (setq pidx 1)
+  (setq pi 1)
   (setq pvect (make-vector plen 0))
   (setq ppvect (make-vector plen 0)))
 
@@ -77,7 +78,8 @@
       (incq pidx)))
 
 (defun is-prime (x)
-  (let ((pi 1) (rtn 0))
+  (let ((rtn 0))
+    (setq pi 1)
     (while (eq rtn 0)
       (cond ((zerop (vref pvect pi)) (setq rtn t))
             ((gt (vref ppvect pi) x) (setq rtn t))

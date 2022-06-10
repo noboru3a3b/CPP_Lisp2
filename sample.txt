@@ -39,11 +39,11 @@
 [eval] primes
 [exp] (primes (make-queue) 3 100)
 [eval] (2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97)
-[exp] (defun make-pvect nil (setq plen 25) (setq pidx 1) (setq pvect (make-vector plen 0)) (setq ppvect (make-vector plen 0)))
+[exp] (defun make-pvect nil (setq plen 25) (setq pidx 1) (setq pi 1) (setq pvect (make-vector plen 0)) (setq ppvect (make-vector plen 0)))
 [eval] make-pvect
 [exp] (defun primeset (x) (if (eqn pidx plen) nil (vset pvect pidx x) (vset ppvect pidx (mul x x)) (incq pidx)))
 [eval] primeset
-[exp] (defun is-prime (x) (let ((pi 1) (rtn 0)) (while (eq rtn 0) (cond ((zerop (vref pvect pi)) (setq rtn t)) ((gt (vref ppvect pi) x) (setq rtn t)) ((zerop (mod x (vref pvect pi))) (setq rtn nil)) (t (incq pi)))) rtn))
+[exp] (defun is-prime (x) (let ((rtn 0)) (setq pi 1) (while (eq rtn 0) (cond ((zerop (vref pvect pi)) (setq rtn t)) ((gt (vref ppvect pi) x) (setq rtn t)) ((zerop (mod x (vref pvect pi))) (setq rtn nil)) (t (incq pi)))) rtn))
 [eval] is-prime
 [exp] (defun primes (x) (let ((rtn 0)) (while (eq rtn 0) (if (is-prime x) (unless (primeset x) (vset pvect 0 2) (setq rtn pvect))) (incq x 2)) rtn))
 [eval] primes
