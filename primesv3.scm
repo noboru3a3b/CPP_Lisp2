@@ -1,4 +1,6 @@
-;; for Scheme (gauche/ypsilon/guile/chez)
+;; for Racket
+#lang racket
+
 (define plen 5761455)
 (define pidx 1)
 (define pvect (make-vector plen 0))
@@ -24,6 +26,8 @@
      (if (is-prime x)
            (if (primeset x) #t
              (begin (vector-set! pvect 0 2)
-                    (set! rtn pvect))))))
+                    (set! rtn pvect)))
+        #f)
+    ))
 
 (primes)

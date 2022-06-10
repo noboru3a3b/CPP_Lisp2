@@ -1,4 +1,9 @@
-;; for Scheme (gauche/ypsilon/guile/chez)
+;; for Ikarus
+(import (ikarus))
+
+;; for Larceny
+;(import (larceny r7r6))
+
 (define plen 5761455)
 (define pidx 1)
 (define pvect (make-vector plen 0))
