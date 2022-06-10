@@ -18,6 +18,7 @@
 #include "cell.h"
 #include "vector.h"
 #include "atom_map.h"
+#include "int_map.h"
 
 Object *s_read(vector<Token> *tokens, int idx, int *rest_idx);
 Object *s_cdr_read(vector<Token> *tokens, int idx, int *rest_idx);
@@ -155,6 +156,8 @@ Atom *p_mapcan = mp->get_atom("mapcan");
 Atom *p_mapconcat = mp->get_atom("mapconcat");
 
 Atom *p_printatoms = mp->get_atom("print-atoms");
+Atom *p_printints = mp->get_atom("print-ints");
+Atom *p_deleteints = mp->get_atom("delete-ints");
 Atom *p_load = mp->get_atom("load");
 Atom *p_exit = mp->get_atom("exit");
 Atom *p_quit = mp->get_atom("quit");
@@ -178,6 +181,8 @@ Atom *p_equal = mp->get_atom("equal");
 //Atom *p_pair = mp->get_atom("pair");
 //tom *p_evcon = mp->get_atom("evcon");
 //Atom *p_evlis = mp->get_atom("evlis");
+
+IntMap *imp = new IntMap;
 
 // Output FILE Stream
 ofstream ofs;
@@ -992,8 +997,8 @@ Object *s_read(vector<Token> *tokens, int idx, int *rest_idx)
   // Number_int
   else if (type == Type::Num_Int)
   {
-    p = new Num_int((long8)stol(s));
-
+    p = imp->get_int((long8)stol(s));
+  
     return p;
   }
 
@@ -1131,7 +1136,7 @@ Object *s_cdr_read(vector<Token> *tokens, int idx, int *rest_idx)
   {
     p = new Cell;
 
-    p_car = new Num_int((long8)stol(s));
+    p_car = imp->get_int((long8)stol(s));
 
     p->set_car(p_car);
     p_cdr = s_cdr_read(tokens, *rest_idx, &cdr_rest_idx);
@@ -1257,7 +1262,7 @@ void v_rest_read(Object *v, int i, vector<Token> *tokens, int idx, int *rest_idx
   // Number_int
   else if (type == Type::Num_Int)
   {
-    p = new Num_int((long8)stol(s));	// Conv error may occur
+    p = imp->get_int((long8)stol(s));	// Conv error may occur
 
     v->set_value(i, p);
     v_rest_read(v, i + 1, tokens, *rest_idx, &cdr_rest_idx);
@@ -2161,7 +2166,7 @@ Object *evadd(Object *x, Object *a)
 {
   Num_int *q;
 
-  q = new Num_int(add0(x, (long8)0, a));
+  q = imp->get_int(add0(x, (long8)0, a));
 
   return (Object *)q;
 }
@@ -2183,7 +2188,7 @@ Object *evsub(Object *x, Object *a)
 {
   Num_int *q;
 
-  q = new Num_int(sub0(cdr(x), to_int(car(x), a), a));
+  q = imp->get_int(sub0(cdr(x), to_int(car(x), a), a));
 
   return (Object *)q;
 }
@@ -2205,7 +2210,7 @@ Object *evmul(Object *x, Object *a)
 {
   Num_int *q;
 
-  q = new Num_int(mul0(x, (long8)1, a));
+  q = imp->get_int(mul0(x, (long8)1, a));
 
   return (Object *)q;
 }
@@ -2227,7 +2232,7 @@ Object *evdiv(Object *x, Object *a)
 {
   Num_int *q;
 
-  q = new Num_int(div0(cdr(x), to_int(car(x), a), a));
+  q = imp->get_int(div0(cdr(x), to_int(car(x), a), a));
 
   return (Object *)q;
 }
@@ -2249,7 +2254,7 @@ Object *evmod(Object *x, Object *a)
 {
   Num_int *q;
 
-  q = new Num_int(mod0(cdr(x), to_int(car(x), a), a));
+  q = imp->get_int(mod0(cdr(x), to_int(car(x), a), a));
 
   return (Object *)q;
 }
@@ -2259,7 +2264,7 @@ Object *evinc(Object *x, Object *a)
 {
   Num_int *q;
 
-  q = new Num_int(to_int(car(x), a) + 1);
+  q = imp->get_int(to_int(car(x), a) + 1);
 
   return (Object *)q;
 }
@@ -2269,7 +2274,7 @@ Object *evdec(Object *x, Object *a)
 {
   Num_int *q;
 
-  q = new Num_int(to_int(car(x), a) - 1);
+  q = imp->get_int(to_int(car(x), a) - 1);
 
   return (Object *)q;
 }
@@ -2284,11 +2289,11 @@ Object *evincq(Object *x, Object *a)
   r = cadr(x);
   if (r == p_nil)
   {
-    q = new Num_int(to_int(car(x), a) + 1);
+    q = imp->get_int(to_int(car(x), a) + 1);
   }
   else
   {
-    q = new Num_int(to_int(car(x), a) + to_int(r, a));
+    q = imp->get_int(to_int(car(x), a) + to_int(r, a));
   }
 
   // Get (var value) list
@@ -2320,11 +2325,11 @@ Object *evdecq(Object *x, Object *a)
   r = cadr(x);
   if (r == p_nil)
   {
-    q = new Num_int(to_int(car(x), a) + 1);
+    q = imp->get_int(to_int(car(x), a) + 1);
   }
   else
   {
-    q = new Num_int(to_int(car(x), a) - to_int(r, a));
+    q = imp->get_int(to_int(car(x), a) - to_int(r, a));
   }
 
   // Get (var value) list
@@ -2918,7 +2923,7 @@ Object *evround(Object *x, Object *a)
 {
   Num_int *q;
 
-  q = new Num_int(round(to_float(car(x), a)));
+  q = imp->get_int(round(to_float(car(x), a)));
 
   return (Object *)q;
 }
@@ -2928,7 +2933,7 @@ Object *evtrunc(Object *x, Object *a)
 {
   Num_int *q;
 
-  q = new Num_int(trunc(to_float(car(x), a)));
+  q = imp->get_int(trunc(to_float(car(x), a)));
 
   return (Object *)q;
 }
@@ -2938,7 +2943,7 @@ Object *evfloor(Object *x, Object *a)
 {
   Num_int *q;
 
-  q = new Num_int(floor(to_float(car(x), a)));
+  q = imp->get_int(floor(to_float(car(x), a)));
 
   return (Object *)q;
 }
@@ -3718,7 +3723,23 @@ Object *evprintatoms(Object *e, Object *a)
   int i;
 
   i = mp->print_all();
-  return new Num_int((long8)i);
+  return imp->get_int((long8)i);
+}
+// (print-ints)
+Object *evprintints(Object *e, Object *a)
+{
+  int i;
+
+  i = imp->print_all();
+  return p_t;
+}
+// (delete-ints)
+Object *evdeleteints(Object *e, Object *a)
+{
+  int i;
+
+  i = imp->delete_free_ints();
+  return p_t;
 }
 // (load "FILENAME"
 Object *evload(Object *e, Object *a)
@@ -3928,13 +3949,13 @@ Object *evlength(Object *e, Object *a)
   // Vector
   if (typeid(*p) == id_Vector)
   {
-    return new Num_int(((Vector *)p)->size);
+    return imp->get_int(((Vector *)p)->size);
   }
   // String
   else if (typeid(*p) == id_String)
   {
     string s = ((String *)p)->value;
-    return new Num_int(s.size());
+    return imp->get_int(s.size());
   }
   // Cell
   else if (typeid(*p) == id_Cell)
@@ -3945,7 +3966,7 @@ Object *evlength(Object *e, Object *a)
 
       if (typeid(*p) != id_Cell)
       {
-        return new Num_int(i + 1);
+        return imp->get_int(i + 1);
       }
     }
 
@@ -4255,6 +4276,8 @@ int main()
   p_mapconcat->func = evmapconcat;
 
   p_printatoms->func = evprintatoms;
+  p_printints->func = evprintints;
+  p_deleteints->func = evdeleteints;
   p_load->func = evload;
   p_exit->func = evexit;
   p_quit->func = evexit;
