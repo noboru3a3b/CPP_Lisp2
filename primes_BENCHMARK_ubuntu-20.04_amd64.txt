@@ -1,0 +1,385 @@
+		primes_BENCHMARK_ubuntu-20.04_amd64		2021-05-22
+		-----------------------------------
+
+# MACHINE:	eX computer Aero Stream
+# CPU:		Intel® Core™ i5-6500 CPU @ 3.20GHz × 4 
+# MEMORY:	16GB
+
+# ruby 3.0.2p107
+okadan@i5:~/PRIMES$ time ruby primesf.rb
+
+real	6m23.332s
+user	6m23.167s
+sys	0m0.068s
+
+# Gauche scheme shell, version 0.9.11-p1
+okadan@i5:~/PRIMES$ time gosh primesq.scm
+
+real	6m20.032s
+user	6m20.021s
+sys	0m0.036s
+
+okadan@i5:~/PRIMES$ time gosh primesv.scm  <--- NG
+
+real	10m2.239s
+user	10m22.755s
+sys	0m0.345s
+
+# digamma 0.1.7
+okadan@i5:~/PRIMES$ time digamma --heap-limit=1024 primesq.scm
+
+real	3m36.491s
+user	3m41.091s
+sys	0m0.040s
+
+# ypsilon-2.0.8 (core)
+okadan@i5:~/PRIMES$ time ypsilon primesq.scm
+
+real	3m42.957s
+user	3m49.453s
+sys	0m0.088s
+
+okadan@i5:~/PRIMES$ time ypsilon primesv.scm  <--- NG
+
+real	7m24.159s
+user	7m30.341s
+sys	0m0.060s
+
+# guile (GNU Guile) 3.0.7
+okadan@i5:~/PRIMES$ time guile primesq.scm
+
+real	3m39.228s
+user	3m39.199s
+sys	0m0.041s
+
+okadan@i5:~/PRIMES$ time guile primesv.scm  <--- OK
+
+real	3m47.953s
+user	4m6.513s
+sys	0m0.546s
+
+# Racket v7.2.
+okadan@i5:~/PRIMES$ time racket primesq3.scm 
+
+real	1m38.041s
+user	1m38.093s
+sys	0m0.088s
+
+okadan@i5:~/PRIMES$ time racket primesv3.scm  <--- NG
+
+real	3m54.560s
+user	3m49.752s
+sys	0m2.178s
+
+# Chez Scheme Version 9.5
+okadan@i5:~/PRIMES$ time chezscheme9.5 --script primesq2.scm
+
+real	1m38.989s
+user	1m38.949s
+sys	0m0.041s
+
+okadan@i5:~/PRIMES$ time chezscheme9.5 --script primesv.scm  <--- OK
+
+real	2m24.570s
+user	2m23.388s
+sys	0m1.172s
+
+# Larceny v1.3 "Grain Alcohol and Rainwater"
+okadan@i5:~/PRIMES$ time scheme-script primesq2.scm
+
+real	1m26.914s
+user	1m26.780s
+sys	0m0.093s
+
+okadan@i5:~/PRIMES$ time scheme-script primesv2.scm  <--- NG!(メモリオーバー)
+
+# Ikarus Scheme version 0.0.4-rc1+, 64-bit
+okadan@i5:~/PRIMES$ time ikarus --r6rs-script primesq2.scm
+
+real	1m49.852s
+user	1m49.775s
+sys	0m0.068s
+
+okadan@i5:~/PRIMES$ time ikarus --r6rs-script primesv2.scm  <--- Good!
+
+real	1m54.664s
+user	1m54.560s
+sys	0m0.089s
+
+# Chicken Version 5.1.0
+okadan@i5:~/PRIMES$ csc -optimize-level 5 primesq.scm
+okadan@i5:~/PRIMES$ time ./primesq
+
+real	4m46.669s
+user	4m46.518s
+sys	0m0.149s
+
+# SBCL 2.0.1.debian
+okadan@i5:~/PRIMES$ time sbcl --script primesq.lisp
+
+real	2m19.772s
+user	2m19.706s
+sys	0m0.041s
+
+# Scala code runner version 2.11.12
+okadan@i5:~/PRIMES$ scalac primes.scala
+okadan@i5:~/PRIMES$ time scala primes
+
+real	0m29.162s
+user	0m47.666s
+sys	0m0.230s
+
+# Scala compiler version 3.0.1
+okadan@i5:~/PRIMES$ scala3c primes.scala
+okadan@i5:~/PRIMES$ time scala3 primes
+
+real	0m38.632s
+user	0m45.490s
+sys	0m0.626s
+
+#--------------------------------------------------#
+#       primesf.rb
+
+def is_prime(x, prime_list)
+  prime_list.each do |p|
+    return true if p * p > x
+    return false if x % p == 0
+  end
+  true
+end
+
+primes = []
+
+3.step(100000000, 2) do |x|
+  primes.push(x) if is_prime(x, primes)
+end
+
+primes = [2] + primes
+
+#--------------------------------------------------#
+;;;     primesq.scm
+
+;; queue
+(define (make-queue)
+  (let ((queue (cons '() '())))
+    (set-car! queue queue)
+    queue))
+
+(define (en-queue! queue x)
+  (let ((q (cons x '())))
+    (set-cdr! (car queue) q)
+    (set-car! queue q)
+    queue))
+
+(define (de-queue! queue)
+  (let* ((lst (cdr queue))
+         (val (car lst))
+         (rest (cdr lst)))
+    (set-cdr! queue rest)
+    (if (null? rest)
+	(set-car! queue queue))
+    val))
+
+(define (get-list queue) (cdr queue))
+
+;; primes
+(define (is-prime p-lst x)
+  (if (null? p-lst) #t
+      (let ((p (car p-lst)))
+	(cond ((> (* p p) x) #t)
+	      ((= 0 (modulo x p)) #f)
+	      (else (is-prime (cdr p-lst) x))))))
+
+(define (primes queue x xmax)
+  (cond ((> x xmax)
+	 (get-list queue))
+	((is-prime (get-list queue) x)
+	 (primes (en-queue! queue x) (+ x 2) xmax))
+	(else
+	 (primes queue (+ x 2) xmax))))
+
+;; main
+(cons 2 (primes (make-queue) 3 100000000))
+
+#--------------------------------------------------#
+;;;     primesq2.scm
+
+(import (rnrs) (rnrs mutable-pairs))
+
+;; queue
+(define (make-queue)
+  (let ((queue (cons '() '())))
+    (set-car! queue queue)
+    queue))
+
+(define (en-queue! queue x)
+  (let ((q (cons x '())))
+    (set-cdr! (car queue) q)
+    (set-car! queue q)
+    queue))
+
+(define (de-queue! queue)
+  (let* ((lst (cdr queue))
+         (val (car lst))
+         (rest (cdr lst)))
+    (set-cdr! queue rest)
+    (if (null? rest)
+	(set-car! queue queue))
+    val))
+
+(define (get-list queue) (cdr queue))
+
+;; primes
+(define (is-prime p-lst x)
+  (if (null? p-lst) #t
+      (let ((p (car p-lst)))
+	(cond ((> (* p p) x) #t)
+	      ((= 0 (mod x p)) #f)
+	      (else (is-prime (cdr p-lst) x))))))
+
+(define (primes queue x xmax)
+  (cond ((> x xmax)
+	 (get-list queue))
+	((is-prime (get-list queue) x)
+	 (primes (en-queue! queue x) (+ x 2) xmax))
+	(else
+	 (primes queue (+ x 2) xmax))))
+
+;; main
+(cons 2 (primes (make-queue) 3 100000000))
+
+#--------------------------------------------------#
+;;;    primesq3 for Racket
+
+#lang racket
+
+;; new queue
+(define (make-queue)
+  (let ((queue (mcons '() '())))
+    (set-mcar! queue queue)
+    queue))
+
+(define (en-queue! queue x)
+  (let ((q (mcons x '())))
+    (set-mcdr! (mcar queue) q)
+    (set-mcar! queue q)
+    queue))
+
+(define (de-queue! queue)
+  (let* ((lst (mcdr queue))
+         (val (mcar lst))
+         (rest (mcdr lst)))
+    (set-mcdr! queue rest)
+    (if (null? rest)
+	(set-mcar! queue queue)
+	#f)
+    val))
+
+(define (get-list queue) (mcdr queue))
+
+;; primes
+(define (is-prime p-lst x)
+  (if (null? p-lst) #t
+      (let ((p (mcar p-lst)))
+	(cond ((> (* p p) x) #t)
+	      ((= 0 (modulo x p)) #f)
+	      (else (is-prime (mcdr p-lst) x))))))
+
+(define (primes queue x xmax)
+  (cond ((> x xmax)
+	 (get-list queue))
+	((is-prime (get-list queue) x)
+	 (primes (en-queue! queue x) (+ x 2) xmax))
+	(else
+	 (primes queue (+ x 2) xmax))))
+
+;; main
+(let ((result (mcons 2 (primes (make-queue) 3 100000000))))
+  'END)
+;(display (mcons 2 (primes (make-queue) 3 100000000)))
+
+#--------------------------------------------------#
+;;;     primesq.lisp
+
+;; queue
+(setf *print-circle* t)
+
+(defun make-queue ()
+  (let ((queue (cons nil nil)))
+    (setf (car queue) queue)
+    queue))
+
+(defun en-queue (queue x)
+  (let ((q (cons x nil)))
+    (setf (cdar queue) q)
+    (setf (car queue) q)
+    queue))
+
+(defun de-queue (queue)
+  (let* ((lst (cdr queue))
+         (val (car lst))
+         (rest (cdr lst)))
+    (setf (cdr queue) rest)
+    (if (null rest) (setf (car queue) queue))
+    val))
+
+(defun get-list (queue) (cdr queue))
+
+;; primes
+(defun is-prime (p-list x)
+  (if (null p-list) t
+      (let ((p (car p-list)))
+	(cond ((> (* p p) x) t)
+	      ((= 0 (mod x p)) nil)
+	      (t (is-prime (cdr p-list) x))))))
+
+(defun primes (queue x max)
+  (cond ((> x max)
+	 (cons 2 (get-list queue)))
+	((is-prime (get-list queue) x)
+	 (primes (en-queue queue x) (+ x 2) max))
+	(t (primes queue (+ x 2) max))))
+
+;; main
+(primes (make-queue) 3 100000000)
+
+#--------------------------------------------------#
+//
+//  primes (scala2)
+//
+// Compile: scalac primes.scala
+//       -> primes$.class
+//          primes.class
+//
+// Execute: scala primes
+
+import scala.collection.mutable.ListBuffer
+
+object primes
+{
+  def main(args :Array[String]) :Unit =
+  {
+    var primes = new ListBuffer[Int]()
+
+    (3 to 100000000 by 2).foreach (n =>
+      if (isPrime(n, primes))
+        primes += n
+    )
+//    println(2 +=: primes)
+  }
+
+  def isPrime(n :Int, list :ListBuffer[Int]) :Boolean =
+  {
+    list.foreach (p =>
+      if ((p * p) > n)
+        return true
+      else if ((n % p) == 0)
+        return false
+    )
+    true
+  }
+}
+
+#--------------------------------------------------#
+
+
