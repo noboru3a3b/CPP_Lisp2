@@ -22,16 +22,16 @@ make read_test
 atan atom caaar caadr caar cadar caddar caddr cadr car
 cdaar cdadr cdar cddar cdddar cdddr cddr cdr closure concat
 cond cons consp const_e const_pi cos cosh dec decq defun
-delete-ints div eq eqn equal eval exit exp floatp floor
-funcall function gt gte if inc incq integerp label lambda
-length let let* list listp ln load log lt lte
-make-string make-vector mapc mapcan mapcar mapconcat max min mod mul
-nconc nil not nreverse null numberp or pow print print-atoms
-print-ints progn quit quote rassoc reverse round set setcar setcdr
-setq sin sinh split-string sqrt string< string= string> stringp sub
-substring symbol-function symbol-name symbol-value t tan tanh trunc unless vectorp
-vref vset when while zerop
-[eval] 135
+delete-floats delete-ints div eq eqn equal eval exit exp floatp
+floor funcall function gt gte if inc incq integerp label
+lambda length let let* list listp ln load log lt
+lte make-string make-vector mapc mapcan mapcar mapconcat max min mod
+mul nconc nil not nreverse null numberp or pow print
+print-atoms print-floats print-ints progn quit quote rassoc reverse round set
+setcar setcdr setq sin sinh split-string sqrt string< string= string>
+stringp sub substring symbol-function symbol-name symbol-value t tan tanh trunc
+unless vectorp vref vset when while zerop
+[eval] 137
 
 > (load "sample.lisp")
 ----------
@@ -211,20 +211,20 @@ vref vset when while zerop
 append apply asin assoc atan atom b c caaar caadr
 caar cadar caddar caddr cadr car cdaar cdadr cdar cddar
 cdddar cdddr cddr cdr closure concat cond cons consp const_e
-const_pi cos cosh d dec dec-c decq defun delete-ints div
-e en-queue eq eqn equal eval exit exp f floatp
-floor funcall funcs function get-c get-list gt gte if inc
-inc-c incq integerp is-prime label lambda length let let* list
-listp ln load log lt lte make-pvect make-queue make-string make-variable-c
-make-vector mapc mapcan mapcar mapconcat max min mod mul n
-nconc nil not nreverse null numberp or p p-list pi
-pidx plen pow ppvect primes primeset print print-atoms print-ints progn
-pvect q queue quit quote rassoc reverse round rtn set
-setcar setcdr setq sin sinh split-string sqr+ sqr+0 sqrt string<
-string= string> stringp sub substring symbol-function symbol-name symbol-value t tan
-tanh tree trunc unless vectorp vref vset when while x
-y zerop
-[eval] 172
+const_pi cos cosh d dec dec-c decq defun delete-floats delete-ints
+div e en-queue eq eqn equal eval exit exp f
+floatp floor funcall funcs function get-c get-list gt gte if
+inc inc-c incq integerp is-prime label lambda length let let*
+list listp ln load log lt lte make-pvect make-queue make-string
+make-variable-c make-vector mapc mapcan mapcar mapconcat max min mod mul
+n nconc nil not nreverse null numberp or p p-list
+pi pidx plen pow ppvect primes primeset print print-atoms print-floats
+print-ints progn pvect q queue quit quote rassoc reverse round
+rtn set setcar setcdr setq sin sinh split-string sqr+ sqr+0
+sqrt string< string= string> stringp sub substring symbol-function symbol-name symbol-value
+t tan tanh tree trunc unless vectorp vref vset when
+while x y zerop
+[eval] 174
 
 > (quit)
 
