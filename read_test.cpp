@@ -19,6 +19,7 @@
 #include "vector.h"
 #include "atom_map.h"
 #include "int_map.h"
+#include "float_map.h"
 
 Object *s_read(vector<Token> *tokens, int idx, int *rest_idx);
 Object *s_cdr_read(vector<Token> *tokens, int idx, int *rest_idx);
@@ -158,6 +159,8 @@ Atom *p_mapconcat = mp->get_atom("mapconcat");
 Atom *p_printatoms = mp->get_atom("print-atoms");
 Atom *p_printints = mp->get_atom("print-ints");
 Atom *p_deleteints = mp->get_atom("delete-ints");
+Atom *p_printfloats = mp->get_atom("print-floats");
+Atom *p_deletefloats = mp->get_atom("delete-floats");
 Atom *p_load = mp->get_atom("load");
 Atom *p_exit = mp->get_atom("exit");
 Atom *p_quit = mp->get_atom("quit");
@@ -183,6 +186,7 @@ Atom *p_equal = mp->get_atom("equal");
 //Atom *p_evlis = mp->get_atom("evlis");
 
 IntMap *imp = new IntMap;
+FloatMap *fmp = new FloatMap;
 
 // Output FILE Stream
 ofstream ofs;
@@ -1005,7 +1009,7 @@ Object *s_read(vector<Token> *tokens, int idx, int *rest_idx)
   // Number_float
   else if (type == Type::Num_Float)
   {
-    p = new Num_float(stod(s));
+    p = fmp->get_float(stod(s));
 
     return p;
   }
@@ -1152,7 +1156,7 @@ Object *s_cdr_read(vector<Token> *tokens, int idx, int *rest_idx)
   {
     p = new Cell;
 
-    p_car = new Num_float(stod(s));
+    p_car = fmp->get_float(stod(s));
 
     p->set_car(p_car);
     p_cdr = s_cdr_read(tokens, *rest_idx, &cdr_rest_idx);
@@ -1273,7 +1277,7 @@ void v_rest_read(Object *v, int i, vector<Token> *tokens, int idx, int *rest_idx
   // Number_float
   else if (type == Type::Num_Float)
   {
-    p = new Num_float(stod(s));	// Conv error may occur
+    p = fmp->get_float(stod(s));	// Conv error may occur
 
     v->set_value(i, p);
     v_rest_read(v, i + 1, tokens, *rest_idx, &cdr_rest_idx);
@@ -2520,7 +2524,7 @@ Object *evaddf(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float(addf0(x, (double)0, a));
+  q = fmp->get_float(addf0(x, (double)0, a));
 
   return (Object *)q;
 }
@@ -2542,7 +2546,7 @@ Object *evsubf(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float(subf0(cdr(x), to_float(car(x), a), a));
+  q = fmp->get_float(subf0(cdr(x), to_float(car(x), a), a));
 
   return (Object *)q;
 }
@@ -2564,7 +2568,7 @@ Object *evmulf(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float(mulf0(x, (double)1, a));
+  q = fmp->get_float(mulf0(x, (double)1, a));
 
   return (Object *)q;
 }
@@ -2586,7 +2590,7 @@ Object *evdivf(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float(divf0(cdr(x), to_float(car(x), a), a));
+  q = fmp->get_float(divf0(cdr(x), to_float(car(x), a), a));
 
   return (Object *)q;
 }
@@ -2596,7 +2600,7 @@ Object *evincf(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float(to_float(car(x), a) + (double)1);
+  q = fmp->get_float(to_float(car(x), a) + (double)1);
 
   return (Object *)q;
 }
@@ -2606,7 +2610,7 @@ Object *evdecf(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float(to_float(car(x), a) - (double)1);
+  q = fmp->get_float(to_float(car(x), a) - (double)1);
 
   return (Object *)q;
 }
@@ -2781,7 +2785,7 @@ Object *evmin(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float(min0(x, (double)0, a));
+  q = fmp->get_float(min0(x, (double)0, a));
 
   return (Object *)q;
 }
@@ -2803,7 +2807,7 @@ Object *evmax(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float(max0(x, (double)0, a));
+  q = fmp->get_float(max0(x, (double)0, a));
 
   return (Object *)q;
 }
@@ -2813,7 +2817,7 @@ Object *evsqrt(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float(max0(x, (double)0, a));
+  q = fmp->get_float(max0(x, (double)0, a));
 
   return (Object *)q;
 }
@@ -2823,7 +2827,7 @@ Object *evsin(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float(sin(to_float(car(x), a)));
+  q = fmp->get_float(sin(to_float(car(x), a)));
 
   return (Object *)q;
 }
@@ -2833,7 +2837,7 @@ Object *evcos(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float(cos(to_float(car(x), a)));
+  q = fmp->get_float(cos(to_float(car(x), a)));
 
   return (Object *)q;
 }
@@ -2843,7 +2847,7 @@ Object *evtan(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float(tan(to_float(car(x), a)));
+  q = fmp->get_float(tan(to_float(car(x), a)));
 
   return (Object *)q;
 }
@@ -2853,7 +2857,7 @@ Object *evasin(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float(asin(to_float(car(x), a)));
+  q = fmp->get_float(asin(to_float(car(x), a)));
 
   return (Object *)q;
 }
@@ -2863,7 +2867,7 @@ Object *evacos(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float(acos(to_float(car(x), a)));
+  q = fmp->get_float(acos(to_float(car(x), a)));
 
   return (Object *)q;
 }
@@ -2873,7 +2877,7 @@ Object *evatan(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float(atan(to_float(car(x), a)));
+  q = fmp->get_float(atan(to_float(car(x), a)));
 
   return (Object *)q;
 }
@@ -2883,7 +2887,7 @@ Object *evsinh(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float(sinh(to_float(car(x), a)));
+  q = fmp->get_float(sinh(to_float(car(x), a)));
 
   return (Object *)q;
 }
@@ -2893,7 +2897,7 @@ Object *evcosh(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float(cosh(to_float(car(x), a)));
+  q = fmp->get_float(cosh(to_float(car(x), a)));
 
   return (Object *)q;
 }
@@ -2903,7 +2907,7 @@ Object *evtanh(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float(tanh(to_float(car(x), a)));
+  q = fmp->get_float(tanh(to_float(car(x), a)));
 
   return (Object *)q;
 }
@@ -2913,7 +2917,7 @@ Object *evabs(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float(abs(to_float(car(x), a)));
+  q = fmp->get_float(abs(to_float(car(x), a)));
 
   return (Object *)q;
 }
@@ -2953,7 +2957,7 @@ Object *evexp(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float(exp(to_float(car(x), a)));
+  q = fmp->get_float(exp(to_float(car(x), a)));
 
   return (Object *)q;
 }
@@ -2963,7 +2967,7 @@ Object *evpow(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float(pow(to_float(car(x), a), to_float(cadr(x), a)));
+  q = fmp->get_float(pow(to_float(car(x), a), to_float(cadr(x), a)));
 
   return (Object *)q;
 }
@@ -2973,7 +2977,7 @@ Object *evln(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float(log(to_float(car(x), a)));
+  q = fmp->get_float(log(to_float(car(x), a)));
 
   return (Object *)q;
 }
@@ -2983,7 +2987,7 @@ Object *evlog(Object *x, Object *a)
 {
   Num_float *q;
 
-  q = new Num_float(log10(to_float(car(x), a)));
+  q = fmp->get_float(log10(to_float(car(x), a)));
 
   return (Object *)q;
 }
@@ -3741,6 +3745,22 @@ Object *evdeleteints(Object *e, Object *a)
   i = imp->delete_free_ints();
   return p_t;
 }
+// (print-floats)
+Object *evprintfloats(Object *e, Object *a)
+{
+  int i;
+
+  i = fmp->print_all();
+  return p_t;
+}
+// (delete-floats)
+Object *evdeletefloats(Object *e, Object *a)
+{
+  int i;
+
+  i = fmp->delete_free_floats();
+  return p_t;
+}
 // (load "FILENAME"
 Object *evload(Object *e, Object *a)
 {
@@ -4156,8 +4176,8 @@ int main()
   p_t->set_value(p_t);
   p_nil->set_value(p_nil);
 
-  p_const_pi->set_value(new Num_float(M_PI));
-  p_const_e->set_value(new Num_float(M_E));
+  p_const_pi->set_value(fmp->get_float(M_PI));
+  p_const_e->set_value(fmp->get_float(M_E));
 
   // Set Atom function 
   p_quote->func = evquote;
@@ -4278,6 +4298,8 @@ int main()
   p_printatoms->func = evprintatoms;
   p_printints->func = evprintints;
   p_deleteints->func = evdeleteints;
+  p_printfloats->func = evprintfloats;
+  p_deletefloats->func = evdeletefloats;
   p_load->func = evload;
   p_exit->func = evexit;
   p_quit->func = evexit;
