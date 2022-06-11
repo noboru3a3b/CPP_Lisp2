@@ -16,11 +16,12 @@ String::String()
 String::String(string s)
 {
   value = s;
+//  cout << " [iSET " << value << ":" << ref_cnt << "] ";
 }
 
 String::~String()
 {
-
+//  cout << " [iDEL " << value << ":" << ref_cnt << "] ";
 }
 
 void String::print()
@@ -44,5 +45,6 @@ void String::print_cdr()
 void String::set_value(string s)
 {
   value = s;
+//  cout << " [iSET2 " << value << ":" << ref_cnt << "] ";
 }
 
