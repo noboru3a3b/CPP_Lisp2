@@ -1,6 +1,7 @@
 ;; for Scheme (gauche/ypsilon/guile/chez)
 (define plen 5761455)
 (define pidx 1)
+(define pi 1)
 (define pvect (make-vector plen 0))
 (define ppvect (make-vector plen 0))
 
@@ -11,11 +12,13 @@
            (set! pidx (+ pidx 1)))))
 
 (define (is-prime x)
-  (do ((pi 1 (+ pi 1))
-       (rtn 0))
-      ((or (= (vector-ref pvect pi) 0) (not (eqv? rtn 0))) rtn)
-    (cond ((> (vector-ref ppvect pi) x) (set! rtn #t))
-          ((= (modulo x (vector-ref pvect pi)) 0) (set! rtn #f)))))
+  (set! pi 1)
+  (do ((rtn 0))
+      ((not (eqv? rtn 0)) rtn)
+    (cond ((= (vector-ref pvect pi) 0) (set! rtn #t))
+          ((> (vector-ref ppvect pi) x) (set! rtn #t))
+          ((= (modulo x (vector-ref pvect pi)) 0) (set! rtn #f))
+          (else (set! pi (+ pi 1))))))
 
 (define (primes)
   (do ((rtn 0)
