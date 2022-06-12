@@ -3744,8 +3744,8 @@ Object *evprintatoms(Object *e, Object *a)
 
   i = mp->print_all();
 
-  if (cout_on) {cout << " ********** Total " << i << " atoms **********" << endl;}
-  if (ofs_on) {ofs << " ********** Total " << i << " atoms **********" << endl;}
+  if (cout_on) {cout << " ********** Total: " << i << " atoms **********" << endl;}
+  if (ofs_on) {ofs << " ********** Total: " << i << " atoms **********" << endl;}
 
   return p_t;
 }
@@ -3755,6 +3755,10 @@ Object *evprintints(Object *e, Object *a)
   int i;
 
   i = imp->print_all();
+
+  if (cout_on) {cout << " ********** Total: " << i << " Integers **********" << endl;}
+  if (ofs_on) {ofs << " ********** Total: " << i << " Integers **********" << endl;}
+
   return p_t;
 }
 // (delete-ints)
@@ -3763,6 +3767,10 @@ Object *evdeleteints(Object *e, Object *a)
   int i;
 
   i = imp->delete_free_ints();
+
+  if (cout_on) {cout << " ----------> Delete: " << i << " Integers." << endl;}
+  if (ofs_on) {ofs << " ----------> Delete: " << i << " Integers." << endl;}
+
   return p_t;
 }
 // (print-floats)
@@ -3771,6 +3779,10 @@ Object *evprintfloats(Object *e, Object *a)
   int i;
 
   i = fmp->print_all();
+
+  if (cout_on) {cout << " ********** Total: " << i << " Floats **********" << endl;}
+  if (ofs_on) {ofs << " ********** Total: " << i << " Floats **********" << endl;}
+
   return p_t;
 }
 // (delete-floats)
@@ -3779,6 +3791,10 @@ Object *evdeletefloats(Object *e, Object *a)
   int i;
 
   i = fmp->delete_free_floats();
+
+  if (cout_on) {cout << " ----------> Delete: " << i << " Floats." << endl;}
+  if (ofs_on) {ofs << " ----------> Delete: " << i << " Floats." << endl;}
+
   return p_t;
 }
 // (print-strings)
@@ -3787,6 +3803,10 @@ Object *evprintstrings(Object *e, Object *a)
   int i;
 
   i = smp->print_all();
+
+  if (cout_on) {cout << " ********** Total: " << i << " Strings **********" << endl;}
+  if (ofs_on) {ofs << " ********** Total: " << i << " Strings **********" << endl;}
+
   return p_t;
 }
 // (delete-strings)
@@ -3795,6 +3815,10 @@ Object *evdeletestrings(Object *e, Object *a)
   int i;
 
   i = smp->delete_free_strings();
+
+  if (cout_on) {cout << " ----------> Delete: " << i << " Strings." << endl;}
+  if (ofs_on) {ofs << " ----------> Delete: " << i << " Strings." << endl;}
+
   return p_t;
 }
 // (print-cells)
@@ -3803,6 +3827,10 @@ Object *evprintcells(Object *e, Object *a)
   int i;
 
   i = cmp->print_all();
+
+  if (cout_on) {cout << " ********** Total: " << i << " Cells **********" << endl;}
+  if (ofs_on) {ofs << " ********** Total: " << i << " Cells **********" << endl;}
+
   return p_t;
 }
 // (delete-cells)
@@ -3811,6 +3839,10 @@ Object *evdeletecells(Object *e, Object *a)
   int i;
 
   i = cmp->delete_free_cells();
+
+  if (cout_on) {cout << " ----------> Delete: " << i << " Cells." << endl;}
+  if (ofs_on) {ofs << " ----------> Delete: " << i << " Cells." << endl;}
+
   return p_t;
 }
 // (load "FILENAME"
@@ -4428,10 +4460,18 @@ int main()
 
       i = cmp->delete_free_cells();
       total = i;
+
+//      cout << " ----------> Delete: " << i << " Cells." << endl;
+//      ofs << " ----------> Delete: " << i << " Cells." << endl;
+
       while (i > 4)
       {
         i = cmp->delete_free_cells();
         total += i;
+
+//        cout << " ----------> Delete: " << i << " Cells." << endl;
+//        ofs << " ----------> Delete: " << i << " Cells." << endl;
+
       }
       cout << "Release " << total << " Cells." << endl;
 
