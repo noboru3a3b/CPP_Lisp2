@@ -22,16 +22,22 @@ make read_test
 atan atom caaar caadr caar cadar caddar caddr cadr car
 cdaar cdadr cdar cddar cdddar cdddr cddr cdr closure concat
 cond cons consp const_e const_pi cos cosh dec decq defun
-delete-floats delete-ints delete-strings div eq eqn equal eval exit exp
-floatp floor funcall function gt gte if inc incq integerp
-label lambda length let let* list listp ln load log
-lt lte make-string make-vector mapc mapcan mapcar mapconcat max min
-mod mul nconc nil not nreverse null numberp or pow
-print print-atoms print-floats print-ints print-strings progn quit quote rassoc reverse
-round set setcar setcdr setq sin sinh split-string sqrt string<
-string= string> stringp sub substring symbol-function symbol-name symbol-value t tan
-tanh trunc unless vectorp vref vset when while zerop
-[eval] 139
+delete-cells delete-floats delete-ints delete-strings div eq eqn equal eval exit
+exp floatp floor funcall function gt gte if inc incq
+integerp label lambda length let let* list listp ln load
+log lt lte make-string make-vector mapc mapcan mapcar mapconcat max
+min mod mul nconc nil not nreverse null numberp or
+pow print print-atoms print-cells print-floats print-ints print-strings progn quit quote
+rassoc reverse round set setcar setcdr setq sin sinh split-string
+sqrt string< string= string> stringp sub substring symbol-function symbol-name symbol-value
+t tan tanh trunc unless vectorp vref vset when while
+zerop
+ ********** Total 141 atoms **********
+[eval] t
+Release 0 Integers.
+Release 0 Floats.
+Release 0 Strings.
+Release 1 Cells.
 
 > (load "sample.lisp")
 ----------
@@ -204,6 +210,10 @@ tanh trunc unless vectorp vref vset when while zerop
 [eval] nil
 ----------
 [eval] t
+Release 8 Integers.
+Release 9 Floats.
+Release 8 Strings.
+Release 3292 Cells.
 
 > (print-atoms)
 * + - / 0= 1+ 1- < <= =
@@ -211,20 +221,25 @@ tanh trunc unless vectorp vref vset when while zerop
 append apply asin assoc atan atom b c caaar caadr
 caar cadar caddar caddr cadr car cdaar cdadr cdar cddar
 cdddar cdddr cddr cdr closure concat cond cons consp const_e
-const_pi cos cosh d dec dec-c decq defun delete-floats delete-ints
-delete-strings div e en-queue eq eqn equal eval exit exp
-f floatp floor funcall funcs function get-c get-list gt gte
-if inc inc-c incq integerp is-prime label lambda length let
-let* list listp ln load log lt lte make-pvect make-queue
-make-string make-variable-c make-vector mapc mapcan mapcar mapconcat max min mod
-mul n nconc nil not nreverse null numberp or p
-p-list pi pidx plen pow ppvect primes primeset print print-atoms
-print-floats print-ints print-strings progn pvect q queue quit quote rassoc
-reverse round rtn set setcar setcdr setq sin sinh split-string
-sqr+ sqr+0 sqrt string< string= string> stringp sub substring symbol-function
-symbol-name symbol-value t tan tanh tree trunc unless vectorp vref
-vset when while x y zerop
-[eval] 176
+const_pi cos cosh d dec dec-c decq defun delete-cells delete-floats
+delete-ints delete-strings div e en-queue eq eqn equal eval exit
+exp f floatp floor funcall funcs function get-c get-list gt
+gte if inc inc-c incq integerp is-prime label lambda length
+let let* list listp ln load log lt lte make-pvect
+make-queue make-string make-variable-c make-vector mapc mapcan mapcar mapconcat max min
+mod mul n nconc nil not nreverse null numberp or
+p p-list pi pidx plen pow ppvect primes primeset print
+print-atoms print-cells print-floats print-ints print-strings progn pvect q queue quit
+quote rassoc reverse round rtn set setcar setcdr setq sin
+sinh split-string sqr+ sqr+0 sqrt string< string= string> stringp sub
+substring symbol-function symbol-name symbol-value t tan tanh tree trunc unless
+vectorp vref vset when while x y zerop
+ ********** Total 178 atoms **********
+[eval] t
+Release 6 Integers.
+Release 8 Floats.
+Release 3 Strings.
+Release 4 Cells.
 
 > (quit)
 
