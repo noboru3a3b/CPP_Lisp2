@@ -1,44 +1,52 @@
-// float_map.cpp
+// cell_map.cpp
 
 #include <iostream>
-#include "float_map.h"
+#include "cell_map.h"
 
 // Output FILE Stream
 extern ofstream ofs;
 extern bool ofs_on;
 extern bool cout_on;
 
-FloatMap::FloatMap()
+CellMap::CellMap()
 {
 
 }
 
-FloatMap::~FloatMap()
+CellMap::~CellMap()
 {
 
 }
 
-Num_float *FloatMap::get_float(double n)
+Cell *CellMap::get_cell()
 {
-  if (float_map.find(n) == float_map.end())
-  {
-    // new float
-    float_map[n] = new Num_float(n);
-    float_map[n]->ref_cnt++;	// by Reference from FloatMap
-  }
-  else
-  {
-    // already exists
-  }
+  Cell *c;
 
-  return float_map[n];
+  // new Cell
+  c = new Cell();
+  cell_map[(long8)c] = c;
+  cell_map[(long8)c]->ref_cnt++;	// by Reference from CellMap
+
+  return c;
 }
 
-int FloatMap::print_all()
+Cell *CellMap::get_cell(Object *p, Object *q)
+{
+  Cell *c;
+
+  // new Cell
+  c = new Cell(p, q);
+  cell_map[(long8)c] = c;
+  cell_map[(long8)c]->ref_cnt++;	// by Reference from CellMap
+
+  return c;
+}
+
+int CellMap::print_all()
 {
   int i = 0;
 
-  for (auto itr = float_map.begin(); itr != float_map.end(); ++itr)
+  for (auto itr = cell_map.begin(); itr != cell_map.end(); ++itr)
   {
     if (cout_on) {cout << itr->first << ":" << (itr->second)->ref_cnt << " ";}
     if (ofs_on) {ofs << itr->first << ":" << (itr->second)->ref_cnt << " ";}
@@ -60,14 +68,14 @@ int FloatMap::print_all()
   return i;
 }
 
-int FloatMap::delete_free_floats()
+int CellMap::delete_free_cells()
 {
   int i = 0;
   Object *save;
 
-  for (auto itr = float_map.begin(); itr != float_map.end();)
+  for (auto itr = cell_map.begin(); itr != cell_map.end();)
   {
-    // delete free_floats
+    // delete free_cells
     if ((itr->second)->ref_cnt < 2)
     {
 //      if (cout_on) {cout << itr->first << ":" << (itr->second)->ref_cnt << " ";}
@@ -75,7 +83,7 @@ int FloatMap::delete_free_floats()
 
       save = itr->second;
 
-      itr = float_map.erase(itr); // Unregist itr, get next element of itr
+      itr = cell_map.erase(itr);  // Unregist itr, get next element of itr
       delete save;                // Delete unregistered element
 
       if ((i % 10) == 9)

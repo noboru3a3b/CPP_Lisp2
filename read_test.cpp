@@ -21,6 +21,7 @@
 #include "int_map.h"
 #include "float_map.h"
 #include "string_map.h"
+#include "cell_map.h"
 
 Object *s_read(vector<Token> *tokens, int idx, int *rest_idx);
 Object *s_cdr_read(vector<Token> *tokens, int idx, int *rest_idx);
@@ -164,6 +165,8 @@ Atom *p_printfloats = mp->get_atom("print-floats");
 Atom *p_deletefloats = mp->get_atom("delete-floats");
 Atom *p_printstrings = mp->get_atom("print-strings");
 Atom *p_deletestrings = mp->get_atom("delete-strings");
+Atom *p_printcells = mp->get_atom("print-cells");
+Atom *p_deletecells = mp->get_atom("delete-cells");
 Atom *p_load = mp->get_atom("load");
 Atom *p_exit = mp->get_atom("exit");
 Atom *p_quit = mp->get_atom("quit");
@@ -191,6 +194,7 @@ Atom *p_equal = mp->get_atom("equal");
 IntMap *imp = new IntMap;
 FloatMap *fmp = new FloatMap;
 StringMap *smp = new StringMap;
+CellMap *cmp = new CellMap;
 
 // Output FILE Stream
 ofstream ofs;
@@ -997,8 +1001,6 @@ Object *s_read(vector<Token> *tokens, int idx, int *rest_idx)
   // String
   else if (type == Type::String)
   {
-//    p = new String;
-//    p->set_value(s);
     p = smp->get_string(s);
 
     return p;
@@ -1079,7 +1081,8 @@ Object *s_cdr_read(vector<Token> *tokens, int idx, int *rest_idx)
   // (
   else if (type == Type::L_Parent)
   {
-    p = new Cell;
+//    p = new Cell;
+    p = cmp->get_cell();
 
     p_car = s_cdr_read(tokens, *rest_idx, &cdr_rest_idx);
 
@@ -1102,7 +1105,8 @@ Object *s_cdr_read(vector<Token> *tokens, int idx, int *rest_idx)
   // #(
   else if (type == Type::V_Parent)
   {
-    p = new Cell;
+//    p = new Cell;
+    p = cmp->get_cell();
 
     // in new Vector
     n = count_items(tokens, *rest_idx, 0);
@@ -1127,10 +1131,9 @@ Object *s_cdr_read(vector<Token> *tokens, int idx, int *rest_idx)
   // String
   else if (type == Type::String)
   {
-    p = new Cell;
+//    p = new Cell;
+    p = cmp->get_cell();
 
-//    p_car = new String;
-//    p_car->set_value(s);
     p_car = smp->get_string(s);
 
     p->set_car(p_car);
@@ -1145,7 +1148,8 @@ Object *s_cdr_read(vector<Token> *tokens, int idx, int *rest_idx)
   // Number_int
   else if (type == Type::Num_Int)
   {
-    p = new Cell;
+//    p = new Cell;
+    p = cmp->get_cell();
 
     p_car = imp->get_int((long8)stol(s));
 
@@ -1161,7 +1165,8 @@ Object *s_cdr_read(vector<Token> *tokens, int idx, int *rest_idx)
   // Number_float
   else if (type == Type::Num_Float)
   {
-    p = new Cell;
+//    p = new Cell;
+    p = cmp->get_cell();
 
     p_car = fmp->get_float(stod(s));
 
@@ -1177,7 +1182,8 @@ Object *s_cdr_read(vector<Token> *tokens, int idx, int *rest_idx)
   // Atom
   else if (type == Type::Atom)
   {
-    p = new Cell;
+//    p = new Cell;
+    p = cmp->get_cell();
 
     p_car = mp->get_atom(s);
     p->set_car(p_car);
@@ -1220,7 +1226,9 @@ void v_rest_read(Object *v, int i, vector<Token> *tokens, int idx, int *rest_idx
   if (type == Type::L_Parent)
   {
     // in Car
-    p = new Cell;
+//    p = new Cell;
+    p = cmp->get_cell();
+
     p_car = s_read(tokens, *rest_idx, &car_rest_idx);
 
     p->set_car(p_car);
@@ -1262,8 +1270,6 @@ void v_rest_read(Object *v, int i, vector<Token> *tokens, int idx, int *rest_idx
   // String
   else if (type == Type::String)
   {
-//    p = new String;
-//    p->set_value(s);
     p = smp->get_string(s);
 
     v->set_value(i, p);
@@ -1561,7 +1567,8 @@ Object *cdr(Object *p)
 
 Cell *cons(Object *p, Object *q)
 {
-  return new Cell(p, q);
+//  return new Cell(p, q);
+  return  cmp->get_cell(p, q);
 }
 
 
@@ -3424,7 +3431,6 @@ Object *evsymbolvalue(Object *e, Object *a)
 // symbol-name
 Object *evsymbolname(Object *e, Object *a)
 {
-//  return new String(((Atom *)s_eval(car(e), a))->name);
   return smp->get_string(((Atom *)s_eval(car(e), a))->name);
 }
 // symbol-function
@@ -3435,7 +3441,6 @@ Object *evsymbolfunction(Object *e, Object *a)
   p = s_eval(car(e), a);
   if (((Atom *)p)->func != NULL)
   {
-//    return new String("#<subr " + ((Atom *)p)->name + ">");
     return smp->get_string("#<subr " + ((Atom *)p)->name + ">");
   }
   else if (((Atom *)p)->lambda != NULL)
@@ -3716,7 +3721,6 @@ Object *evmapconcat(Object *e, Object *a)
     }
     else
     {
-//      return new String(evmapconcatvect(fn, lst, sp, 0, ((Vector *)lst)->size, a));
       return smp->get_string(evmapconcatvect(fn, lst, sp, 0, ((Vector *)lst)->size, a));
     }
   }
@@ -3729,7 +3733,6 @@ Object *evmapconcat(Object *e, Object *a)
     }
     else
     {
-//      return new String(evmapconcatlist(fn, lst, sp, a));
       return smp->get_string(evmapconcatlist(fn, lst, sp, a));
     }
   }
@@ -3740,7 +3743,11 @@ Object *evprintatoms(Object *e, Object *a)
   int i;
 
   i = mp->print_all();
-  return imp->get_int((long8)i);
+
+  if (cout_on) {cout << " ********** Total " << i << " atoms **********" << endl;}
+  if (ofs_on) {ofs << " ********** Total " << i << " atoms **********" << endl;}
+
+  return p_t;
 }
 // (print-ints)
 Object *evprintints(Object *e, Object *a)
@@ -3788,6 +3795,22 @@ Object *evdeletestrings(Object *e, Object *a)
   int i;
 
   i = smp->delete_free_strings();
+  return p_t;
+}
+// (print-cells)
+Object *evprintcells(Object *e, Object *a)
+{
+  int i;
+
+  i = cmp->print_all();
+  return p_t;
+}
+// (delete-cells)
+Object *evdeletecells(Object *e, Object *a)
+{
+  int i;
+
+  i = cmp->delete_free_cells();
   return p_t;
 }
 // (load "FILENAME"
@@ -4049,7 +4072,6 @@ Object *evsplitstring(Object *e, Object *a)
 
     for (int i = v.size()-1; i >= 0; i--)
     {
-//      r = cons(new String(v[i]), r);
       r = cons(smp->get_string(v[i]), r);
     }
     return r;
@@ -4078,12 +4100,10 @@ Object *evconcat(Object *e, Object *a)
     }
     else
     {
-//      return new String(s);
       return smp->get_string(s);
     }
   }
 
-//  return new String(s);
   return smp->get_string(s);
 }
 // (stringp String
@@ -4122,7 +4142,6 @@ Object *evmakestring(Object *e, Object *a)
     str += ((String *)q)->value;
   }
 
-//  return new String(str);
   return smp->get_string(str);
 }
 // (substring Exp m n
@@ -4147,7 +4166,6 @@ Object *evsubstring(Object *e, Object *a)
   // String
   s = s.substr(m, len);
 
-//  return new String(s);
   return smp->get_string(s);
 }
 // (string= Exp Exp
@@ -4205,6 +4223,8 @@ int main()
   int rst_idx;
   Object *p;
   Object *q;
+  int i;
+  int total;
 
   // Set Atom value
   p_t->set_value(p_t);
@@ -4336,6 +4356,8 @@ int main()
   p_deletefloats->func = evdeletefloats;
   p_printstrings->func = evprintstrings;
   p_deletestrings->func = evdeletestrings;
+  p_printcells->func = evprintcells;
+  p_deletecells->func = evdeletecells;
   p_load->func = evload;
   p_exit->func = evexit;
   p_quit->func = evexit;
@@ -4393,6 +4415,25 @@ int main()
       cout << "[eval] ";
       q->print();
       cout << endl;
+
+      // Release free memories
+      i = imp->delete_free_ints();
+      cout << "Release " << i << " Integers." << endl;
+
+      i = fmp->delete_free_floats();
+      cout << "Release " << i << " Floats." << endl;
+
+      i = smp->delete_free_strings();
+      cout << "Release " << i << " Strings." << endl;
+
+      i = cmp->delete_free_cells();
+      total = i;
+      while (i > 4)
+      {
+        i = cmp->delete_free_cells();
+        total += i;
+      }
+      cout << "Release " << total << " Cells." << endl;
 
       // All Atoms
 //     mp->print_all();

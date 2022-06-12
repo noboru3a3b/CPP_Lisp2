@@ -26,10 +26,25 @@ Cell::Cell(Object *p, Object *q)
 
 Cell::~Cell()
 {
+//  if (cout_on) {cout << "[DEL this()] ";}
+//  if (ofs_on) {ofs << "[DEL this()] ";}
+
   car->ref_cnt--;
   cdr->ref_cnt--;
-  if (car->ref_cnt == 0) delete car;
-  if (cdr->ref_cnt == 0) delete cdr;
+
+  if (car->ref_cnt == 0)
+  {
+//    if (cout_on) {cout << "[DEL car()] ";}
+//    if (ofs_on) {ofs << "[DEL car()] ";}
+    delete car;
+  }
+
+  if (cdr->ref_cnt == 0)
+  {
+//    if (cout_on) {cout << "[DEL cdr()] ";}
+//    if (ofs_on) {ofs << "[DEL cdr()] ";}
+    delete cdr;
+  }
 }
 
 void Cell::print()

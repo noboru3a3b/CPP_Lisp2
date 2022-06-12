@@ -22,5 +22,5 @@ class StringMap
   int delete_free_strings();
 };
 
-#endif // __FSTRING_MAP_H__
+#endif // __STRING_MAP_H__
 

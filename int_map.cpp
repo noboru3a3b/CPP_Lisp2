@@ -70,8 +70,8 @@ int IntMap::delete_free_ints()
     // delete free_ints
     if ((itr->second)->ref_cnt < 2)
     {
-      if (cout_on) {cout << itr->first << ":" << (itr->second)->ref_cnt << " ";}
-      if (ofs_on) {ofs << itr->first << ":" << (itr->second)->ref_cnt << " ";}
+//      if (cout_on) {cout << itr->first << ":" << (itr->second)->ref_cnt << " ";}
+//      if (ofs_on) {ofs << itr->first << ":" << (itr->second)->ref_cnt << " ";}
 
       save = itr->second;
 
@@ -80,8 +80,8 @@ int IntMap::delete_free_ints()
 
       if ((i % 10) == 9)
       {
-        if (cout_on) {cout << endl;}
-        if (ofs_on) {ofs << endl;}
+//        if (cout_on) {cout << endl;}
+//        if (ofs_on) {ofs << endl;}
       }
       i++;
     }
@@ -93,8 +93,8 @@ int IntMap::delete_free_ints()
 
   if ((i % 10) != 0)
   {
-    if (cout_on) {cout << endl;}
-    if (ofs_on) {ofs << endl;}
+//    if (cout_on) {cout << endl;}
+//    if (ofs_on) {ofs << endl;}
   }
 
   return i;
