@@ -62,10 +62,10 @@
          (primes (en-queue queue x) (add x 2) max))
         (t (primes queue (add x 2) max))))
 
-(primes (make-queue) 3 100)
+(primes (make-queue) 3 1000)
 
 (defun make-pvect ()
-  (setq plen 25)
+  (setq plen 168)
   (setq pidx 1)
   (setq pi 1)
   (setq pvect (make-vector plen 0))

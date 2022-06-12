@@ -32,7 +32,7 @@ rassoc reverse round set setcar setcdr setq sin sinh split-string
 sqrt string< string= string> stringp sub substring symbol-function symbol-name symbol-value
 t tan tanh trunc unless vectorp vref vset when while
 zerop
- ********** Total 141 atoms **********
+ ********** Total: 141 atoms **********
 [eval] t
 Release 0 Integers.
 Release 0 Floats.
@@ -132,11 +132,11 @@ Release 1 Cells.
         (t (primes queue (add x 2) max))))
 [eval] primes
 
-(primes (make-queue) 3 100)
-[eval] (2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97)
+(primes (make-queue) 3 1000)
+[eval] (2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101 103 107 109 113 127 131 137 139 149 151 157 163 167 173 179 181 191 193 197 199 211 223 227 229 233 239 241 251 257 263 269 271 277 281 283 293 307 311 313 317 331 337 347 349 353 359 367 373 379 383 389 397 401 409 419 421 431 433 439 443 449 457 461 463 467 479 487 491 499 503 509 521 523 541 547 557 563 569 571 577 587 593 599 601 607 613 617 619 631 641 643 647 653 659 661 673 677 683 691 701 709 719 727 733 739 743 751 757 761 769 773 787 797 809 811 821 823 827 829 839 853 857 859 863 877 881 883 887 907 911 919 929 937 941 947 953 967 971 977 983 991 997)
 
 (defun make-pvect ()
-  (setq plen 25)
+  (setq plen 168)
   (setq pidx 1)
   (setq pi 1)
   (setq pvect (make-vector plen 0))
@@ -173,9 +173,9 @@ Release 1 Cells.
 [eval] primes
 
 (make-pvect)
-[eval] #(0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+[eval] #(0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
 (primes 3)
-[eval] #(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97)
+[eval] #(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101 103 107 109 113 127 131 137 139 149 151 157 163 167 173 179 181 191 193 197 199 211 223 227 229 233 239 241 251 257 263 269 271 277 281 283 293 307 311 313 317 331 337 347 349 353 359 367 373 379 383 389 397 401 409 419 421 431 433 439 443 449 457 461 463 467 479 487 491 499 503 509 521 523 541 547 557 563 569 571 577 587 593 599 601 607 613 617 619 631 641 643 647 653 659 661 673 677 683 691 701 709 719 727 733 739 743 751 757 761 769 773 787 797 809 811 821 823 827 829 839 853 857 859 863 877 881 883 887 907 911 919 929 937 941 947 953 967 971 977 983 991 997)
 
 (symbol-function #'primes)
 [eval] (lambda (x) (let ((rtn 0)) (while (eq rtn 0) (if (is-prime x) (unless (primeset x) (vset pvect 0 2) (setq rtn pvect))) (incq x 2)) rtn))
@@ -210,10 +210,10 @@ Release 1 Cells.
 [eval] nil
 ----------
 [eval] t
-Release 8 Integers.
+Release 76 Integers.
 Release 9 Floats.
 Release 8 Strings.
-Release 3292 Cells.
+Release 37111 Cells.
 
 > (print-atoms)
 * + - / 0= 1+ 1- < <= =
@@ -234,12 +234,12 @@ quote rassoc reverse round rtn set setcar setcdr setq sin
 sinh split-string sqr+ sqr+0 sqrt string< string= string> stringp sub
 substring symbol-function symbol-name symbol-value t tan tanh tree trunc unless
 vectorp vref vset when while x y zerop
- ********** Total 178 atoms **********
+ ********** Total: 178 atoms **********
 [eval] t
-Release 6 Integers.
+Release 11 Integers.
 Release 8 Floats.
 Release 3 Strings.
-Release 4 Cells.
+Release 10 Cells.
 
 > (quit)
 
