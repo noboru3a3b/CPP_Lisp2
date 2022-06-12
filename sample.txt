@@ -39,20 +39,20 @@
 [eval] primes
 [exp] (primes (make-queue) 3 1000)
 [eval] (2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101 103 107 109 113 127 131 137 139 149 151 157 163 167 173 179 181 191 193 197 199 211 223 227 229 233 239 241 251 257 263 269 271 277 281 283 293 307 311 313 317 331 337 347 349 353 359 367 373 379 383 389 397 401 409 419 421 431 433 439 443 449 457 461 463 467 479 487 491 499 503 509 521 523 541 547 557 563 569 571 577 587 593 599 601 607 613 617 619 631 641 643 647 653 659 661 673 677 683 691 701 709 719 727 733 739 743 751 757 761 769 773 787 797 809 811 821 823 827 829 839 853 857 859 863 877 881 883 887 907 911 919 929 937 941 947 953 967 971 977 983 991 997)
-[exp] (defun make-pvect nil (setq plen 168) (setq pidx 1) (setq pi 1) (setq pvect (make-vector plen 0)) (setq ppvect (make-vector plen 0)))
+[exp] (defun make-pvect nil (setq plen 168) (setq pidx 1) (setq pi 1) (setq px 3) (setq pvect (make-vector plen 0)) (setq ppvect (make-vector plen 0)))
 [eval] make-pvect
-[exp] (defun primeset (x) (if (eqn pidx plen) nil (vset pvect pidx x) (vset ppvect pidx (mul x x)) (incq pidx)))
+[exp] (defun primeset nil (if (eqn pidx plen) nil (vset pvect pidx px) (vset ppvect pidx (mul px px)) (incq pidx)))
 [eval] primeset
-[exp] (defun is-prime (x) (let ((rtn 0)) (setq pi 1) (while (eq rtn 0) (cond ((zerop (vref pvect pi)) (setq rtn t)) ((gt (vref ppvect pi) x) (setq rtn t)) ((zerop (mod x (vref pvect pi))) (setq rtn nil)) (t (incq pi)))) rtn))
+[exp] (defun is-prime nil (let ((rtn 0)) (setq pi 1) (while (eq rtn 0) (cond ((zerop (vref pvect pi)) (setq rtn t)) ((gt (vref ppvect pi) px) (setq rtn t)) ((zerop (mod px (vref pvect pi))) (setq rtn nil)) (t (incq pi)))) rtn))
 [eval] is-prime
-[exp] (defun primes (x) (let ((rtn 0)) (while (eq rtn 0) (if (is-prime x) (unless (primeset x) (vset pvect 0 2) (setq rtn pvect))) (incq x 2)) rtn))
+[exp] (defun primes nil (let ((rtn 0)) (while (eq rtn 0) (if (is-prime px) (unless (primeset) (vset pvect 0 2) (setq rtn pvect))) (incq px 2)) rtn))
 [eval] primes
 [exp] (make-pvect)
 [eval] #(0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
 [exp] (primes 3)
 [eval] #(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101 103 107 109 113 127 131 137 139 149 151 157 163 167 173 179 181 191 193 197 199 211 223 227 229 233 239 241 251 257 263 269 271 277 281 283 293 307 311 313 317 331 337 347 349 353 359 367 373 379 383 389 397 401 409 419 421 431 433 439 443 449 457 461 463 467 479 487 491 499 503 509 521 523 541 547 557 563 569 571 577 587 593 599 601 607 613 617 619 631 641 643 647 653 659 661 673 677 683 691 701 709 719 727 733 739 743 751 757 761 769 773 787 797 809 811 821 823 827 829 839 853 857 859 863 877 881 883 887 907 911 919 929 937 941 947 953 967 971 977 983 991 997)
 [exp] (symbol-function (function primes))
-[eval] (lambda (x) (let ((rtn 0)) (while (eq rtn 0) (if (is-prime x) (unless (primeset x) (vset pvect 0 2) (setq rtn pvect))) (incq x 2)) rtn))
+[eval] (lambda nil (let ((rtn 0)) (while (eq rtn 0) (if (is-prime px) (unless (primeset) (vset pvect 0 2) (setq rtn pvect))) (incq px 2)) rtn))
 [exp] (symbol-function (function incq))
 [eval] "#<subr incq>"
 [exp] (setq IN_FILE "sample.lisp")

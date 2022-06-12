@@ -139,36 +139,37 @@ Release 1 Cells.
   (setq plen 168)
   (setq pidx 1)
   (setq pi 1)
+  (setq px 3)
   (setq pvect (make-vector plen 0))
   (setq ppvect (make-vector plen 0)))
 [eval] make-pvect
 
-(defun primeset (x)
+(defun primeset ()
   (if (eqn pidx plen) nil
-      (vset pvect pidx x)
-      (vset ppvect pidx (mul x x))
+      (vset pvect pidx px)
+      (vset ppvect pidx (mul px px))
       (incq pidx)))
 [eval] primeset
 
-(defun is-prime (x)
+(defun is-prime ()
   (let ((rtn 0))
     (setq pi 1)
     (while (eq rtn 0)
       (cond ((zerop (vref pvect pi)) (setq rtn t))
-            ((gt (vref ppvect pi) x) (setq rtn t))
-            ((zerop (mod x (vref pvect pi))) (setq rtn nil))
+            ((gt (vref ppvect pi) px) (setq rtn t))
+            ((zerop (mod px (vref pvect pi))) (setq rtn nil))
             (t (incq pi))))
     rtn))
 [eval] is-prime
 
-(defun primes (x)
+(defun primes ()
   (let ((rtn 0))
     (while (eq rtn 0)
-      (if (is-prime x)
-            (unless (primeset x)
+      (if (is-prime px)
+            (unless (primeset)
               (vset pvect 0 2)
               (setq rtn pvect)))
-      (incq x 2))
+      (incq px 2))
     rtn))
 [eval] primes
 
@@ -178,7 +179,7 @@ Release 1 Cells.
 [eval] #(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101 103 107 109 113 127 131 137 139 149 151 157 163 167 173 179 181 191 193 197 199 211 223 227 229 233 239 241 251 257 263 269 271 277 281 283 293 307 311 313 317 331 337 347 349 353 359 367 373 379 383 389 397 401 409 419 421 431 433 439 443 449 457 461 463 467 479 487 491 499 503 509 521 523 541 547 557 563 569 571 577 587 593 599 601 607 613 617 619 631 641 643 647 653 659 661 673 677 683 691 701 709 719 727 733 739 743 751 757 761 769 773 787 797 809 811 821 823 827 829 839 853 857 859 863 877 881 883 887 907 911 919 929 937 941 947 953 967 971 977 983 991 997)
 
 (symbol-function #'primes)
-[eval] (lambda (x) (let ((rtn 0)) (while (eq rtn 0) (if (is-prime x) (unless (primeset x) (vset pvect 0 2) (setq rtn pvect))) (incq x 2)) rtn))
+[eval] (lambda nil (let ((rtn 0)) (while (eq rtn 0) (if (is-prime px) (unless (primeset) (vset pvect 0 2) (setq rtn pvect))) (incq px 2)) rtn))
 (symbol-function #'incq)
 [eval] "#<subr incq>"
 
@@ -213,7 +214,7 @@ Release 1 Cells.
 Release 76 Integers.
 Release 9 Floats.
 Release 8 Strings.
-Release 37111 Cells.
+Release 34919 Cells.
 
 > (print-atoms)
 * + - / 0= 1+ 1- < <= =
@@ -229,17 +230,17 @@ let let* list listp ln load log lt lte make-pvect
 make-queue make-string make-variable-c make-vector mapc mapcan mapcar mapconcat max min
 mod mul n nconc nil not nreverse null numberp or
 p p-list pi pidx plen pow ppvect primes primeset print
-print-atoms print-cells print-floats print-ints print-strings progn pvect q queue quit
-quote rassoc reverse round rtn set setcar setcdr setq sin
-sinh split-string sqr+ sqr+0 sqrt string< string= string> stringp sub
-substring symbol-function symbol-name symbol-value t tan tanh tree trunc unless
-vectorp vref vset when while x y zerop
- ********** Total: 178 atoms **********
+print-atoms print-cells print-floats print-ints print-strings progn pvect px q queue
+quit quote rassoc reverse round rtn set setcar setcdr setq
+sin sinh split-string sqr+ sqr+0 sqrt string< string= string> stringp
+sub substring symbol-function symbol-name symbol-value t tan tanh tree trunc
+unless vectorp vref vset when while x y zerop
+ ********** Total: 179 atoms **********
 [eval] t
-Release 11 Integers.
+Release 9 Integers.
 Release 8 Floats.
 Release 3 Strings.
-Release 10 Cells.
+Release 2 Cells.
 
 > (quit)
 
