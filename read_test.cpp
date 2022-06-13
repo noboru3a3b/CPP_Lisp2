@@ -4478,7 +4478,7 @@ int main()
 //      cout << " ----------> Delete: " << i << " Cells." << endl;
 //      ofs << " ----------> Delete: " << i << " Cells." << endl;
 
-      while (i > 1)
+      while (i > 0)
       {
         i = cmp->delete_free_cells();
         total += i;
