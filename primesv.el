@@ -1,0 +1,37 @@
+;; for Emacs Lisp
+(defun make-pvect ()
+  (setq plen 5761455)
+  (setq pidx 1)
+  (setq p_i 1)
+  (setq px 3)
+  (setq pvect (make-vector plen 0))
+  (setq ppvect (make-vector plen 0)))
+
+(defun primeset ()
+  (if (= pidx plen) nil
+      (aset pvect pidx px)
+      (aset ppvect pidx (* px px))
+      (setq pidx (+ pidx 1))))
+
+(defun is-prime ()
+  (let ((rtn 0))
+    (setq p_i 1)
+    (while (eq rtn 0)
+      (cond ((= (aref pvect p_i) 0) (setq rtn t))
+            ((> (aref ppvect p_i) px) (setq rtn t))
+            ((= (mod px (aref pvect p_i)) 0) (setq rtn nil))
+            (t (setq p_i (+ p_i 1)))))
+    rtn))
+
+(defun primes ()
+  (let ((rtn 0))
+    (while (eq rtn 0)
+      (if (is-prime)
+            (unless (primeset)
+              (aset pvect 0 2)
+              (setq rtn pvect)))
+      (setq px (+ px 2)))
+    rtn))
+
+(make-pvect)
+(primes)

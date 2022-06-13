@@ -24,10 +24,10 @@
 (defun primes ()
   (do ((rtn 0))
       ((not (eql rtn 0)) rtn)
-     (if (is-prime)
-           (if (primeset) t
-             (progn (setf (aref pvect 0) 2)
-                    (setf rtn pvect))))
-     (setf px (+ px 2))))
+    (if (is-prime)
+          (if (primeset) t
+              (progn (setf (aref pvect 0) 2)
+                     (setf rtn pvect))))
+    (setf px (+ px 2))))
 
-(format t "~S" (primes))
+(primes)
