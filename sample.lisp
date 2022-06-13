@@ -99,7 +99,7 @@
     rtn))
 
 (make-pvect)
-(primes 3)
+(primes)
 
 (symbol-function #'primes)
 (symbol-function #'incq)
