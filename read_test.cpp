@@ -3837,11 +3837,25 @@ Object *evprintcells(Object *e, Object *a)
 Object *evdeletecells(Object *e, Object *a)
 {
   int i;
+  int total;
 
   i = cmp->delete_free_cells();
+  total = i;
 
-  if (cout_on) {cout << " ----------> Delete: " << i << " Cells." << endl;}
-  if (ofs_on) {ofs << " ----------> Delete: " << i << " Cells." << endl;}
+//  if (cout_on) {cout << " ----------> Delete: " << i << " Cells." << endl;}
+//  if (ofs_on) {ofs << " ----------> Delete: " << i << " Cells." << endl;}
+
+    while (i > 0)
+    {
+      i = cmp->delete_free_cells();
+      total += i;
+
+//      if (cout_on) {cout << " ----------> Delete: " << i << " Cells." << endl;}
+//      if (ofs_on) {ofs << " ----------> Delete: " << i << " Cells." << endl;}
+    }
+
+  if (cout_on) {cout << " ----------> Delete: " << total << " Cells." << endl;}
+  if (ofs_on) {ofs << " ----------> Delete: " << total << " Cells." << endl;}
 
   return p_t;
 }
@@ -4464,7 +4478,7 @@ int main()
 //      cout << " ----------> Delete: " << i << " Cells." << endl;
 //      ofs << " ----------> Delete: " << i << " Cells." << endl;
 
-      while (i > 4)
+      while (i > 1)
       {
         i = cmp->delete_free_cells();
         total += i;
