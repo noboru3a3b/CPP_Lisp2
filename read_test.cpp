@@ -21,6 +21,7 @@
 #include "int_map.h"
 #include "float_map.h"
 #include "string_map.h"
+#include "vector_map.h"
 #include "cell_map.h"
 
 Object *s_read(vector<Token> *tokens, int idx, int *rest_idx);
@@ -165,6 +166,8 @@ Atom *p_printfloats = mp->get_atom("print-floats");
 Atom *p_deletefloats = mp->get_atom("delete-floats");
 Atom *p_printstrings = mp->get_atom("print-strings");
 Atom *p_deletestrings = mp->get_atom("delete-strings");
+Atom *p_printvectors = mp->get_atom("print-vectors");
+Atom *p_deletevectors = mp->get_atom("delete-vectors");
 Atom *p_printcells = mp->get_atom("print-cells");
 Atom *p_deletecells = mp->get_atom("delete-cells");
 Atom *p_load = mp->get_atom("load");
@@ -194,6 +197,7 @@ Atom *p_equal = mp->get_atom("equal");
 IntMap *imp = new IntMap;
 FloatMap *fmp = new FloatMap;
 StringMap *smp = new StringMap;
+VectorMap *vmp = new VectorMap;
 CellMap *cmp = new CellMap;
 
 // Output FILE Stream
@@ -987,7 +991,9 @@ Object *s_read(vector<Token> *tokens, int idx, int *rest_idx)
 
 //    cout << "[n] " << n << endl;
 
-    p = new Vector((long8)n);
+//    p = new Vector((long8)n);
+    p = vmp->get_vector((long8)n);
+
     p_car = s_read(tokens, *rest_idx, &car_rest_idx);
 
     p->set_value(0, p_car);
@@ -1113,7 +1119,9 @@ Object *s_cdr_read(vector<Token> *tokens, int idx, int *rest_idx)
 
 //    cout << "[cdr n] " << n << endl;
 
-    q = new Vector((long8)n);
+//    q = new Vector((long8)n);
+    q = vmp->get_vector((long8)n);
+
     q_car = s_read(tokens, *rest_idx, &car_rest_idx);
 
     q->set_value(0, q_car);
@@ -1255,7 +1263,9 @@ void v_rest_read(Object *v, int i, vector<Token> *tokens, int idx, int *rest_idx
 
 //    cout << "[v_rest n] " << n << endl;
 
-    p = new Vector((long8)n);
+//    p = new Vector((long8)n);
+    p = vmp->get_vector((long8)n);
+
     p_car = s_read(tokens, *rest_idx, &car_rest_idx);
 
     p->set_value(0, p_car);
@@ -3821,6 +3831,30 @@ Object *evdeletestrings(Object *e, Object *a)
 
   return p_t;
 }
+// (print-vectors)
+Object *evprintvectors(Object *e, Object *a)
+{
+  int i;
+
+  i = vmp->print_all();
+
+  if (cout_on) {cout << " ********** Total: " << i << " Vectors **********" << endl;}
+  if (ofs_on) {ofs << " ********** Total: " << i << " Vectors **********" << endl;}
+
+  return p_t;
+}
+// (delete-vectors)
+Object *evdeletevectors(Object *e, Object *a)
+{
+  int i;
+
+  i = vmp->delete_free_vectors();
+
+  if (cout_on) {cout << " ----------> Delete: " << i << " Vectors." << endl;}
+  if (ofs_on) {ofs << " ----------> Delete: " << i << " Vectors." << endl;}
+
+  return p_t;
+}
 // (print-cells)
 Object *evprintcells(Object *e, Object *a)
 {
@@ -3999,7 +4033,8 @@ Object *evmakevector(Object *e, Object *a)
   n = ((Num_int *)p)->value;
 
   // vector
-  v = new Vector(n);
+//  v = new Vector(n);
+  v = vmp->get_vector(n);
 
   for (int i = 0; i < n; i++)
   {
@@ -4402,6 +4437,8 @@ int main()
   p_deletefloats->func = evdeletefloats;
   p_printstrings->func = evprintstrings;
   p_deletestrings->func = evdeletestrings;
+  p_printvectors->func = evprintvectors;
+  p_deletevectors->func = evdeletevectors;
   p_printcells->func = evprintcells;
   p_deletecells->func = evdeletecells;
   p_load->func = evload;
@@ -4471,6 +4508,9 @@ int main()
 
       i = smp->delete_free_strings();
       cout << "Release " << i << " Strings." << endl;
+
+      i = vmp->delete_free_vectors();
+      cout << "Release " << i << " Vectors." << endl;
 
       i = cmp->delete_free_cells();
       total = i;

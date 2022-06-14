@@ -29,7 +29,7 @@ atom_map_test:
 read_test:
 	g++ -std=c++1z -g object.cpp atom.cpp string.cpp num_int.cpp num_float.cpp \
 	cell.cpp vector.cpp atom_map.cpp int_map.cpp float_map.cpp string_map.cpp \
-	cell_map.cpp read_test.cpp
+	vector_map.cpp cell_map.cpp read_test.cpp
 
 clean:
 	rm a.out
