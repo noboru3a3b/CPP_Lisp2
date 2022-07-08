@@ -84,6 +84,12 @@ real	2m40.150s
 user	2m38.967s
 sys	0m1.172s
 
+okadan@i5:~/CPP_Lisp2$ time chezscheme9.5 --script primesq2.scm (10倍リミットテスト)
+50847534
+real	38m45.477s
+user	38m45.073s
+sys	0m0.316s
+
 # Larceny v1.3 "Grain Alcohol and Rainwater"
 okadan@i5:~/PRIMES$ time scheme-script primesq2.scm
 
