@@ -4,7 +4,8 @@
 ;; for Larceny
 ;(import (larceny r7r6))
 
-(define plen 5761455)
+;(define plen 5761455)  ; 2 .. 100000000
+(define plen 57614550)  ; 2 ... 1140691813 OK
 (define pidx 1)
 (define pi 1)
 (define px 3)
@@ -35,4 +36,4 @@
                      (set! rtn pvect))))
     (set! px (+ px 2))))
 
-(primes)
+(display (primes))

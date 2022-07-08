@@ -112,6 +112,18 @@ real	2m1.660s
 user	2m1.543s
 sys	0m0.108s
 
+okadan@i5:~/PRIMES$ time ikarus --r6rs-script primesq2.scm (10倍リミットテスト)
+50847534
+real	43m21.967s
+user	43m20.701s
+sys	0m1.252s
+
+okadan@i5:~/PRIMES$ time ikarus --r6rs-script primesv2.scm (10倍バッファサイズテスト)
+
+real	61m17.893s
+user	60m36.648s
+sys	0m3.503s
+
 # Chicken Version 5.1.0
 okadan@i5:~/PRIMES$ csc -optimize-level 5 primesq.scm
 okadan@i5:~/PRIMES$ time ./primesq
@@ -132,6 +144,20 @@ okadan@i5:~/CPP_Lisp2$ time sbcl --script primesv.lisp  <--- OK
 real	3m32.961s
 user	3m32.784s
 sys	0m0.104s
+
+okadan@i5:~/CPP_Lisp2$ time sbcl --script primesv2.lisp  <--- 最適化 OK
+99999989
+
+real	3m22.388s
+user	3m22.315s
+sys	0m0.060
+
+okadan@i5:~/CPP_Lisp2$ time sbcl --script primesv2.lisp  <--- (10倍バッファサイズテスト) 最適化 OK
+999999937
+
+real	77m54.706s
+user	77m54.062s
+sys	0m0.572s
 
 # Scala code runner version 2.11.12
 okadan@i5:~/PRIMES$ scalac primes.scala
