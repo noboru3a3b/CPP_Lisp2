@@ -126,9 +126,9 @@ sys	0m1.252s
 
 okadan@i5:~/PRIMES$ time ikarus --r6rs-script primesv2.scm (10倍バッファサイズテスト)
 
-real	61m17.893s
-user	60m36.648s
-sys	0m3.503s
+real	51m13.234s
+user	50m39.054s
+sys	0m2.875s
 
 # Chicken Version 5.1.0
 okadan@i5:~/PRIMES$ csc -optimize-level 5 primesq.scm
@@ -157,6 +157,25 @@ okadan@i5:~/CPP_Lisp2$ time sbcl --script primesv2.lisp  <--- 最適化 OK
 real	3m22.388s
 user	3m22.315s
 sys	0m0.060
+
+okadan@i5:~/PRIMES$ time sbcl --script primesq2.lisp  <--- Heap exhausted NG!
+Heap exhausted during garbage collection: 0 bytes available, 16 requested.
+        Immobile Object Counts
+ Gen   GF type  fdefn symbol   code  Boxed   Cons    Raw   Code  SmMix  Mixed  LgRaw LgCode  LgMix Waste%       Alloc        Trig   Dirty GCs Mem-age
+  1     0    0      0      0      0      0   9924      0      0      0      0      0      0      0    0.8   322648992    10737418    9924   0  1.0000
+  2     0    3      6      0      6     10  14827      2      0      2      6      0      0      0    0.8   482513856     2000000       3   0  0.0000
+  3     0    0      0      0      0      0      0      0      0      0      0      0      0      0    0.0           0     2000000       0   0  0.0000
+  4     0    0      0      0      0      0      0      0      0      0      0      0      0      0    0.0           0     2000000       0   0  0.0000
+  5     0    0      0      0      0      0      0      0      0      0      0      0      0      0    0.0           0     2000000       0   0  0.0000
+  6   345  725  15100  25613  16953    315    122    184      2     14     11     10      0     55    3.0    22663040     2000000       1   0  0.0000
+  7     0    0      0      0      0      0   7284      0      0      0      0      0      0      0    0.8   236817408     2000000    7284   0  0.0000
+Tot   345  728  15106  25613  16959    325  32157    186      2     16     17     10      0     55    0.8  1064643296 [99.2% of 1073741824 max]
+GC control variables:
+   *GC-INHIBIT* = true
+   *GC-PENDING* = true
+   *STOP-FOR-GC-PENDING* = false
+fatal error encountered in SBCL pid 9339 tid 9339:
+Heap exhausted, game over.
 
 okadan@i5:~/CPP_Lisp2$ time sbcl --script primesv2.lisp  <--- (10倍バッファサイズテスト) 最適化 OK
 999999937
