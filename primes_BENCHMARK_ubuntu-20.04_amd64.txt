@@ -158,7 +158,7 @@ real	3m22.388s
 user	3m22.315s
 sys	0m0.060
 
-okadan@i5:~/PRIMES$ time sbcl --script primesq2.lisp  <--- Heap exhausted NG!
+okadan@i5:~/PRIMES$ time sbcl --script primesq2.lisp (10倍リミットテスト) <--- Heap exhausted NG!
 Heap exhausted during garbage collection: 0 bytes available, 16 requested.
         Immobile Object Counts
  Gen   GF type  fdefn symbol   code  Boxed   Cons    Raw   Code  SmMix  Mixed  LgRaw LgCode  LgMix Waste%       Alloc        Trig   Dirty GCs Mem-age
@@ -177,7 +177,7 @@ GC control variables:
 fatal error encountered in SBCL pid 9339 tid 9339:
 Heap exhausted, game over.
 
-okadan@i5:~/CPP_Lisp2$ time sbcl --script primesv2.lisp  <--- (10倍バッファサイズテスト) 最適化 OK
+okadan@i5:~/CPP_Lisp2$ time sbcl --script primesv2.lisp (10倍バッファサイズテスト) <--- 最適化 OK
 999999937
 
 real	77m54.706s
