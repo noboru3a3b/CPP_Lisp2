@@ -1,5 +1,6 @@
 ;; for Scheme (gauche/ypsilon/guile/chez)
-(define plen 5761455)
+;(define plen 5761455)  ; 2 .. 100000000 OK
+(define plen 50847534)  ; 2 .. 1000000000 OK
 (define pidx 1)
 (define pi 1)
 (define px 3)
