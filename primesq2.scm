@@ -2,7 +2,7 @@
 
 (import (rnrs) (rnrs mutable-pairs))
 
-;; new queue
+;; queue
 (define (make-queue)
   (let ((queue (cons '() '())))
     (set-car! queue queue)
@@ -35,13 +35,13 @@
 
 (define (primes queue x xmax)
   (cond ((> x xmax)
-         (get-list queue))
+         (cons 2 (get-list queue)))
         ((is-prime (get-list queue) x)
          (primes (en-queue! queue x) (+ x 2) xmax))
         (else
          (primes queue (+ x 2) xmax))))
 
 ;; main
-;(cons 2 (primes (make-queue) 3 100000000))
-(display (length (cons 2 (primes (make-queue) 3 1000000000))))
+;(primes (make-queue) 3 100000000)
+(display (length (primes (make-queue) 3 1000000000)))
 
