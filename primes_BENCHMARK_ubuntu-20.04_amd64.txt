@@ -183,6 +183,12 @@ GC control variables:
 fatal error encountered in SBCL pid 9339 tid 9339:
 Heap exhausted, game over.
 
+okadan@i5:~/PRIMES$ time sbcl --dynamic-space-size 8192 --script primesq2.lisp (10倍リミットテスト) <--- OK
+50847534
+real	53m48.012s
+user	53m47.633s
+sys	0m0.244s
+
 okadan@i5:~/CPP_Lisp2$ time sbcl --script primesv2.lisp (10倍バッファサイズテスト) <--- 最適化 OK
 999999937
 
